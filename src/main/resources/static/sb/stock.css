@@ -1,0 +1,534 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, select {
+    margin: 0;
+    padding: 0
+}
+
+em, i, b {
+    font-weight: normal;
+    font-style: normal;
+}
+
+ol, ul, li {
+    list-style: none;
+}
+
+img, a img {
+    border: 0;
+    outline: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+p {
+    word-wrap: break-word;
+}
+
+a {
+    text-decoration: none;
+}
+
+input, textarea {
+    outline: none;
+    border: 0 none;
+    font-family: "Microsoft Yahei";
+}
+
+select {
+    outline: none;
+    font-family: "Microsoft Yahei";
+}
+
+body {
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #333;
+}
+
+/*============================================*/
+.sp-wrapper {
+    padding: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+.sp-title {
+    height: 50px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+}
+
+.sp-title span, .sp-title a {
+    position: relative;
+    display: inline-block;
+    padding: 0 15px;
+    line-height: 48px;
+    padding-bottom: 2px;
+}
+
+.sp-title span, .sp-title a.active {
+    padding-bottom: 0;
+    border-bottom: 2px solid #39c;
+}
+
+.sp-tool {
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.sp-tool .fl {
+    float: left;
+}
+
+.sp-tool .fr {
+    float: right;
+}
+
+.sp-tool .fl b {
+    margin-right: 30px;
+}
+
+.sp-tool input[type=text], .sp-tool select {
+    width: 290px;
+    height: 30px;
+    padding: 0 4px;
+    border: 1px solid #A1A1A1;
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.sp-tool input.date[type=text], .sp-tool input.text[type=text] {
+    width: 140px;
+}
+
+.sp-tool select {
+    width: 150px;
+}
+
+.sp-tool input[type=button], .sp-tool input[type=submit] {
+    margin-left: 10px;
+    width: 70px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    background: #C9C9C9;
+    color: #666;
+    cursor: pointer;
+}
+
+.sp-tool i, .sp-tool a {
+    float: left;
+    margin-left: 10px;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 25px;
+    border: 1px solid #A1A1A1;
+    color: #333;
+    cursor: pointer;
+}
+
+.sp-tool a.add, .sp-tool i.add, .sp-tool i.save, .sp-tool i.delete {
+    background: #f60;
+    color: #fff;
+}
+
+.sp-tool i.save {
+    background: #39f;
+}
+
+.sp-tool i.delete {
+    background: #C9C9C9;
+}
+
+.sp-tool p {
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.sp-tool p:first-child {
+    margin-top: 100px;
+}
+
+.sp-tool p em {
+    display: inline-block;
+    width: 90px;
+    text-align: right;
+}
+
+.sp-tool p input.text {
+    width: 100px;
+}
+
+.sp-tool p select {
+    width: 110px;
+}
+
+.sp-tool p b {
+    margin-right: 30px;
+}
+
+.sp-tool p input[type=file] {
+    vertical-align: middle;
+    width: 200px;
+}
+
+.sp-table table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.sp-table th, .sp-table td {
+    padding: 6px 15px;
+    text-align: left;
+    font-size: 12px;
+    color: #333;
+    border: 1px solid #E4E4E4;
+}
+
+.sp-table th {
+    background: #f2f2f2;
+}
+
+.sp-table th em {
+    margin-left: 10px;
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: #39c;
+    color: #fff;
+}
+
+.sp-table td span {
+    margin-left: 30px;
+    color: #39c;
+    cursor: pointer;
+}
+
+.sp-table td i, .sp-table td a {
+    color: #39c;
+    font-style: normal;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.sp-table td img {
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+
+.sp-table td input[type=text] {
+    width: 100%;
+    height: 30px;
+}
+
+.sp-table td select {
+    width: 100px;
+    border: 0 none;
+    height: 30px;
+}
+
+.sp-table td input.goods {
+    width: 250px;
+}
+
+.sp-table td input.unit {
+    width: 50px;
+}
+
+.sp-box {
+    width: 600px;
+    height: 500px;
+    overflow: hidden;
+    text-align: left;
+}
+
+.sp-box p {
+    float: left;
+    width: 280px;
+    height: 32px;
+    margin: 10px;
+}
+
+.sp-box p span {
+    padding-right: 10px;
+    line-height: 32px;
+    font-size: 14px;
+}
+
+.sp-box p input[type=text], .sp-box p select {
+    width: 190px;
+    padding: 0 4px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    border: 1px solid #d3d3d3;
+}
+
+.sp-box p select {
+    width: 200px;
+    height: 32px;
+}
+
+.sp-box .sp-button {
+    clear: both;
+    padding: 20px 10px 30px;
+}
+
+.sp-box .sp-button i {
+    display: inline-block;
+    padding: 0 15px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+    background: #39c;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.sp-box .sp-table {
+    padding: 0 10px 20px;
+    height: 270px;
+    overflow-y: auto;
+}
+
+.sp-tree {
+    display: none;
+    position: absolute;
+    z-index: 199999999;
+    width: 300px;
+    height: 100px;
+    padding: 10px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #d3d3d3;
+}
+
+.sp-tree li {
+    position: relative;
+    font-size: 12px;
+    line-height: 20px;
+    padding-left: 20px
+}
+
+.sp-tree li li {
+    border-left: 1px solid #ccc;
+}
+
+.sp-tree li h3 {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.sp-tree li h3 b {
+}
+
+.sp-tree li h3 b:hover {
+    text-decoration: underline;
+}
+
+.sp-tree li i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 16px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.sp-tree li ul {
+    display: none;
+}
+
+.sp-result {
+    display: none;
+    position: absolute;
+    z-index: 100000;
+    width: 250px;
+    height: 150px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #d3d3d3;
+}
+
+.sp-result li {
+    font-size: 12px;
+    line-height: 30px;
+    padding: 0 10px;
+}
+
+.sp-result li:hover {
+    background: #f2f2f2;
+    font-weight: bold;
+}
+
+.sp-category {
+    width: 460px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    color: #333;
+}
+
+.sp-category dt {
+    background: #f2f2f2;
+    text-align: center;
+    overflow: hidden;
+}
+
+.sp-category li {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+}
+
+.sp-category b {
+    float: left;
+    margin-left: 20px;
+    text-align: left;
+    height: 30px;
+    line-height: 30px;
+}
+
+.sp-category span {
+    float: right;
+    display: block;
+    width: 120px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    border-left: 1px solid #ccc;
+}
+
+.sp-category span i {
+    margin: 0 10px;
+    color: #39c;
+    cursor: pointer;
+}
+
+.sp-category dt b {
+    display: block;
+    width: 310px;
+    margin: 0;
+    text-align: center;
+}
+
+.sp-category ul {
+    clear: both;
+    overflow: hidden;
+    border-top: 1px solid #ccc;
+}
+
+.sp-category ul li:last-child {
+    border: 0 none;
+}
+
+.sp-category li b {
+    margin-left: 40px;
+}
+
+.sp-category li li b {
+    margin-left: 60px;
+}
+
+.sp-category li li li b {
+    margin-left: 80px;
+}
+
+.sp-category li li li li b {
+    margin-left: 100px;
+}
+
+.sp-category li li li li li b {
+    margin-left: 120px;
+}
+
+.T-box {
+    width: 400px;
+    padding: 15px 20px 0;
+    text-align: left;
+}
+
+.T-box p {
+    position: relative;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.T-box p span {
+    display: inline-block;
+    padding-right: 15px;
+    text-align: right;
+    width: 110px;
+    line-height: 36px;
+    font-size: 14px;
+}
+
+.T-box p input[type=text] {
+    width: 160px;
+    padding: 0 5px;
+    height: 34px;
+    line-height: 34px;
+    font-size: 14px;
+    border: 1px solid #d3d3d3;
+    outline: none;
+}
+
+.ck-box {
+    width: 1100px;
+    text-align: left;
+}
+
+.ck-box p {
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.ck-box p b {
+    margin-right: 20px;
+}
+
+.pages {
+    clear: both;
+    padding: 50px 10px;
+    text-align: right;
+    line-height: 30px;
+}
+
+.pages a {
+    margin: 0 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.pages a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+.pages a.active, .nums a.active:hover {
+    font-weight: bold;
+    text-decoration: none;
+    cursor: default;
+}
+
+/*
+.sp-box::-webkit-scrollbar{width:8px;height:30px;}
+.sp-box::-webkit-scrollbar-button{display:none;}
+.sp-box::-webkit-scrollbar-track{display:none;}
+.sp-box::-webkit-scrollbar-track-piece{background-color:#ccc;}
+.sp-box::-webkit-scrollbar-thumb{width:8px;height:30px;background-color:#D51038;-webkit-border-radius:20px;border-radius:20px;}
+.sp-box::-webkit-scrollbar-corner{background-color:#D51038;}
+*/

@@ -1,0 +1,638 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, select {
+    margin: 0;
+    padding: 0
+}
+
+em, i, b {
+    font-weight: normal;
+    font-style: normal;
+}
+
+ol, ul, li {
+    list-style: none;
+}
+
+img, a img {
+    border: 0;
+    outline: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+p {
+    word-wrap: break-word;
+}
+
+a {
+    text-decoration: none;
+}
+
+input, textarea {
+    outline: none;
+    border: 0 none;
+    font-family: "Microsoft Yahei";
+}
+
+select {
+    outline: none;
+    font-family: "Microsoft Yahei";
+}
+
+body {
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #333;
+}
+
+/*============================================*/
+.sp-wrapper {
+    padding: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+.sp-title {
+    height: 50px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+}
+
+.sp-title span, .sp-title a, .sp-title b, .sp-title em {
+    position: relative;
+    display: inline-block;
+    padding: 0 15px;
+    line-height: 48px;
+    padding-bottom: 2px;
+}
+
+.sp-title span, .sp-title a.active {
+    padding-bottom: 0;
+    border-bottom: 2px solid #39c;
+}
+
+.sp-title a {
+    font-weight: normal;
+}
+
+.sp-title a.active {
+    color: #39c;
+}
+
+.sp-title em {
+    font-weight: bold;
+}
+
+.sp-title em i {
+    font-weight: normal;
+    margin-left: 15px;
+    font-size: 12px;
+    padding: 1px 4px;
+    background: #39f;
+    color: #fff;
+}
+
+.sp-title b i {
+    font-weight: bold;
+}
+
+.sp-tool {
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.sp-tool input[type=text], .sp-tool select {
+    margin-right: 10px;
+    width: 150px;
+    height: 30px;
+    padding: 0 4px;
+    border: 1px solid #A1A1A1;
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.sp-tool select {
+    width: 160px;
+}
+
+.sp-tool span b {
+    padding-right: 10px;
+}
+
+.sp-tool input[type=button], .sp-tool input[type=submit] {
+    margin-right: 10px;
+    width: 90px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    background: #39f;
+    color: #fff;
+    cursor: pointer;
+}
+
+.sp-tool i, .sp-tool a {
+    margin-right: 10px;
+    display: inline-block;
+    text-align: center;
+    width: 90px;
+    height: 30px;
+    line-height: 30px;
+    background: #39f;
+    color: #fff;
+    cursor: pointer;
+}
+
+.sp-tool a.add, .sp-tool i.add {
+    background: #f60;
+}
+
+.sp-table table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.sp-table th, .sp-table td {
+    padding: 10px 20px;
+    text-align: left;
+    font-size: 12px;
+    color: #333;
+    border-bottom: 1px solid #E4E4E4;
+}
+
+.sp-table th {
+    background: #f2f2f2;
+}
+
+.sp-table th em {
+    margin-left: 10px;
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: #39c;
+    color: #fff;
+}
+
+.sp-table td span {
+    margin-left: 15px;
+    color: #39c;
+    cursor: pointer;
+}
+
+.sp-table td i, .sp-table td a {
+    color: #39c;
+    font-style: normal;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.sp-table td img {
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+
+.sp-table div {
+    padding-top: 100px;
+}
+
+.sp-table p {
+    line-height: 30px;
+    font-weight: bold;
+}
+
+.sp-result {
+    display: none;
+    position: absolute;
+    z-index: 100000;
+    width: 250px;
+    height: 150px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #d3d3d3;
+}
+
+.sp-result li {
+    font-size: 12px;
+    line-height: 30px;
+    padding: 0 10px;
+}
+
+.sp-result li:hover {
+    background: #f2f2f2;
+    font-weight: bold;
+}
+
+.T-box {
+    padding: 20px 0;
+}
+
+.T-box p {
+    position: relative;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.T-box p span {
+    display: inline-block;
+    padding-right: 15px;
+    text-align: right;
+    width: 80px;
+    line-height: 32px;
+    font-size: 14px;
+}
+
+.T-box p input[type=text], .T-box p select {
+    width: 150px;
+    padding: 0 4px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    border: 1px solid #d3d3d3;
+    outline: none;
+}
+
+.T-box p select {
+    width: 160px;
+    height: 32px;
+}
+
+.T-box p input[type=submit], .T-box p input[type=button] {
+    width: 90px;
+    height: 32px;
+    background: #39f;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    border: 0 none;
+}
+
+.T-box p label {
+    margin-right: 20px;
+}
+
+.T-box p label input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: -3px;
+}
+
+.T-box p.rate input, .T-box p.less input, .T-box p.pics input {
+    width: 70px;
+}
+
+.T-box p.rate, .T-box p.less, .T-box p.pics, .T-box p.next {
+    display: none;
+}
+
+.T-box p b.goods {
+    display: inline-block;
+    width: 300px;
+    height: 50px;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.T-box p b.goods img {
+    float: left;
+    margin-right: 15px;
+    width: 50px;
+    height: 50px;
+}
+
+.T-box p b.goods i {
+    display: block;
+    font-style: normal;
+    line-height: 25px;
+    font-size: 12px;
+}
+
+.pages {
+    clear: both;
+    padding: 50px 10px;
+    text-align: right;
+    line-height: 30px;
+}
+
+.pages a {
+    margin: 0 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.pages a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+.pages a.active, .nums a.active:hover {
+    font-weight: bold;
+    text-decoration: none;
+    cursor: default;
+}
+
+.yhq-box {
+    padding: 20px 0;
+}
+
+.yhq-box div {
+    position: relative;
+    padding-left: 100px;
+    font-size: 12px;
+    margin-bottom: 40px;
+}
+
+.yhq-box div span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80px;
+    padding-right: 20px;
+    text-align: right;
+    line-height: 32px;
+}
+
+.yhq-box div em {
+    position: absolute;
+    left: 100px;
+    top: 35px;
+    color: #a1a1a1;
+}
+
+.yhq-box div i {
+    margin: 0 10px;
+}
+
+.yhq-box div input[type=text], .yhq-box div select {
+    width: 150px;
+    padding: 0 4px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    border: 1px solid #d3d3d3;
+    outline: none;
+}
+
+.yhq-box div select {
+    width: 160px;
+    height: 32px;
+}
+
+.yhq-box div input[type=submit], .yhq-box div input[type=button] {
+    width: 90px;
+    height: 32px;
+    background: #39f;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    border: 0 none;
+}
+
+.yhq-box div label {
+    line-height: 32px;
+    margin-right: 20px;
+}
+
+.yhq-box div p {
+    margin-bottom: 15px;
+}
+
+.yhq-box div p:last-child {
+    margin-bottom: 0;
+}
+
+.yhq-box div p label {
+    margin-right: 10px;
+}
+
+.yhq-box div p input[type="text"] {
+    width: 90px;
+}
+
+.yhq-box div input[type="radio"], .yhq-box div input[type="checkbox"] {
+    vertical-align: -2px;
+    margin-right: 5px;
+}
+
+.yhq-box div input.num[type="text"] {
+    width: 90px;
+    margin: 0 10px;
+}
+
+.yhq-box div input.date[type="text"] {
+    width: 120px;
+    margin: 0 5px;
+}
+
+.yhq-box div .sp-select {
+    line-height: 32px;
+    cursor: pointer;
+    color: #39f;
+}
+
+.yhq-items {
+    margin: -20px 0 20px 100px;
+    width: 340px;
+    border: 1px solid #f2f2f2;
+}
+
+.yhq-items dt {
+    height: 40px;
+    line-height: 40px;
+    background: #f2f2f2;
+    color: #333;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.yhq-items dt i {
+    float: left;
+    margin-left: 15px;
+}
+
+.yhq-items dt b {
+    float: right;
+    margin-right: 15px;
+}
+
+.yhq-items li {
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    margin: 15px 0;
+}
+
+.yhq-items li img {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    width: 50px;
+    height: 50px;
+}
+
+.yhq-items li h5 {
+    position: absolute;
+    left: 75px;
+    top: 0;
+    width: 200px;
+    height: 25px;
+    line-height: 25px;
+    font-weight: normal;
+    font-size: 12px;
+    color: #333;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.yhq-items li p {
+    position: absolute;
+    left: 75px;
+    bottom: 0;
+    line-height: 25px;
+    font-size: 12px;
+    color: #969696;
+}
+
+.yhq-items li p span {
+    margin-right: 30px;
+    display: inline;
+}
+
+.yhq-items li b {
+    float: right;
+    margin-right: 15px;
+    color: #39f;
+    cursor: pointer;
+}
+
+/*============================================*/
+.item-box {
+    width: 660px;
+    min-height: 660px;
+    font-size: 12px;
+    color: #333;
+    text-align: left;
+}
+
+.item-search {
+    margin-bottom: 20px;
+}
+
+.item-search input[type="text"] {
+    width: 300px;
+    height: 28px;
+    padding: 5px 9px;
+    border: 1px solid #6B6B6B;
+    font-size: 14px;
+    color: #333;
+}
+
+.item-search input[type="button"] {
+    width: 80px;
+    height: 40px;
+    margin-left: 10px;
+    border: 0 none;
+    background: #6B6B6B;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+
+.item-list dt {
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    background: #f2f2f2;
+}
+
+.item-list dt input[type="checkbox"], .item-list li input[type="checkbox"] {
+    float: left;
+    width: 16px;
+    height: 16px;
+}
+
+.item-list dt b, .item-list li b {
+    display: block;
+    float: right;
+    width: 120px;
+    text-align: center;
+}
+
+.item-list dt span {
+    float: left;
+    margin-left: 70px;
+}
+
+.item-list li {
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.item-list li input[type="checkbox"], .item-list li input[type="radio"] {
+    float: left;
+    margin: 17px 15px;
+}
+
+.item-list li img {
+    float: left;
+    width: 50px;
+    height: 50px;
+}
+
+.item-list li span {
+    float: left;
+    margin-left: 15px;
+    display: block;
+    width: 300px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.item-pages {
+    text-align: right;
+    font-size: 12px;
+}
+
+.item-pages span {
+    display: inline-block;
+    margin: 0 5px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #f00;
+    border: 1px solid #f00;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.item-pages span:hover, .item-pages span.active {
+    background: #f00;
+    color: #fff;
+}
+
+.item-pages span.active {
+    cursor: default;
+}
+
+.item-pages span.none, .item-pages span.none:hover {
+    cursor: default;
+    border-color: #fff;
+    background: #fff;
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title})">
+    <title>店铺选择-数据中心-OMS订单管理系统</title>
+</head>
+<body th:replace="layout :: common_body(~{::div.layui-body})">
+<div class="layui-body" style="padding:15px;">
+
+    <!-- start sp-wrapper -->
+    <link rel="stylesheet" href="/sb/system.css"/>
+    <div class="sp-wrapper">
+        <h2 class="sp-title"><span>团队管理</span></h2>
+        <form method="get" action="/login/user_list">
+            <div class="sp-tool">
+                <span><input type="text" placeholder="姓名" name="name"><input type="text" placeholder="手机号" name="mobile"><input type="submit" value="搜索">
+                    <i class="add" id="add" th:attr="d-userid=0">新增员工</i></span>
+            </div>
+        </form>
+        <div class="sp-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>用户名</th>
+                    <th>姓名</th>
+                    <th>手机号码</th>
+                    <th>所在店铺</th>
+                    <th>添加时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item:${lists}">
+                    <td th:text="${itemStat.index+1}">1</td>
+                    <td th:text="${item.getUserName()}">张三</td>
+                    <td th:text="${item.getTrueName()}">张三</td>
+                    <td th:text="${item.getMobile()}">18612348888</td>
+                    <td>
+                        <div th:each="list:${item.shopList}">
+                            <div th:text="${list.name}"></div>
+                        </div>
+                    </td>
+                    <td th:text="${item.getAddTime()}">2018-10-20 16:43:20</td>
+                    <td th:text="${T(com.b2c.entity.enums.UserStateEnums).getName(item.getStatus())}">正常</td>
+                    <td >
+                        <i th:attr="d-name=${item.getTrueName()},d-mobile=${item.getMobile()},d-group=${item.getShopId()},d-status=${item.getStatus()},d-userid=${item.getId()}"
+                           class="edit">修改</i><i th:if="${item.getId()!=1}" th:attr="data-id=${item.getId()}" class="delete">删除</i></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pages">
+                <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模板 新增/修改 -->
+    <script type="text/template" id="tpl-group">
+        <div class="T-box" style="width: 720px">
+            <form id="sp-form" method="post">
+                <input type="hidden" name="userid" id="sp-userid">
+                <p><span>用户名</span><input id="sb-user" name="user" type="text"/></p>
+                <p><span>姓名</span><input id="sb-name" name="name" type="text"/></p>
+                <p><span>手机号</span><input id="sb-phone" name="phone" type="text"/></p>
+                <p><span>密码</span><input id="sb-password" name="password" type="text"/></p>
+                <p><span>店铺</span>
+                    <span>
+                    <ul>
+                    <li th:each="item :${shopLists}" >
+                        <input type="checkbox"  th:value="${item.getId()}" th:text="${item.getName()}" id="sb-shopid" name="group" >
+                    </li>
+                    </ul>
+                    </span>
+                </p>
+                <p><span>状态</span><select id="sb-status" name="status">
+                    <option selected disabled>请选择</option>
+                    <option value="0">正常</option>
+                    <option value="1">锁定</option>
+                </select></p>
+                <p class="text" id="sb-text"></p>
+            </form>
+        </div>
+    </script>
+
+    <script type="text/javascript" src="/sb/jquery.min.js"></script>
+    <script type="text/javascript" src="/sb/Tips.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 新增
+            $('#add').click(function () {
+                var id = $(this).attr('d-userid');
+                Tips.alert({
+                    title: '新增员工',
+                    content: $('#tpl-group').html(),
+                    before: function () {
+                        $('#sb-text').text('');
+                        if ($('#sb-name').val() == '') {
+                            $('#sb-text').text('姓名不能为空');
+                            return false;
+                        }
+                        if ($('#sb-phone').val() == '') {
+                            $('#sb-text').text('手机号不能为空');
+                            return false;
+                        }
+                        if ($('#sb-shopid').val() == null) {
+                            $('#sb-text').text('请选择分组');
+                            return false;
+                        }
+                        if ($('#sb-user').val() == null) {
+                            $('#sb-text').text('请输入账号');
+                            return false;
+                        }
+                        if ($('#sb-status').val() == null) {
+                            $('#sb-text').text('请选择状态');
+                            return false;
+                        }
+                        if ($('#sb-password').val() == null) {
+                            $('#sb-text').text('密码不能为空');
+                            return false;
+                        }
+                        var group=[];
+                        var arr=document.getElementsByName("group");
+                        for(i=0;i<arr.length;i++){
+                            if(arr[i].checked){
+                                group=group.concat(arr[i].value);
+                            }
+                        }
+                        var data = {
+                            id: id,
+                            userName: $('#sb-name').val(),
+                            mobile: $('#sb-phone').val(),
+                            groupId:group,
+                            status: $('#sb-status').val(),
+                            userPwd: $('#sb-password').val(),
+                            trueName:$('#sb-user').val()
+                        };
+                        $.ajax({
+                            url: "/dc/execute_manage_user",
+                            type: "POST",
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify(data),
+                            success: function (res) {
+                                if (res.code != 0) {
+                                    $('#sb-text').text(res.msg);
+                                } else {
+                                    location.reload(true);
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                });
+            });
+            // 修改
+            $('.edit').click(function () {
+                var id = $(this).attr('d-userid');
+                var name = $(this).attr('d-name');
+                var mobile = $(this).attr('d-mobile');
+                var group = $(this).attr('d-group');
+                var status = $(this).attr('d-status');
+                Tips.alert({
+                    title: '修改员工',
+                    content: $('#tpl-group').html(),
+                    render: function () {
+                        $('#yhm').hide();
+                        $('#sb-name').val(name);
+                        $('#sb-phone').val(mobile);
+                        $('#sb-group').val(group);
+                        $('#sb-status').val(status);
+                        $('#sp-userid').val(id);
+                        $('#sb-user').hide();
+                    },
+                    before: function () {
+                        var group=[];
+                        var arr=document.getElementsByName("group");
+                        for(i=0;i<arr.length;i++){
+                            if(arr[i].checked){
+                                group=group.concat(arr[i].value);
+                            }
+                        }
+                        var data = {
+                            id: id,
+                            userName: $('#sb-name').val(),
+                            mobile: $('#sb-phone').val(),
+                            groupId:group,
+                            status: $('#sb-status').val(),
+                            userPwd: $('#sb-password').val()
+                        };
+                        $.ajax({
+                            url: "/dc/execute_manage_user",
+                            type: "POST",
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify(data),
+                            success: function (res) {
+                                if (res.code > 0) {
+                                    $('#sb-text').text(res.msg);
+                                } else {
+                                    location.reload(true);
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                });
+            });
+            // 删除
+            $('.delete').click(function () {
+                var data = {
+                    userid: $(this).attr('data-id')
+                };
+                Tips.confirm({
+                    title: '删除员工',
+                    content: '确认要删除吗？',
+                    define: function () {
+                        $.ajax({
+                            url: "/dc/del_manage_user",
+                            type: "POST",
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify(data),
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    Tips.alert('删除成功', function () {
+                                        location.reload(true);
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <!-- end sp-wrapper -->
+
+</div>
+</body>
+</html>

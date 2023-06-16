@@ -1,0 +1,820 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, select {
+    margin: 0;
+    padding: 0
+}
+
+em, i, b {
+    font-weight: normal;
+    font-style: normal;
+}
+
+ol, ul, li {
+    list-style: none;
+}
+
+img, a img {
+    border: 0;
+    outline: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+p {
+    word-wrap: break-word;
+}
+
+a {
+    text-decoration: none;
+}
+
+input, textarea {
+    outline: none;
+    border: 0 none;
+    font-family: "Microsoft Yahei";
+}
+
+select {
+    outline: none;
+    font-family: "Microsoft Yahei";
+}
+
+body {
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #333;
+}
+
+/*============================================*/
+.cp-nav {
+    padding: 20px;
+    margin: 0 0 30px;
+    border-bottom: 1px solid #ccc;
+    overflow: hidden;
+}
+
+.cp-nav a {
+    display: block;
+    padding: 0 50px;
+    float: left;
+    font-size: 14px;
+    color: #333;
+}
+
+.cp-input {
+    padding: 20px 50px;
+    height: 44px;
+    line-height: 44px;
+}
+
+.cp-input span {
+    display: inline-block;
+    width: 150px;
+    padding-right: 20px;
+    font-size: 14px;
+    text-align: right;
+}
+
+.cp-input input[type="text"], .cp-input select {
+    width: 200px;
+    height: 34px;
+    padding: 4px 9px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.cp-input input[type="button"] {
+    width: 80px;
+    height: 44px;
+    font-size: 16px;
+    text-align: center;
+    background: #39c;
+    color: #fff;
+    cursor: pointer;
+}
+
+.cp-input label {
+    margin-right: 20px;
+}
+
+.cp-input input[type="radio"] {
+    vertical-align: middle;
+    margin-right: 3px;
+}
+
+.cp-input .cp-mb {
+    margin-left: 20px;
+    color: #39c;
+}
+
+.cp-input select {
+    width: 300px;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 9px;
+}
+
+.cp-title {
+    padding: 20px 50px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.cp-title a {
+    margin: 0 20px;
+    padding: 2px 8px;
+    background: #39c;
+    color: #fff;
+    font-weight: normal;
+}
+
+.category-box, .category-box * {
+    margin: 0;
+    padding: 0;
+}
+
+.category-box {
+    width: 600px;
+    height: 200px;
+    margin: 0 50px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+}
+
+.category-box ul {
+    float: left;
+    width: 199px;
+    height: 200px;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+}
+
+.category-box ul:last-child {
+    border: 0 none;
+}
+
+.category-box li {
+    list-style: none;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.category-box li.active {
+    font-weight: bold;
+    background: #f2f2f2;
+}
+
+.category-box li:hover {
+    background: #f2f2f2;
+}
+
+.cp-button {
+    padding: 100px 50px 100px 240px;
+}
+
+.cp-button button, .cp-button a {
+    border: 0 none;
+    width: 160px;
+    height: 44px;
+    line-height: 44px;
+    background: #39c;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.cp-button a {
+    display: inline-block;
+    margin: 0 20px;
+    background: #BCBCBC;
+}
+
+.cp-hash {
+    padding: 15px 50px;
+    margin: 20px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.cp-hash h3 {
+    padding-left: 10px;
+    border-left: 4px solid #333;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.cp-details, .cp-other {
+    overflow: hidden;
+    padding: 20px 50px;
+    width: 840px;
+}
+
+.cp-product {
+    padding: 20px 50px;
+    width: 840px;
+}
+
+.cp-details .cp-input {
+    float: left;
+    padding: 10px;
+    width: 400px;
+}
+
+.cp-details .cp-input input[type="text"] {
+    width: 280px;
+}
+
+.cp-details .cp-input span {
+    width: 80px;
+}
+
+.cp-details .cp-input:first-child {
+    width: 820px;
+}
+
+.cp-details .cp-input:first-child input[type="text"] {
+    width: 700px;
+}
+
+.cp-product .cp-input {
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.cp-product .cp-input span {
+    width: 80px;
+}
+
+.cp-other .cp-input span {
+    width: 120px;
+}
+
+.cp-add {
+    margin: 30px 0;
+    display: block;
+    width: 160px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 16px;
+    background: #39c;
+    color: #fff;
+}
+
+.cp-item {
+    position: relative;
+    background: #f2f2f2;
+    padding: 10px;
+    margin: 0 0 30px;
+    width: 770px;
+    height: 40px;
+}
+
+.cp-item input[type="text"] {
+    float: left;
+    margin-right: 10px;
+    width: 100px;
+    height: 38px;
+    padding: 0 9px;
+    border: 1px solid #ccc;
+}
+
+.cp-item span {
+    float: left;
+    position: relative;
+    display: block;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+}
+
+.cp-item input[type="file"], .cp-item span i {
+    position: absolute;
+    left: 45px;
+    top: 0;
+    z-index: 3;
+    width: 75px;
+    height: 40px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.cp-item span img {
+    display: none;
+    width: 40px;
+    height: 40px;
+}
+
+.cp-item span i {
+    display: block;
+    opacity: 1;
+    z-index: 2;
+    text-align: center;
+    background: #39c;
+    color: #fff;
+}
+
+.cp-item b {
+    position: absolute;
+    right: -45px;
+    top: 15px;
+    width: 30px;
+    height: 30px;
+    line-height: 26px;
+    font-size: 26px;
+    background: #ccc;
+    color: #fff;
+    font-weight: normal;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.cp-upload {
+    padding: 20px 50px;
+}
+
+.cp-upload dt {
+    clear: both;
+    height: 40px;
+    line-height: 40px;
+}
+
+.cp-upload dt span {
+    display: inline-block;
+    width: 100px;
+    font-weight: bold;
+}
+
+.cp-upload dt b {
+    color: #868686;
+}
+
+.cp-upload dd {
+    padding: 0 0 20px 100px;
+    min-height: 110px;
+}
+
+.cp-upload dd p {
+    float: left;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 20px 20px 0;
+    border: 1px dashed #ccc;
+}
+
+.cp-upload dd p input[type="file"], .cp-upload dd p span, .cp-upload dd p img, .cp-upload dd p video, .cp-upload dd p i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.cp-upload dd p img, .cp-upload dd p video {
+    opacity: 1;
+    z-index: 2;
+}
+
+.cp-upload dd p span {
+    opacity: 1;
+    z-index: 1;
+    padding-top: 10px;
+    height: 90px;
+    text-align: center;
+    font-size: 12px;
+    color: #868686;
+}
+
+.cp-upload dd p span em {
+    line-height: 50px;
+    font-size: 40px;
+    font-weight: 200;
+}
+
+.cp-upload dd p i {
+    opacity: 1;
+    z-index: 4;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 12px;
+    background: rgba(0, 0, 0, .8);
+    color: #fff;
+}
+
+.cp-textarea {
+    position: relative;
+    width: 700px;
+    height: 600px;
+}
+
+.cp-textarea textarea, .cp-textarea div {
+    position: absolute;
+    left: 0;
+    top: -30px;
+    width: 900px;
+    height: 600px;
+    border: 1px solid #ccc;
+}
+
+.cp-template {
+    padding: 20px 50px;
+    width: 820px;
+}
+
+.cp-template li {
+    margin: 20px 0;
+}
+
+.cp-template li h3 {
+    pading: 0 20px;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+}
+
+.cp-template li h3 span {
+    float: left;
+}
+
+.cp-template li h3 b {
+    float: right;
+    font-weight: normal;
+    color: #ccc;
+}
+
+.cp-template li h3 a {
+    margin-left: 10px;
+    color: #39c;
+}
+
+.cp-template li table {
+    width: 100%;
+}
+
+.cp-template li th, .cp-template li td {
+    padding: 10px 0;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    text-align: center;
+}
+
+.cp-template li th {
+    font-weight: normal;
+    background: #f2f2f2;
+}
+
+.cp-input select.area {
+    width: 100px;
+    padding: 0;
+    margin-right: 20px;
+}
+
+.cp-input span.inline {
+    display: inline;
+    padding-right: 10px;
+}
+
+.cp-input input.inline[type="text"] {
+    width: 60px;
+    text-align: center;
+    padding: 0;
+    margin-right: 10px;
+}
+
+.cp-product .sp-box:last-child {
+    margin-bottom: 0;
+}
+
+.sp-box {
+    position: relative;
+    padding-left: 160px;
+    margin-bottom: 50px;
+}
+
+.sp-box h3 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 120px;
+    height: 44px;
+    line-height: 44px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: right;
+}
+
+.sp-box p {
+    height: 44px;
+    line-height: 44px;
+    font-size: 14px;
+    color: #969696;
+    overflow: hidden;
+}
+
+.sp-box p span {
+    float: right;
+    margin-top: 7px;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+    background: #39f;
+    color: #fff;
+    cursor: pointer;
+}
+
+.sp-color li {
+    position: relative;
+    height: 44px;
+    margin-bottom: 10px;
+}
+
+.sp-color input[type=checkbox] {
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 22px;
+    height: 22px;
+}
+
+.sp-color input[type=text], .sp-color select {
+    position: absolute;
+    left: 37px;
+    top: 0;
+    width: 180px;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 9px;
+    border: 1px solid #ccc;
+}
+
+.sp-color input[type=text] {
+    width: 160px;
+    height: 42px;
+    line-height: 42px;
+}
+
+.sp-color span {
+    position: absolute;
+    left: 232px;
+    top: 0;
+    width: 44px;
+    height: 44px;
+}
+
+.sp-color input[type="file"], .sp-color em, .sp-color img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.sp-color img {
+    display: none;
+    opacity: 1;
+    z-index: 1;
+}
+
+.sp-color em {
+    opacity: 1;
+    z-index: 2;
+    text-align: center;
+    color: #868686;
+    font-size: 30px;
+    height: 42px;
+    line-height: 38px;
+    border: 1px solid #ccc;
+}
+
+.sp-size {
+    background: #f2f2f2;
+    padding: 30px 1px 1px 30px;
+    overflow: hidden;
+}
+
+.sp-size label {
+    float: left;
+    width: 100px;
+    margin: 0 0 30px;
+    font-size: 14px;
+}
+
+.sp-size label input {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.sp-standard {
+    width: 680px;
+}
+
+.sp-standard th, .sp-standard td {
+    width: 116px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+}
+
+.sp-standard th {
+    background: #f2f2f2;
+}
+
+.sp-standard td.child {
+    padding: 0;
+    width: 136px;
+}
+
+.sp-standard td.child tr td:nth-child(1) {
+    border-left: 0 none;
+}
+
+.sp-standard td.child tr td:nth-child(4) {
+    border-right: 0 none;
+}
+
+.sp-standard td.child tr:first-child td {
+    border-top: 0 none;
+}
+
+.sp-standard td.child tr:last-child td {
+    border-bottom: 0 none;
+}
+
+.sp-standard input, .sp-standard select {
+    width: 116px;
+    height: 30px;
+    line-height: 30px;
+    border: 0 none;
+    background: none;
+}
+
+.sp-standard th input {
+    background: #fff;
+    width: 110px;
+    padding-left: 6px;
+}
+
+.sp-standard th select {
+    background: #fff;
+}
+
+.sp-tool {
+    position: relative;
+    margin: 0 0 20px;
+}
+
+.sp-tool p input[type=text], .sp-tool p select {
+    margin-right: 10px;
+    width: 290px;
+    height: 30px;
+    padding: 0 4px;
+    border: 1px solid #d3d3d3;
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.sp-tool p select {
+    width: 160px;
+}
+
+.sp-tool p input[type=button], .sp-tool input[type=submit] {
+    margin-right: 10px;
+    width: 60px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    background: #39f;
+    color: #fff;
+    cursor: pointer;
+}
+
+.sp-tool ul {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 32px;
+    z-index: 10;
+    width: 298px;
+    height: 150px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #d3d3d3;
+}
+
+.sp-tool ul li {
+    font-size: 12px;
+    line-height: 30px;
+    padding: 0 10px;
+}
+
+.sp-tool ul li:hover {
+    background: #f2f2f2;
+    font-weight: bold;
+}
+
+.sp-table {
+    display: none;
+}
+
+.sp-table table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.sp-table th, .sp-table td {
+    padding: 6px 15px;
+    text-align: left;
+    font-size: 12px;
+    color: #333;
+    border: 1px solid #d3d3d3;
+}
+
+.sp-table th {
+    background: #f2f2f2;
+}
+
+.sp-table td input[type=text] {
+    width: 100px;
+    height: 30px;
+}
+
+.sp-table td p {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.sp-table td p input[type="file"], .sp-table td p span, .sp-table td p img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.sp-table td p img {
+    opacity: 1;
+    z-index: 2;
+}
+
+.sp-table td p span {
+    opacity: 1;
+    z-index: 1;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    color: #868686;
+}
+
+.sp-select {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    width: 100px;
+    height: 150px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #d3d3d3;
+    box-shadow: 0 0 2px #333;
+}
+
+.sp-select li {
+    font-size: 12px;
+    line-height: 30px;
+    padding: 0 10px;
+}
+
+.sp-select li:hover {
+    background: #f2f2f2;
+    font-weight: bold;
+}

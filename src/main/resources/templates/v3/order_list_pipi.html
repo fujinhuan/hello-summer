@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title})">
+    <title th:text="${shop.name+'订单-订单管理-OMS订单管理系统'}"></title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+    <style type="text/css">
+        .update {
+            display: inline-block;
+            margin-left: 15px;
+            padding: 0 20px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+            background: #009789;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .update i {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+            width: 30px;
+            height: 30px;
+            background: url(data:image/gif;base64,R0lGODlhHgAeAIABAP///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxQkUxQ0I4RDlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxQkUxQ0I4QzlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5ODNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAkUAAEALAAAAAAeAB4AAAJTjI8IkO1vFpxuWUbzlUpXfFyT1XCh+JHjBiYqtY1ZhM6ejee62+5m8PNhWEJWDUcE9nS/IHO5i0qnNijEesLysDHYcVtavh5QJ7A4liapNDbPVgAAIfkECRQAAQAsAAAAAB4AHgAAAlCMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg3kEo/YGlL2CrN+GtwMik7Cd8wlt/Ua+WPVwpDZBwuq2VBEGxNovThkdk5m0AgAh+QQJFAABACwAAAAAHgAeAAACUoyPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2D+YGiOLeRvYKbXzHgu/WEtuTuCW3OhrAU0+pEsmLBVtJ3bFVkW1pXpAxHszt2ogAAIfkECRQAAQAsAAAAAB4AHgAAAlGMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7gmNlpojZ8WKZE2OV5k2go2AvkgjOReUptWwSQEAIfkECRQAAQAsAAAAAB4AHgAAAlOMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7vlk7o6zGGvkRAaxMFBXm5JGvk4xz/vNbaE8s5FWAAAh+QQJFAABACwAAAAAHgAeAAACT4yPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2f6M1tct3b4Hy+IZFlPCCTuabzCbT9QNPKTndNwbQp7mSarX6F0CI0Is5lHQUAIfkECRQAAQAsAAAAAB4AHgAAAlKMjwiQ7W8WnG5ZRhs+V2ZlJZ44deLGjadZXg9Lha/7oe+H5/re8uDvi2A6thoRliMKg8sUM6B6SqfUYikWhcgqtNZWkw1nSeAKTylFT8dMdqMAACH5BAUUAAEALAAAAAAeAB4AAAJQjI8HC+n/GIM0ylazuVijvl0JaJHSuFBitpZeMFUk+9b2jeNpHn6zvePoOK2aEPYzgnY8Ju8JjaqALKfM6otdtQ5uD5VUWCLDU/QoxULVjwIAOw==);
+        }
+
+        .T-box {
+            width: 400px;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        .T-box p {
+            position: relative;
+            height: 36px;
+            line-height: 36px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .T-box p span {
+            display: inline-block;
+            padding-right: 15px;
+            text-align: right;
+            width: 110px;
+            line-height: 36px;
+            font-size: 14px;
+        }
+
+        .T-box p input, .T-box p select {
+            width: 250px;
+            padding: 0 5px;
+            height: 34px;
+            line-height: 34px;
+            font-size: 14px;
+            border: 1px solid #d3d3d3;
+            outline: none;
+        }
+
+        .T-box p i {
+            padding: 0 10px;
+            line-height: 36px;
+            font-style: normal;
+        }
+
+        .T-box p b {
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+            width: 60px;
+            height: 36px;
+            line-height: 36px;
+            background: #c33;
+            color: #fff;
+            text-align: center;
+            font-size: 13px;
+            font-weight: normal;
+        }
+    </style>
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><a th:href="@{/ali_order/list(shopId=${shop.id},state='waitsellersend')}">待发货订单</a></li>
+            <li><a th:href="@{/ali_order/list(shopId=${shop.id})}">全部订单</a></li>
+        </ul>
+    </div>
+
+    <!-- content starts -->
+    <!--    <blockquote class="layui-elem-quote">订单总览</blockquote>-->
+
+    <fieldset class="layui-elem-field">
+        <legend>按条件搜索</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-form-pane1" method="get" action="/pipi/order_list">
+                <input type="hidden" name="shopId" th:value="${shop.id}"/>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <input type="text" name="orderNum" th:value="${orderNum}" placeholder="订单编号"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="mobile" placeholder="收货人手机号" class="layui-input">
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">下单时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="startTime" th:value="${startTime}"
+                                   id="startTime" autocomplete="off"
+                                   style="width: 150px;" placeholder="yyyy-MM-dd">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="endTime" th:value="${endTime}" id="endTime"
+                                   style="width: 150px;" autocomplete="off" placeholder="yyyy-MM-dd">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="state">
+                                <option value="">订单状态</option>
+                                <option value="waitsellersend">等待发货</option>
+                                <option value="waitbuyerreceive">等待买家确认收货</option>
+                                <option value="waitbuyerpay">等待买家付款</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn ">搜索</button>
+                        <i>总共：<span style="color: red" th:text="${totalSize}"></span>条记录</i>
+                    </div>
+                    <!--                    <div class="layui-inline">-->
+                    <!--                        <input type="button" class="layui-btn layui-btn-primary" id="export_order" value="按日期导出"/>-->
+                    <!--                    </div>-->
+                    <div class="layui-inline">
+                        <a th:href="@{/pipi/order_excel_import_review(shopId=${shop.id})}" class="layui-btn layui-btn-normal">excel导入订单</a>
+                        <span id="upd_order_" style="display: none;" class="update"><i></i>更新中</span>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </fieldset>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper">
+<!--        <form id="order_type_confirm" action="/dc_order/set_order_type_confirm_review" method="post">-->
+<!--            <input type="hidden" name="shopId" th:value="${shop.id}">-->
+<!--            <div class="layui-inline" style="padding-bottom: 10px;">-->
+<!--                <input type="button" class="layui-btn layui-btn-primary" th:attr="shop-id=${shop.id}" id="batch_set_order_type" value="批量关联业务员(0)"/>-->
+<!--            </div>-->
+            <table class="dd-table">
+                <tr>
+                    <th>
+                        <input id="allCheck" type="checkbox"/>
+                        订单号
+                    </th>
+                    <th width="250px;">商品</th>
+                    <th>订单金额</th>
+                    <th>订单信息</th>
+                    <th>物流信息</th>
+                    <th>备注</th>
+                    <th>业务员</th>
+                    <th>订单状态</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="item:${lists}">
+                    <td>
+                        <input type="checkbox" class="currCheck" name="orderIds" th:value="${item.id}"
+                               th:if="${item.clientUserId == 0 || item.developerId == 0}"/>
+                        <input type="checkbox" name="orderIds" disabled th:value="${item.id}"
+                               th:if="${item.clientUserId != 0 || item.developerId != 0}"/>
+                        <span th:text="${item.id}"></span>
+                    </td>
+                    <td>
+                        <div th:each="it:${item.items}" th:if="${itStat.index < 1}">
+                            <img th:src="${it.productImgUrl}">
+                            <p>
+                                <span th:text="${#strings.abbreviate(it.name,18)}"></span><br/>
+                                规格：[[${it.skuInfo}]]<br/>
+                                单价: ¥[[${it.price}]] 数量：X[[${it.quantity}]]
+                            </p>
+                        </div>
+
+
+                        <div class="display" th:if="${itStat.index >= 1}" style="display: none;"
+                             th:each="it:${item.items}">
+                            <img th:src="${it.productImgUrl}">
+                            <p>
+                                <span th:text="${#strings.abbreviate(it.name,18)}"></span><br/>
+                                规格：[[${it.skuInfo}]]<br/>
+                                单价: ¥[[${it.price}]] 数量：X[[${it.quantity}]]
+                            </p>
+                        </div>
+                        <a th:if="${item.items.size() > 1}" class="display_zk" is_show="0">展开查看更多</a>
+
+
+                    </td>
+                    <td><b>¥[[${item.totalAmount}]]</b><br>（含运费：¥[[${item.shippingFee}]]）<br/>
+                        <i>共[[${item.totalQuantity}]]件商品</i>
+                    </td>
+                    <td>
+                        <div>
+                            <p th:text="${'下单时间：'+#dates.format(item.createTime, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                            <p>买家：[[${item.buyerName}]]，旺旺：[[${item.buyerLoginId}]]</p>
+                            <p style="color: red">收货人：[[${item.contactPerson}]]&nbsp;[[${item.mobile}]]</p>
+                            <p th:if="${item.clientName}">客户：<span th:text="${item.clientName}"></span></p>
+                        </div>
+                    </td>
+                    <td>
+                        <div th:if="${item.getLogisticsCode()!=null}">
+                            <p>[[${item.logisticsCompany}]] &nbsp; [[${item.logisticsCode}]]</p>
+                        </div>
+                    </td>
+                    <td>
+                        <p th:if="${item.buyerFeedback}">买家留言：<b th:text="${item.buyerFeedback}" style="color: red"></b>
+                        </p>
+                        <p th:if="${item.sellerMemo}">卖家备注：<b th:text="${item.sellerMemo}" style="color: red"></b></p>
+                    </td>
+                    <td>
+                        <p th:if="${item.developerId > 0 }" th:text="${item.developerName}"></p>
+                    </td>
+                    <td>
+                        <span th:text="${item.status}" style="display: none;"></span><br/>
+                        <span th:text="${T(com.b2c.entity.alibaba.EnumAliOrderStatus).getName(item.status)}"></span><br/>
+                        <span th:if="${item.auditStatus == 0 }" style="color: red">待确认</span>
+                        <span th:if="${item.auditStatus == 1 }" style="color: red">已确认</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/ali_order/detail(id=${item.getId()})}">查看详情</a>
+                        <!--                    <a th:if="${item.auditStatus == 0 && item.status == 'waitsellersend' && item.getOrderId().intValue()==0}" class="track confirm" th:attr="order-id=${item.id}" href="javascript:;">关联采购订单</a>-->
+                        <!--                    <a th:if="${item.auditStatus == 0 && item.status == 'waitsellersend'}" class="track" th:href="@{/order/aliOrderDetail(id=${item.getId()},shopId=${shop.id})}">确认订单</a>-->
+                        <a th:if="${item.auditStatus == 0 && item.status == 'waitsellersend'}"
+                           class="layui-btn layui-btn-xs layui-btn-normal confirm_order" href="javascript:;"
+                           style="color: #fff"
+                           th:attr="data-id=${item.id},shop-id=${shop.id}">确认订单</a>
+
+                        <a class="edit" th:attr="order-id=${item.getId()}">查看物流</a>
+                        <a th:if="${item.getAuditStatus() == 1 && item.status == 'waitsellersend'}"
+                           th:attr="order-id=${item.getId()}" class="order_send">订单发货</a>
+
+                        <a href="javascript:;" class="updateOrderByNum" th:attr="data-id=${item.id}">更新</a>
+                    </td>
+                </tr>
+            </table>
+<!--        </form>-->
+    </div>
+    <!-- end dd-wrapper -->
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+    </div>
+
+    <script type="text/template" id="tpl">
+        <div class="o-review-box">
+            <p>请选择关联的采购订单编号。</p>
+            <p><select id="settle_method">
+                <option disabled selected value="">请选择关联的采购订单</option>
+                <option th:each="b:${buyer}" th:value="${b.getId()}" th:text="${b.getOrderNum()}">线上支付</option>
+            </select></p>
+        </div>
+    </script>
+    <script type="text/template" id="modify_address">
+        <div class="T-box">
+            <p><span>姓名</span><input type="text" id="userName"/></p>
+            <p><span>手机号</span><input type="text" id="mobile"/></p>
+            <p><span>收货地址</span><input type="text" id="address"/></p>
+        </div>
+    </script>
+    <!--    <script type="text/javascript" src="/static/goods/Tips/Tips.min.js"></script>-->
+    <script type="text/javascript">
+        var layer;
+        var $;
+        var windowOpen;
+
+        //计算天数差的函数，通用
+        function DateDiff(sDate1, sDate2) { //sDate1和sDate2是2019-3-12格式
+            var aDate, oDate1, oDate2, iDays
+            aDate = sDate1.split("-")
+            oDate1 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]) //转换为9-25-2017格式
+            aDate = sDate2.split("-")
+            oDate2 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0])
+            iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24) //把相差的毫秒数转换为天数
+            return iDays
+        }
+
+        function getNum() {
+            var num = 0;
+            for (var i = 0; i < $('.currCheck').length; i++) {
+                var checked = $('.currCheck').eq(i).prop('checked');
+                if (checked) {
+                    num++;
+                }
+            }
+            return num;
+        }
+
+        layui.use(['laydate', 'jquery', 'form', 'layer'], function () {
+            var laydate = layui.laydate;
+            $ = layui.jquery;
+            var form = layui.form;
+            layer = layui.layer;
+            laydate.render({
+                elem: '#startTime'
+            });
+            laydate.render({
+                elem: '#endTime'
+            });
+
+            $(function () {
+                //更新订单根据退款单号
+                $(".updateOrderByNum").click(function () {
+                    var orderId = $(this).attr("data-id");
+                    $.ajax({
+                        url: "/ali_ajax/pull_order_by_id",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: 'application/json',
+                        data: JSON.stringify({shopId: [[${shop.id}]], orderId: orderId}),
+                        success: function (res) {
+                            if (res.code == 0) {
+                                Tips.alert({
+                                    title: '更新订单',
+                                    content: '【' + res.msg + '】',
+                                    define: function () {
+                                        window.location.reload();
+                                    }
+                                });
+
+                            } else if (res.code == 601) {
+                                // $("#upd_order").show();
+                                // $("#upd_order_").hide();
+                                alert(res.msg);
+                                // Tips.alert(res.msg);
+                                location.href = "/ali/ali_oauth";
+                                // location.href = "/tao_oauth?shopId=[[${shop.id}]]";
+                            } else {
+                                Tips.alert(res.msg);
+                            }
+                        }
+                    })
+                });//更新订单end
+
+                //确认订单start
+                $(".confirm_order").click(function () {
+                    var orderId = $(this).attr("data-id");
+                    var shopId = $(this).attr("shop-id");
+                    //确认订单iframe层
+                    layer.open({
+                        type: 2,
+                        title: '订单确认',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['480px', '650px'],
+                        content: '/ali_order/order_confirm?orderId=' + orderId + "&shopId=" + shopId //iframe的url
+                    });
+                });//确认订单end
+
+                //展开查看更多
+                $(".display_zk").click(function () {
+                    var obj = $(this);
+                    var isShow = obj.attr("is_show");
+                    if (isShow == 1) {
+                        //显示状态，收起
+                        $(this).siblings(".display").each(function () {
+                            $(this).hide();
+                        });
+                        obj.attr("is_show", 0);
+                        obj.html("展开查看更多");
+                    } else if (isShow == 0) {
+                        //未显示状态，显示
+                        $(this).siblings(".display").each(function () {
+                            $(this).show();
+                        });
+                        obj.attr("is_show", 1);
+                        obj.html("收起");
+                    }
+
+
+                })
+
+
+                //批量设置订单类型
+                $("#batch_set_order_type").click(function () {
+                    var shopId = $(this).attr("shop-id");
+                    var ids = [];
+                    var urlParam = "";
+                    $("input[name^='orderIds']").each(function (i, el) {
+                        if ($(this).is(':checked')) {
+                            var oid = $(this).val();
+                            ids.push(oid);
+                            urlParam += "&orderIds=" + oid;
+                        }
+                    });
+
+                    //console.log(ids);
+                    if (ids.length == 0)
+                        alert("请选择要关联的订单");
+                    else {
+
+                        //关联业务员iframe层
+                        layer.open({
+                            type: 2,
+                            title: '订单确认',
+                            shadeClose: true,
+                            shade: 0.8,
+                            area: ['660px', '650px'],
+                            content: '/developer_order/link_developer?shopId=' + shopId + urlParam //iframe的url
+                        });
+                        // $("#order_type_confirm").submit();
+                    }
+
+                });
+
+
+                $('#allCheck').on('change', function () {
+                    var checked = $('#allCheck').prop('checked');
+                    $('.currCheck').prop('checked', checked);
+                    $('#batch_set_order_type').val('批量关联业务员(' + getNum() + ')')
+                });
+
+                console.log($('.currCheck'))
+
+                $('.currCheck').on('change', function (e) {
+                    console.log("ddddd")
+                    var allChecked;
+                    for (var i = 0; i < $('.currCheck').length; i++) {
+                        var checked = $('.currCheck').eq(i).prop('checked');
+                        if (!checked) {
+                            $('#allCheck').prop('checked', false);
+                            $('#batch_set_order_type').val('批量关联业务员(' + getNum() + ')')
+                            return;
+                        }
+                    }
+                    $('#allCheck').prop('checked', true);
+                    $('#batch_set_order_type').val('批量关联业务员(' + getNum() + ')')
+                });
+
+                //更新订单
+                $("#upd_order").click(function () {
+                    $("#upd_order").hide();
+                    $("#upd_order_").show();
+                    $.ajax({
+                        url: "/ali_ajax/pull_order",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: 'application/json',
+                        success: function (res) {
+                            if (res.code == 0) {
+                                Tips.alert({
+                                    title: '更新订单',
+                                    content: '更新成功：【' + res.msg + '】',
+                                    define: function () {
+                                        location.href = "/order/aliOrderList?shopId=[[${shop.id}]]";
+
+                                    }
+                                });
+                            } else if (res.code == 601) {
+                                // $("#upd_order").show();
+                                // $("#upd_order_").hide();
+                                alert(res.msg);
+                                // Tips.alert(res.msg);
+                                location.href = "/ali/ali_oauth";
+                            } else {
+
+                                Tips.alert(res.msg);
+                            }
+                            $("#upd_order").show();
+                            $("#upd_order_").hide();
+                        }
+                    })
+                });
+
+                //订单发货
+                $(".order_send").click(function () {
+                    var orderId = $(this).attr("order-id");
+                    $.ajax({
+                        url: "/ali_ajax/order_send",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: 'application/json',
+                        data: orderId,
+                        success: function (res) {
+                            if (res.code == 0) {
+                                alert("发货成功");
+                                location.reload();
+                            } else if (res.code == 601) {
+                                alert(res.msg);
+                                try {
+                                    parent.location.href = res.data;
+                                } catch (e) {
+                                    location.href = res.data;
+                                }
+                            } else {
+                                alert(res.msg);
+                            }
+                        }
+                    })
+                });
+
+
+            })
+        });
+
+    </script>
+
+    <!-- 模板  -->
+    <script type="text/template" id="tpl-group">
+        <div class="T-box" style="width: 1000px">
+            <div class="dd-log">
+                <ul id="sendContext">
+                </ul>
+            </div>
+        </div>
+    </script>
+
+    <!--    <script type="text/javascript" src="/static/sb/jquery.min.js"></script>-->
+    <script type="text/javascript">
+        $(function () {
+            $('.edit').click(function () {
+                var id = $(this).attr('order-id');
+                Tips.alert({
+                    title: '查看物流',
+                    content: $('#tpl-group').html(),
+                    render: function () {
+                        $.ajax({
+                            url: "/ali_ajax/order_logistics",
+                            type: "POST",
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: id,
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    var sum = "<li>订单编号:" + res.data[0].orderId + "</li>";
+                                    var log = res.data[0].logisticsSteps;
+                                    for (var i = 0; i < log.length; i++) {
+                                        var html = "<li>"
+                                            + "<i></i><span>物流跟踪:" + log[i].acceptTime + "</span><span>" + log[i].remark + "</span></li>";
+                                        +"</li>"
+
+                                        sum = sum + html;
+                                    }
+                                    $("#sendContext").html(sum);
+                                } else {
+                                    alert(res.msg);
+                                    location.reload(true);
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                });
+            });
+        })
+    </script>
+</div>
+</body>
+<html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>退货订单详情-退货管理-OMS订单管理系统</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+
+    <!-- content starts -->
+    <blockquote class="layui-elem-quote">退货订单详情
+        <div class="layui-inline">
+            <button type="button" id="print_btn" class="layui-btn">打印订单</button>
+        </div>
+    </blockquote>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper" id="myElementId">
+
+
+        <div class="dd-info">
+            <p class="mb"><strong >退货单号：<b th:text="${orderVo.getOrderId()}"></b></strong></p>
+        </div>
+        <div class="dd-info">
+            <p class="mb"><strong>退货状态：</strong><b
+                    th:text="${T(com.b2c.enums.third.EnumDouYinOrderRefundStatus).getName(orderVo.getOrderStatus())}"></b></p>
+            <p>源订单号：<b th:text="${orderVo.getPid()}"></b></p>
+            <p>退货申请时间：<b th:text="${#dates.format(orderVo.getApplyTime()*1000, 'yyyy-MM-dd HH:mm:ss')}"></b></p>
+            <p>买家发货物流：<b th:text="${orderVo.logisticsCompany}"></b>&nbsp;<b th:text="${orderVo.logisticsCode}"></b></p>
+
+        </div>
+        <table class="dd-table">
+            <tr>
+                <th>商品</th>
+                <th>商品款号</th>
+                <th>规格</th>
+                <th>SKU</th>
+                <th>购买数量</th>
+                <th>退货数量</th>
+            </tr>
+            <tr >
+                <td>
+                    <div><img th:src="${orderVo.getProductPic()}">
+                        <p th:text="${orderVo.getProductName()}"></p>
+                    </div>
+                </td>
+                <td th:text="${orderVo.getGoodsNumber()}"></td>
+                <td th:text="${orderVo.getSpecDesc()}">
+                </td>
+                <td th:text="${orderVo.getCode()}"></td>
+                <td th:text="${orderVo.getBuyQuantity()}"></td>
+                <td th:text="${orderVo.getComboNum()}"></td>
+            </tr>
+        </table>
+
+    </div>
+    <!-- end dd-wrapper -->
+
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script src="/jQuery.print.min.js"></script>
+    <script>
+        $(function () {
+            $("#print_btn").click(function () {
+                $.print("#myElementId" /*, options*/);
+            })
+        })
+    </script>
+
+</div>
+
+
+</body>
+<html>

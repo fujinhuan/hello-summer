@@ -1,0 +1,427 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, select {
+    margin: 0;
+    padding: 0
+}
+
+em, i, b {
+    font-weight: normal;
+    font-style: normal;
+}
+
+ol, ul, li {
+    list-style: none;
+}
+
+img, a img {
+    border: 0;
+    outline: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+p {
+    word-wrap: break-word;
+}
+
+a {
+    text-decoration: none;
+}
+
+input, textarea {
+    outline: none;
+    border: 0 none;
+    font-family: "Microsoft Yahei";
+}
+
+select {
+    outline: none;
+    font-family: "Microsoft Yahei";
+}
+
+body {
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #333;
+}
+
+/*============================================*/
+.fl-wrapper {
+    padding: 20px;
+    font-size: 12px;
+    line-height: 2;
+}
+
+.fl-title {
+    height: 50px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+}
+
+.fl-title span, .fl-title a {
+    position: relative;
+    display: inline-block;
+    padding: 0 15px;
+    line-height: 48px;
+    padding-bottom: 2px;
+}
+
+.fl-title span, .fl-title a.active {
+    padding-bottom: 0;
+    border-bottom: 2px solid #39c;
+}
+
+.fl-button {
+    margin-bottom: 20px;
+}
+
+.fl-button a, .fl-button input {
+    display: inline-block;
+    margin-right: 20px;
+    padding: 0 10px;
+    height: 28px;
+    border: 1px solid #39c;
+    line-height: 28px;
+    border: 1px solid #39c;
+    background: #fff;
+    color: #39c;
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+.fl-button a.add, .fl-button input {
+    background: #39c;
+    color: #fff;
+}
+
+.fl-button input {
+    border: 0 none;
+    cursor: pointer;
+    height: 30px;
+}
+
+.fl-table {
+    width: 100%;
+}
+
+.fl-table th, .fl-table td {
+    width: 20%;
+    padding: 10px 0 10px 20px;
+    text-align: left;
+    font-size: 12px;
+    color: #333;
+}
+
+.fl-table th {
+    background: #f2f2f2;
+}
+
+.fl-table td {
+    padding: 20px 0 20px 20px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.fl-table td i, .fl-table td a {
+    color: #39c;
+    font-style: normal;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.fl-table td b {
+    font-weight: bold;
+}
+
+.fl-table td em {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    background: url(t-1.png) no-repeat;
+}
+
+.fl-table td em.active {
+    background-image: url(t-0.png);
+}
+
+.fl-table td img {
+    width: 50px;
+    height: 50px;
+}
+
+.fl-table .child {
+    display: table-row;
+}
+
+.fl-table .child td {
+    padding: 0;
+}
+
+.fl-table .child table {
+    width: 100%;
+}
+
+.fl-table .child table td {
+    padding: 10px 0 10px 20px;
+}
+
+.fl-table .child table td b {
+    margin-left: 30px;
+    font-weight: normal;
+}
+
+.T-box {
+    width: 400px;
+    padding: 15px 20px 0;
+    text-align: left;
+}
+
+.T-box p {
+    position: relative;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.T-box p span {
+    display: inline-block;
+    padding-right: 15px;
+    text-align: right;
+    width: 110px;
+    line-height: 36px;
+    font-size: 14px;
+}
+
+.T-box p input[type=text], .T-box p select {
+    width: 160px;
+    padding: 0 5px;
+    height: 34px;
+    line-height: 34px;
+    font-size: 14px;
+    border: 1px solid #d3d3d3;
+    outline: none;
+}
+
+.T-box p i {
+    padding: 0 10px;
+    line-height: 36px;
+    font-style: normal;
+}
+
+.T-box p b {
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
+    width: 60px;
+    height: 36px;
+    line-height: 36px;
+    background: #c33;
+    color: #fff;
+    text-align: center;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.T-result {
+    margin-bottom: 0;
+}
+
+.T-result em {
+    color: #c33;
+    font-style: normal;
+}
+
+.T-img {
+    display: none;
+}
+
+.T-img img {
+    height: 36px;
+    vertical-align: middle;
+}
+
+.fl-item {
+    position: relative;
+    background: #f2f2f2;
+    padding: 10px;
+    margin: 0 0 30px;
+    width: 530px;
+    height: 30px;
+}
+
+.fl-item input[type="text"], .fl-item select {
+    float: left;
+    margin-right: 10px;
+    width: 150px;
+    height: 28px;
+    padding: 0 9px;
+    border: 1px solid #ccc;
+}
+
+.fl-item select {
+    width: 170px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+}
+
+.fl-item b {
+    position: absolute;
+    right: -45px;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    line-height: 26px;
+    font-size: 26px;
+    background: #ccc;
+    color: #fff;
+    font-weight: normal;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.fl-property {
+    padding: 20px 0;
+}
+
+.fl-property .fl-button {
+    display: none;
+}
+
+.fl-tips {
+    padding: 50px 0;
+}
+
+.fl-tips p {
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.fl-tips p b {
+    font-weight: normal;
+    color: #f00;
+}
+
+.sp-table table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.sp-table th, .sp-table td {
+    padding: 6px 15px;
+    text-align: left;
+    font-size: 12px;
+    color: #333;
+    border: 1px solid #E4E4E4;
+}
+
+.sp-table th {
+    background: #f2f2f2;
+}
+
+.sp-table th em {
+    margin-left: 10px;
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: #39c;
+    color: #fff;
+}
+
+.sp-table td span {
+    margin-left: 30px;
+    color: #39c;
+    cursor: pointer;
+}
+
+.sp-table td i, .sp-table td a {
+    color: #39c;
+    font-style: normal;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.sp-table td img {
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+
+.sp-table td input[type=text] {
+    width: 100%;
+    height: 30px;
+}
+
+.sp-table td select {
+    width: 100px;
+    border: 0 none;
+    height: 30px;
+}
+
+.sp-table td input.goods {
+    width: 250px;
+}
+
+.sp-table td input.unit {
+    width: 50px;
+}
+
+.T2-box {
+    width: 400px;
+    text-align: left;
+}
+
+.T2-box p {
+    position: relative;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.T2-box p span {
+    display: inline-block;
+    padding-right: 15px;
+    text-align: right;
+    width: 110px;
+    line-height: 32px;
+    font-size: 14px;
+}
+
+.T2-box p input[type=text], .T2-box p select, .T2-box p textarea {
+    width: 190px;
+    padding: 0 4px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    border: 1px solid #d3d3d3;
+    outline: none;
+}
+
+.T2-box p select {
+    width: 200px;
+    height: 32px;
+}
+
+.T2-box p textarea {
+    height: 100px;
+    vertical-align: top;
+    line-height: 20px;
+}
+
+.T2-box p.text {
+    margin-bottom: 0;
+    padding-left: 125px;
+    color: #f00;
+}
+
+.T2-box div {
+    display: none;
+}

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>创建订单-OMS订单管理系统</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;top: 0px;">
+
+    <!-- start sp-wrapper -->
+    <link rel="stylesheet" href="/sb/stock.css"/>
+    <style>
+        .a-input {
+            height: 36px;
+            line-height: 36px;
+            margin-bottom: 20px;
+        }
+
+        .a-input span {
+            display: inline-block;
+            width: 100px;
+            padding-right: 15px;
+            font-size: 14px;
+            text-align: right;
+            color: #323232;
+        }
+
+        .a-input input {
+            border: 1px solid #dcdcdc;
+            height: 22px;
+            line-height: 22px;
+            padding: 6px 4px;
+            width: 260px;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        .a-input select {
+            border: 1px solid #dcdcdc;
+            height: 36px;
+            line-height: 36px;
+            padding: 6px 4px;
+            width: 260px;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        .a-input select {
+            width: 260px;
+        }
+
+        .textarea-box{
+            display: flex;
+
+            padding-right: 15px;
+            font-size: 14px;
+            text-align: right;
+            color: #323232;
+        }
+        .textarea-box span{
+            width: 100px;
+            margin-right: 20px;
+        }
+        .textarea-box textarea{
+            border:1px solid #ccc;
+            border-radius: 8px;
+            padding: 5px;
+        }
+        .content-title {
+            font-weight: bold;
+            padding: 20px 40px;
+            font-size: 16px;
+        }
+        .bussiness-table{
+            width: 95%;
+            margin: 0 auto;
+        }
+        .bussiness-table input{
+            border: none;
+            min-width:100px ;
+            height: 36px;
+            padding: 0 15px;
+        }
+        .bussiness-total-box{
+            margin-left: 40px;
+            margin-top: 30px;
+        }
+        .order-save{
+            margin: 30px 150px
+        }
+
+    </style>
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+    </div>
+    <div class="sp-wrapper">
+        <div class="order-body">
+            <div class="content-title">&nbsp;</div>
+            <form action="/pdd/order_create" method="post" class="layui-form" id="sp-form">
+                <div class="a-input"><span>订单编号</span>
+                    <input type="text" name="orderNumber" id="orderNumber"  placeholder="订单编号" />
+                    <a href="javascript:;" id="orderSnCreate" style="color: #1E9FFF">生成订单号</a>
+                </div>
+                <div class="a-input"><span>收货信息</span>
+                    <input type="text" name="contactPerson" placeholder="收货人姓名" id="name" />
+                    <input type="text" name="contactMobile" placeholder="收货人手机号" id="phone" />
+                </div>
+                <div class="a-input add_address"><span>所在地区</span><input type="text" name="area" placeholder="请选择地区"
+                                                                         readonly="readonly" id="address" /><input type="hidden" name="areaCode" id="code">
+                </div>
+                <div class="a-input"><span>详细地址</span><input type="text" name="address" placeholder="请填写详细地址"
+                                                             id="address2" /></div>
+                <div  class="bussiness-table">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>商品</th>
+                            <th>购买数量</th>
+                            <th>剩余库存</th>
+                            <th>商品单价</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="sp-data">
+                        <tr>
+                            <td>
+                                <input type="hidden" name="specNumber" class="specNumber">
+                                <input type="hidden" name="specId" class="specId">
+                                <input type="hidden" name="goodsId" class="goodsId">
+                                <input type="hidden" name="goodsNumber" class="goodsNumber">
+                                <input type="text" class="goods" placeholder="请输入商品编码" autocomplete="off"/>
+                            </td>
+                            <td><input type="text" name="quantity" class="quantity" placeholder="请输入"/></td>
+                            <td><input type="text" name="qty" class="qty" readonly /></td>
+                            <td><input type="text" name="note" class="note" placeholder="请输入商品单价"/></td>
+                            <td>
+                                <i class="delete">-</i><i class="add">+</i>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="hidden" name="specNumber" class="specNumber">
+                                <input type="hidden" name="specId" class="specId">
+                                <input type="hidden" name="goodsId" class="goodsId">
+                                <input type="hidden" name="goodsNumber" class="goodsNumber">
+                                <input type="text" class="goods" placeholder="请输入商品编码" autocomplete="off"/></td>
+                            <td><input type="text" name="quantity" class="quantity" placeholder="请输入"/></td>
+                            <td><input type="text" name="qty" class="qty" readonly /></td>
+                            <td><input type="text" name="note" class="note" placeholder="请输入商品单价"/></td>
+                            <td>
+                                <i class="delete">-</i><i class="add">+</i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="hidden" name="specNumber" class="specNumber">
+                                <input type="hidden" name="specId" class="specId">
+                                <input type="hidden" name="goodsId" class="goodsId">
+                                <input type="hidden" name="goodsNumber" class="goodsNumber">
+                                <input type="text" class="goods" placeholder="请输入商品编码" autocomplete="off"/></td>
+                            <td><input type="text" name="quantity" class="quantity" placeholder="请输入"/></td>
+                            <td><input type="text" name="qty" class="qty" readonly /></td>
+                            <td><input type="text" name="note" class="note" placeholder="请输入商品单价"/></td>
+                            <td><i class="delete">-</i>
+                                <i class="add">+</i></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="hidden" name="specNumber" class="specNumber">
+                                <input type="hidden" name="specId" class="specId">
+                                <input type="hidden" name="goodsId" class="goodsId">
+                                <input type="hidden" name="goodsNumber" class="goodsNumber">
+                                <input type="text" class="goods" placeholder="请输入商品编码" autocomplete="off"/></td>
+                            <td><input type="text" name="quantity" class="quantity" placeholder="请输入"/></td>
+                            <td><input type="text" name="qty" class="qty" readonly /></td>
+                            <td><input type="text" name="note" class="note" placeholder="请输入商品单价"/></td>
+                            <td><i class="delete">-</i>
+                                <i class="add">+</i></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="hidden" name="specNumber" class="specNumber">
+                                <input type="hidden" name="specId" class="specId">
+                                <input type="hidden" name="goodsId" class="goodsId">
+                                <input type="hidden" name="goodsNumber" class="goodsNumber">
+                                <input type="text" class="goods" placeholder="请输入商品编码" autocomplete="off"/></td>
+                            <td><input type="text" name="quantity" class="quantity" placeholder="请输入"/></td>
+                            <td><input type="text" name="qty" class="qty" readonly /></td>
+                            <td><input type="text" name="note" class="note" placeholder="请输入商品单价"/></td>
+                            <td><i class="delete">-</i>
+                                <i class="add">+</i></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="bussiness-total-box">
+<!--                        <div class="layui-form-item">
+                            <div> 商品总数：<span class="total-number" id="spzs">0</span></div>
+                        </div>
+                        <div class="layui-form-item">
+                            商品总额：<span class="total-number" id="spze">￥0.00</span>
+                        </div>-->
+                    </div>
+
+                    <div class="a-input"><span>物流费用</span><input type="text" name="shippingFee" placeholder="请输入物流费用"/></div>
+
+                    <div class="layui-form-item layui-input-inline">
+                        <label class="layui-form-label">是否是抽奖订单</label>
+                        <div class="layui-input-block">
+                            <select name="saleType" id="saleType" lay-search="">
+                                <option value="">请选择是否是抽奖订单</option>
+                                <option value="2">抽奖订单</option>
+                                <option value="1">非抽奖订单</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="textarea-box"><span>订单备注</span>
+                        <textarea name="sellerMemo" id="mark"  cols="80" rows="3"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="clear"></div>
+        <button type="button" id="save" class="layui-btn order-save">保存</button>
+                </div>
+    </form>
+    <script type="text/javascript" src="/sb/jquery.min.js"></script>
+    <script type="text/javascript" src="/sb/Tips.min.js"></script>
+    <script type="text/javascript" src="/address/Address.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // 新增用户收货地址
+            $('.add_address').click(function () {
+                var $address = $('#address');
+                var $code = $('#code');
+                var ad = new Address({
+                    url: '/ajax_user/address_data',
+                    input: $address[0],
+                    select: function (address, code) {
+                        $address.val(address.join(' '));
+                        $code.val(code.join(' '));
+                    }
+                });
+                ad.initArea($address.val(), $code.val());
+            });
+            function render(data) {
+                for (var i = 0, n = data.length, tpl = ''; i < n; i++) {
+                    var goodsName = data[i].name + "_" + data[i].colorValue+ " " + data[i].sizeValue + ' SKU:' + data[i].specNumber
+                    tpl += '<li data-id="' + data[i].goodsId + '" data-unit="' + data[i].unit + '" goods-no="' + data[i].goodsNumber +
+                        '" spec-no="' + data[i].specNumber + '" spec-name="' + data[i].colorValue+ " " + data[i].sizeValue + '" spec-id="' + data[i].specId +
+                        '" data-quantity="' + data[i].quantity + '" data-price="' + data[i].salePrice +
+                        '" data-rate="' + data[i].disRate + '" data-qty="' + data[i].currentQty +
+                        '" data-amount="' + data[i].amount + '">' + goodsName + '</li>';
+                }
+                $('.sp-result').html(tpl);
+
+            }
+
+            function init() {
+                var $box = $('<ul class="sp-result"></ul>').appendTo($('body'));
+                var $status = false;
+                var $id = null; //商品ID
+                var $goodsName = null; //商品
+                var $goodsId = null; //商品id
+                var $goodsNumber = null; //商品编码
+                var $specId = null; //商品规格id
+                var $specNumber = null; //商品规格编号
+                var $unit = null; //单位
+                // var $address = null; //仓库
+                var $quantity = null; //数量
+                var $price = null; //购买单价
+                var $disRate = null; //折扣率
+                var $disAmount = null; //折扣额
+                var $amount = null; //购货金额
+                // var $number = null; //序列号
+                var $note = null; //备注
+                var $qty = null; //库存
+
+                $(document).click(function (e) {
+                    if ($status) {
+                        $box.hide();
+                        $status = false;
+                    }
+                });
+                $('#sp-data').delegate('.goods', 'click', function (e) {
+                    e.stopPropagation();
+                    var _this = $(this);
+                    var _tr = _this.parent('td').parent('tr');
+                    // $id = _tr.find('.goodsId'); //商品ID
+                    $goodsName = _this;
+                    $unit = _tr.find('.unit'); //单位
+                    $specNumber = _tr.find('.specNumber'); //商品规格编码
+                    $goodsNumber = _tr.find('.goodsNumber'); //商品规格编码
+                    $goodsId = _tr.find('.goodsId'); //商品id
+                    $specId = _tr.find('.specId'); //商品id
+                    // $address = _tr.find('.address'); //仓库
+                    $quantity = _tr.find('.quantity'); //数量
+                    $price = _tr.find('.price'); //购买单价
+                    $disRate = _tr.find('.disRate'); //折扣率
+                    $disAmount = _tr.find('.disAmount'); //折扣额
+                    $amount = _tr.find('.amount'); //购货金额
+                    // $number = _tr.find('.number'); //序列号
+                    $note = _tr.find('.note'); //备注
+                    $qty = _tr.find('.qty'); //库存
+
+                    var _this = $(this);
+                    var pos = _this.offset();
+                    var x = pos.left;
+                    var y = pos.top + _this.height();
+                    $box.css({
+                        left: x,
+                        top: y
+                    }).html('').hide();
+                    $status = true;
+                });
+                $box.delegate('li', 'click', function (e) {
+                    e.stopPropagation();
+                    var _this = $(this);
+                    $goodsName.val(_this.text()); //商品
+                    $specNumber.val(_this.attr('spec-no'))
+                    $goodsId.val(_this.attr('data-id'))
+                    $goodsNumber.val(_this.attr('goods-no'))
+                    $specId.val(_this.attr('spec-id'))
+                    $unit.val(_this.attr('data-unit')); //单位
+                    $quantity.val(_this.attr('data-quantity')); //数量
+                    $price.val(_this.attr('data-price')); //购买单价
+                    $disRate.val(_this.attr('data-rate')); //折扣率
+                    $disAmount.val(_this.attr('data-rebate')); //折扣额
+                    $amount.val(_this.attr('data-amount')); //购货金额
+                    $note.val(_this.attr('data-price'))
+                    $qty.val(_this.attr('data-qty'));
+                    $box.hide();
+                    $status = false;
+                });
+                $box.click(function (e) {
+                    e.stopPropagation();
+                });
+                // 商品搜索
+                $('#sp-data').delegate('.goods', 'input', function (e) {
+                    e.stopPropagation();
+                    if ($box.css('display') == 'none') {
+                        $box.show();
+                    }
+                    var key = $(this).val();
+                    // ajax..
+                    $.ajax({
+                        url: "/ajax_goods/goods_spec_search_by_number",
+                        type: "POST",
+                        dataType: "json",
+                        contentType: "application/json",
+                        data: JSON.stringify({key: key}),
+                        success: function (res) {
+                            $('.sp-result').html("");
+                            if (res.code == 0 && res.data.length > 0) {
+                                render(res.data);
+                            }
+                        }
+                    });
+                });
+
+                // 商品计算 -start
+
+                var $yhl = $('#yhl'); //优惠率
+                var $yhje = $('#yhje'); //优惠金额
+                var $yhhje = $('#yhhje'); //优惠后金额
+                var $bcfk = $('#bcfk'); //本次付款
+                var $bcqk = $('#bcqk'); //本次欠款
+                var $spze = $('#spze'); //商品总额
+                var $spzs = $('#spzs'); //商品总数
+
+                var _yhl = parseFloat($yhl.val()) || 0;
+                var _bcfk = parseFloat($bcfk.val()) || 0;
+
+                // 获取总额
+                function $getMoney() {
+                    var ze = 0;
+                    $('.note').each(function (i, el) {
+                        var je = parseFloat($(el).val()) || 0;
+                        ze += je;
+                    });
+                    return ze;
+                }
+
+
+                // 设置优惠额 优惠后金额
+                function $setMoney() {
+                    var ze = $getMoney();
+                    $spze.html(ze.toFixed(2));
+                }
+
+                // 设置本次欠款
+                function $setArrears() {
+                    _bcfk = parseFloat($bcfk.val()) || 0;
+                    _yhhje = parseFloat($yhhje.val()) || 0;
+                    $bcqk.val((_yhhje - _bcfk).toFixed(2));
+                }
+
+                // 计算折扣额 购货金额
+/*                function $count() {
+                    var quantity = 0;
+                    $('.quantity').each(function (i, el) {
+                        var je = parseFloat($(el).val()) || 0;
+                        quantity += je;
+                    });
+                    $spzs.html(quantity);
+                }*/
+
+                // 计算折扣额 购货金额
+                function $count(_this) {
+                    var _tr = _this.parent('td').parent('tr');
+                    var _quantity = _tr.find('.quantity'); // 数量
+                    var _price = _tr.find('.note'); //单价
+
+                    // var _sl = parseInt(_quantity.val()) || 0;
+                    var _jg = parseFloat(_price.val()) || 0;
+                    var _sl = parseInt(_quantity.val()) || 0;
+
+                    // 总额 = 数量 * 单价
+                    var ze = _sl * _jg;
+                    $spze.html(ze.toFixed(2));
+                    $spzs.html(_sl);
+                }
+                function $js(_this) {
+                    $count(_this);
+                    $setMoney();
+                    $setArrears();
+                }
+
+                // 数量触发
+                $('#sp-data').delegate('.quantity', 'input', function (e) {
+                    console.log("数量触发");
+                    e.stopPropagation();
+                    $js($(this));
+                });
+                // 单价触发
+                $('#sp-data').delegate('.price', 'input', function (e) {
+                    console.log("单价触发");
+                    e.stopPropagation();
+                    $js($(this));
+                });
+                // 折扣率触发
+                $('#sp-data').delegate('.disRate', 'input', function (e) {
+                    console.log("折扣率触发");
+                    e.stopPropagation();
+                    $js($(this));
+                });
+
+                // 优惠率触发
+                $yhl.on('input', function (e) {
+                    _yhl = parseFloat($yhl.val()) || 0;
+                    $setMoney();
+                    $setArrears();
+                });
+
+                // 本次付款触发
+                $bcfk.on('input', function (e) {
+                    $setArrears();
+                });
+
+                // 商品计算 -end
+            }
+
+            init();
+
+            // 新增
+            $(document).on('click','.add',function () {
+                var newHtml = '<tr>\
+					<td> <input type="hidden" name="specNumber" class="specNumber">\n' +
+                    '<input type="hidden" name="specId" class="specId">\n' +
+                    '<input type="hidden" name="goodsId" class="goodsId">\n' +
+                    '<input type="hidden" name="goodsNumber" class="goodsNumber">\n' +
+                    '<input type="text" class="goods" placeholder="请输入商品编码" autocomplete="off" /></td>';
+                newHtml += '<td><input type="text" name="quantity" class="quantity" placeholder="请输入" /></td>\
+                     <td><input type="text" name="qty" class="qty" readonly />\
+					<td><input type="text" name="note" class="note" placeholder="请输入商品单价" /></td>\
+					<td><i class="delete">-</i><i class="add">+</i></td>\
+				</tr>';
+
+                $('#sp-data').append(newHtml);
+
+            });
+            // 删除
+            $('#sp-data').delegate('.delete', 'click', function () {
+                $(this).parent('td').parent('tr').remove();
+            });
+            // 保存
+            $('#save').click(function () {
+                // 获取页面已有的一个form表单
+                // var form = document.getElementById("sp-form");
+                // 用表单来初始化
+                var formData = $('#sp-form').serialize();
+                //检查商品规格
+                var returnResult = true;
+                var goodsCount = 0;
+                //规格颜色
+                $("input[name^='specNumber']").each(function (i, el) {
+                    if ($(this).val() != "") {
+                        //有商品
+                        goodsCount++;
+                        //检查该行数据
+                        var quantity = $($("input[name^='quantity']")[goodsCount - 1]).val();
+                        if (quantity == '' || quantity == '0' || isNaN(quantity)) {
+                            alert("请输入数量");
+                            returnResult = false;
+                            return false;
+                        }
+                    }
+                });
+                if (returnResult == false) return false;
+                if (goodsCount == 0) {
+                    alert("未选择商品");
+                    return false;
+                }
+                var orderNumber= $("input[name='orderNumber']").val();
+                var contactMobile= $("input[name='contactMobile']").val();
+                var contactPerson= $("input[name='contactPerson']").val();
+                var address= $("input[name='address']").val();
+                var areaCode= $("input[name='areaCode']").val();
+                var saleType = $("#saleType  option:selected").val();
+                if(isnull(orderNumber)){
+                    alert("请填写订单号");
+                    return false;
+                }
+                if(isnull(saleType)){
+                    alert("请选择订单类型");
+                    return false;
+                }
+                if (isnull(contactMobile)) {
+                    alert("请输入收件人手机号");
+                    return false;
+                }
+                if (isnull(contactPerson)) {
+                    alert("请输入收件人姓名");
+                    return false;
+                }
+                if (isnull(address)) {
+                    alert("请输入收件人地址信息");
+                    return false;
+                }
+                if(isnull(areaCode)){
+                    alert("请选择所在地区");
+                    return false;
+                }
+                $('#sp-form').submit();
+            });
+            function isnull(val) {
+                if (val == '' || val == undefined || val == null || val.length <= 0) return true;
+                return false;
+            }
+            /**生产订单号**/
+            $("#orderSnCreate").click(function () {
+                var orderSn = randomNumber();
+                $("#orderNumber").val(orderSn);
+            })
+
+            function setTimeDateFmt(s) {  // 个位数补齐十位数
+                return s < 10 ? '0' + s : s;
+            }
+
+            function randomNumber() {
+                const now = new Date()
+                let month = now.getMonth() + 1
+                let day = now.getDate()
+                let hour = now.getHours()
+                let minutes = now.getMinutes()
+                let seconds = now.getSeconds()
+                month = setTimeDateFmt(month)
+                day = setTimeDateFmt(day)
+                hour = setTimeDateFmt(hour)
+                minutes = setTimeDateFmt(minutes)
+                seconds = setTimeDateFmt(seconds)
+                let orderCode = now.getFullYear().toString() + month.toString() + day + hour + minutes + seconds + (Math.round(Math.random() * 1000000)).toString();
+                console.log(orderCode)
+                return orderCode;
+            }
+        });
+    </script>
+    <!-- end sp-wrapper -->
+    <script>
+        layui.use(['laydate', 'form'], function () {
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#form_date' //指定元素
+            });
+        });
+    </script>
+      </div>
+    </div>
+</div>
+</body>
+<html>

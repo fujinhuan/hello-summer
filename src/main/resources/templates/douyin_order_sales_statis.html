@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>商品价格查询-商品列表</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+    <style type="text/css">
+        .fl-nav a {
+            position: relative;
+            display: inline-block;
+            padding: 0 15px;
+            line-height: 48px;
+            padding-bottom: 2px;
+        }
+
+        .fl-nav a.active {
+            padding-bottom: 0;
+            border-bottom: 2px solid #39c;
+        }
+    </style>
+
+
+    <!-- content starts -->
+    <blockquote class="layui-elem-quote">抖音订单销量查询</blockquote>
+
+
+    <fieldset class="layui-elem-field">
+        <legend>按条件搜索</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-form-pane1" method="get" th:action="@{/douyin/douyin_order_sales_statis}">
+                <input type="hidden" name="shopId" th:value="${shopId}">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">下单时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text"   class="layui-input" name="startTime" th:value="${startTime}" id="startTime" autocomplete="off"
+                                   style="width: 120px;" placeholder="yyyy-MM-dd">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text"  class="layui-input" name="endTime" th:value="${endTime}" id="endTime" style="width: 120px;" autocomplete="off" placeholder="yyyy-MM-dd">
+                        </div>
+                    </div>
+ <!--                   <div class="layui-inline">
+                        <select name="zhanghao" id="zhanghao" >
+                            <option value="">全部账号</option>
+                            <option th:each="item:${accountList}" th:value="${item.id}" th:text="${item.name}" >华衣服饰（蓝V号）</option>
+                        </select>
+                    </div>-->
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn">搜索</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </fieldset>
+    <!-- start sp-wrapper -->
+    <link rel="stylesheet" href="/goods/splb/sp.css"/>
+    <div class="sp-wrapper">
+        <table class="sp-table">
+            <tr>
+                <th>主播</th>
+                <th>订单数量</th>
+                <th>订单金额</th>
+                <th>商品销量</th>
+            </tr>
+            <tr th:each="item:${lists}">
+                <td th:text="${item.getZbName()}"></td>
+                <td th:text="${item.getOrderCount()}"></td>
+                <td th:text="${#numbers.formatDecimal(item.getOrderAmount(), 0, 2)}" ></td>
+                <td th:text="${item.getGoodNum()}"></td>
+
+            </tr>
+        </table>
+    </div>
+    <div id="outerdiv" style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;">
+        <div id="innerdiv" style="position:absolute;">
+            <img id="bigimg" style="border:5px solid #fff;" src="" />
+        </div>
+    </div>
+    <!-- end sp-wrapper -->
+    <script type="text/javascript">
+        $(function () {
+            $(".pimg").click(function(){
+                var _this = $(this);//将当前的pimg元素作为_this传入函数
+                imgShow("#outerdiv", "#innerdiv", "#bigimg", _this);
+            });
+            function imgShow(outerdiv, innerdiv, bigimg, _this){
+                var src = _this.attr("src");//获取当前点击的pimg元素中的src属性
+                $(bigimg).attr("src", src);//设置#bigimg元素的src属性
+
+                /*获取当前点击图片的真实大小，并显示弹出层及大图*/
+                $("<img/>").attr("src", src).load(function(){
+                    var windowW = $(window).width();//获取当前窗口宽度
+                    var windowH = $(window).height();//获取当前窗口高度
+                    var realWidth = this.width;//获取图片真实宽度
+                    var realHeight = this.height;//获取图片真实高度
+                    var imgWidth, imgHeight;
+                    var scale = 0.8;//缩放尺寸，当图片真实宽度和高度大于窗口宽度和高度时进行缩放
+
+                    if(realHeight>windowH*scale) {//判断图片高度
+                        imgHeight = windowH*scale;//如大于窗口高度，图片高度进行缩放
+                        imgWidth = imgHeight/realHeight*realWidth;//等比例缩放宽度
+                        if(imgWidth>windowW*scale) {//如宽度扔大于窗口宽度
+                            imgWidth = windowW*scale;//再对宽度进行缩放
+                        }
+                    } else if(realWidth>windowW*scale) {//如图片高度合适，判断图片宽度
+                        imgWidth = windowW*scale;//如大于窗口宽度，图片宽度进行缩放
+                        imgHeight = imgWidth/realWidth*realHeight;//等比例缩放高度
+                    } else {//如果图片真实高度和宽度都符合要求，高宽不变
+                        imgWidth = realWidth;
+                        imgHeight = realHeight;
+                    }
+                    $(bigimg).css("width",imgWidth);//以最终的宽度对图片缩放
+
+                    var w = (windowW-imgWidth)/2;//计算图片与窗口左边距
+                    var h = (windowH-imgHeight)/2;//计算图片与窗口上边距
+                    $(innerdiv).css({"top":h, "left":w});//设置#innerdiv的top和left属性
+                    $(outerdiv).fadeIn("fast");//淡入显示#outerdiv及.pimg
+                });
+                $(outerdiv).click(function(){//再次点击淡出消失弹出层
+                    $(this).fadeOut("fast");
+                });
+            }
+
+            $("#excel_btn").click(function () {
+                //组合条件
+                var url = "/douyin/order_list_douyin_sku_export";
+                var startTime = $("input[name=startTime]").val();
+                var endTime = $("input[name=endTime]").val();
+
+                if (startTime != '') {
+                    url += "?startTime=" + startTime;
+                }
+                if (startTime != '') {
+                    url += "&endTime=" + endTime;
+                }
+                window.open(url, "_blank");
+            })
+        })
+
+
+        layui.use(['layer', 'jquery', 'form'], function () {
+            var form = layui.form;
+            var $ = layui.jquery;
+            $(function () {
+            })
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#startTime',
+                type: 'date'
+            });
+            laydate.render({
+                elem: '#endTime',
+                type: 'date'
+            });
+        });
+        layui.use(['laydate', 'layer'], function () {
+
+        });
+    </script>
+
+</div>
+
+
+</body>
+<html>

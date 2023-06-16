@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title})">
+    <title th:text="'订单查询-'+${shop.name+'-OMS订单管理系统'}"></title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+    <style type="text/css">
+        .update {
+            display: inline-block;
+            margin-left: 15px;
+            padding: 0 20px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+            background: #009789;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .update i {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+            width: 30px;
+            height: 30px;
+            background: url(data:image/gif;base64,R0lGODlhHgAeAIABAP///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxQkUxQ0I4RDlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxQkUxQ0I4QzlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5ODNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAkUAAEALAAAAAAeAB4AAAJTjI8IkO1vFpxuWUbzlUpXfFyT1XCh+JHjBiYqtY1ZhM6ejee62+5m8PNhWEJWDUcE9nS/IHO5i0qnNijEesLysDHYcVtavh5QJ7A4liapNDbPVgAAIfkECRQAAQAsAAAAAB4AHgAAAlCMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg3kEo/YGlL2CrN+GtwMik7Cd8wlt/Ua+WPVwpDZBwuq2VBEGxNovThkdk5m0AgAh+QQJFAABACwAAAAAHgAeAAACUoyPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2D+YGiOLeRvYKbXzHgu/WEtuTuCW3OhrAU0+pEsmLBVtJ3bFVkW1pXpAxHszt2ogAAIfkECRQAAQAsAAAAAB4AHgAAAlGMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7gmNlpojZ8WKZE2OV5k2go2AvkgjOReUptWwSQEAIfkECRQAAQAsAAAAAB4AHgAAAlOMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7vlk7o6zGGvkRAaxMFBXm5JGvk4xz/vNbaE8s5FWAAAh+QQJFAABACwAAAAAHgAeAAACT4yPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2f6M1tct3b4Hy+IZFlPCCTuabzCbT9QNPKTndNwbQp7mSarX6F0CI0Is5lHQUAIfkECRQAAQAsAAAAAB4AHgAAAlKMjwiQ7W8WnG5ZRhs+V2ZlJZ44deLGjadZXg9Lha/7oe+H5/re8uDvi2A6thoRliMKg8sUM6B6SqfUYikWhcgqtNZWkw1nSeAKTylFT8dMdqMAACH5BAUUAAEALAAAAAAeAB4AAAJQjI8HC+n/GIM0ylazuVijvl0JaJHSuFBitpZeMFUk+9b2jeNpHn6zvePoOK2aEPYzgnY8Ju8JjaqALKfM6otdtQ5uD5VUWCLDU/QoxULVjwIAOw==);
+        }
+        .T-box {
+            width: 400px;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        .T-box p {
+            position: relative;
+            height: 36px;
+            line-height: 36px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .T-box p span {
+            display: inline-block;
+            padding-right: 15px;
+            text-align: right;
+            width: 110px;
+            line-height: 36px;
+            font-size: 14px;
+        }
+
+        .T-box p input, .T-box p select {
+            width: 250px;
+            padding: 0 5px;
+            height: 34px;
+            line-height: 34px;
+            font-size: 14px;
+            border: 1px solid #d3d3d3;
+            outline: none;
+        }
+
+        .T-box p i {
+            padding: 0 10px;
+            line-height: 36px;
+            font-style: normal;
+        }
+
+        .T-box p b {
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+            width: 60px;
+            height: 36px;
+            line-height: 36px;
+            background: #c33;
+            color: #fff;
+            text-align: center;
+            font-size: 13px;
+            font-weight: normal;
+        }
+        .red{
+            color: red;
+        }
+    </style>
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <ul class="layui-tab-title" id="status_menu">
+            <li><a th:href="@{/pdd/orderList(shopId=${shopId},status=1)}">待发货订单</a></li>
+            <li><a th:href="@{/pdd/orderList(shopId=${shopId})}">全部订单</a></li>
+        </ul>
+    </div>
+
+    <!-- content starts -->
+<!--    <blockquote class="layui-elem-quote">订单总览</blockquote>-->
+
+    <fieldset class="layui-elem-field">
+        <legend>按条件搜索</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-form-pane1" method="get" action="/pdd/orderList">
+                <input type="hidden" name="shopId" th:value="${shop.id}"/>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <input type="text" name="orderNum" th:value="${orderNum}" placeholder="订单编号" class="layui-input" style="width: 200px" />
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="goodsSpecNum" th:value="${goodsSpecNum}" placeholder="SKU编码" class="layui-input"  />
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="trackingNumber" th:value="${trackingNumber}" placeholder="快递单号" class="layui-input"  />
+                    </div>
+
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="status" id="status">
+                                <option value="">订单状态</option>
+                                <option  th:each="item: ${T(com.b2c.entity.pdd.EnumPddOrderStatus).values()}" th:text="${item.name}" th:value="${item.index}">等待发货</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="refundStatus" id="refundStatus">
+                                <option value="">售后状态</option>
+                                <option  th:each="item: ${T(com.b2c.entity.pdd.EnumPddOrderRefundStatus1).values()}" th:text="${item.name}" th:value="${item.pddIndex}">等待发货</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">下单时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" name="startTime" th:value="${startTime}" id="startTime" autocomplete="off"
+                               style="width: 180px;" placeholder="yyyy-MM-dd HH:mm:ss">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" name="endTime" th:value="${endTime}" id="endTime" style="width: 180px;" autocomplete="off" placeholder="yyyy-MM-dd HH:mm:ss">
+                    </div>
+                </div>
+
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="orderBy" id="orderBy">
+                                <option value="1">按承诺发货时间降序</option>
+                                <option value="2">按下单时间降序</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn">搜索</button>
+                        <i>总共：<span style="color: red" th:text="${totalSize}"></span>条记录</i>
+                    </div>
+
+                    <div class="layui-inline">
+                        <span id="upd_order" class="layui-btn  layui-btn-warm layui-btn-sm">拉取订单</span>
+                        <span id="upd_order_" style="display: none;" class="update"><i></i>拉取中</span>
+
+                    </div>
+<!--                    <div class="layui-inline">-->
+<!--                        <span id="upd_order_status" class="layui-btn layui-btn-normal">更新当前页订单状态</span>-->
+<!--                        <span id="upd_order_status_" style="display: none;" class="update"><i></i>更新中</span>-->
+<!--&lt;!&ndash;                        <a id="upd_order_status_all" style="display: none">更新当前订单状态</a>&ndash;&gt;-->
+<!--                    </div>-->
+                    <div class="layui-inline" th:if="${status != null && status != 3}">
+                        <span id="upd_order_status_all" class="layui-btn layui-btn-primary layui-btn-sm">更新当前订单状态</span>
+                        <span id="upd_order_status_all_" style="display: none;" class="update layui-btn layui-btn-warm"><i></i>更新中</span>
+                        <!--                        <a id="upd_order_status_all" style="display: none">更新当前订单状态</a>-->
+                    </div>
+                    <div class="layui-inline">
+                        <a class="layui-btn layui-btn-primary" href="javascript:;" id="export_order">导出订单数据</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </fieldset>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper">
+        <table class="dd-table">
+            <tr>
+                <th>订单编号</th>
+                <th width="20%">商品</th>
+                <th>订单金额</th>
+                <th>下单时间</th>
+                <th th:if="${status == 1}">承诺发货时间</th>
+                <th>订单备注</th>
+                <th>收件信息</th>
+                <th>订单状态</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="item:${lists}">
+                <td>
+                    <span th:text="${item.orderSn}" ></span>
+                    <input type="hidden" class="orderSN" th:value="${item.orderSn}">
+                </td>
+                <td>
+                    <div >
+                        <img th:src="${item.goodsImg}">
+                        <p>
+                            <span th:text="${#strings.abbreviate(item.goodsName,25)}"></span><br/>
+                            <span style="color: #9F9F9F" th:text="${item.goodsSpec}"></span>
+                            <span th:text="${item.goodsSpecNum}"></span><br/>
+<!--                            单价: ¥[[${item.goodsPrice}]] -->
+                            数量：<span th:text="${item.quantity}"> </span>
+                        </p>
+                    </div>
+                </td>
+                <td>¥<span th:text="${item.payAmount}"></span></td>
+                <td th:text="${item.createdTime}"></td>
+                <td th:if="${status == 1}" >
+                    <span th:class="${item.lastShipTime <= #dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd 23:59:59')} ? 'red' : ''" th:text="${item.lastShipTime}" ></span>
+                </td>
+                <td ><p style="color: red"><b th:text="${item.remark}"></b></p></td>
+                <td>
+                    <p th:text="${item.area}"></p>
+                    <div th:if="${item.trackingNumber !=null }">
+                        <p>[[${item.trackingCompany}]]</p>
+                        <p>[[${item.trackingNumber}]]</p>
+                    </div>
+                </td>
+
+                <td>
+                    <div  th:if="${(item.auditStatus==0 || item.auditStatus==2) && item.refundStatus ==1 }" >
+                    <span style="color: red" th:if="${item.auditStatus==0}">未确认</span>
+                    <span style="color: red" th:if="${item.auditStatus==2}">已拦截</span><br/>
+                    </div>
+                    <span  th:text="${T(com.b2c.entity.pdd.EnumPddOrderStatus).getName(item.orderStatus)}"></span><br/>
+                    <span th:if="${item.refundStatus != 1}" >
+                        <a target="_blank" th:href="@{/pdd/refund_detail(id=${item.refundId},shopId=${item.shopId})}" th:text="${T(com.b2c.entity.pdd.EnumPddOrderRefundStatus1).getName(item.refundStatus)}"> </a>
+                    </span>
+                </td>
+                <td>
+                    <a th:href="@{/pdd/orderDetail(id=${item.getOrderId()},shopId=${item.shopId})}">查看详情</a><br/>
+                    <a href="javascript:;" style="color: #FFFFFF" th:attr="data-id=${item.getOrderSn()}" th:if="${item.refundStatus !=0 && item.refundStatus !=4 }"
+                        class="order_intercept layui-btn layui-btn-normal layui-btn-xs">拦截订单</a><br/>
+<!--                    <a th:if="${item.auditStatus == 0 && item.refundStatus == 1}" class="track"  th:href="@{/pdd/orderDetail(id=${item.getOrderId()},shopId=${item.shopId})}">确认订单</a>-->
+
+<!--                    <a th:if="${item.getAuditStatus() == 1 && not #strings.isEmpty(item.getTracking_number())}" th:attr="order-id=${item.getId()}" class="order_send" >订单发货</a>-->
+<!--                    <a th:attr="order-id=${item.getId()}" class="order_up" style="color: #1E9FFF">更新订单</a>-->
+                    <a th:href="@{/pdd/apply_refund_pdd(id=${item.getOrderId()},shopId=${item.shopId})}" style="color: #FFFFFF" th:attr="data-id=${item.getOrderSn()}"
+                       th:if="${item.refundStatus > 1}" class="layui-btn layui-btn-warm layui-btn-xs">申请退货</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end dd-wrapper -->
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+    </div>
+
+    <script type="text/template" id="modify_address">
+        <div class="T-box">
+            <p><span>姓名</span><input type="text" id="userName"/></p>
+            <p><span>手机号</span><input type="text" id="mobile"/></p>
+            <p><span>收货地址</span><input type="text" id="address"/></p>
+        </div>
+    </script>
+    <script type="text/javascript" src="/goods/Tips/Tips.min.js"></script>
+    <script type="text/javascript">
+        var layer;
+        var $;
+        var windowOpen;
+        layui.use(['laydate', 'jquery', 'form', 'layer'], function () {
+            var laydate = layui.laydate;
+            $ = layui.jquery;
+            var form = layui.form;
+            layer = layui.layer;
+            laydate.render({
+                elem: '#startTime'
+                ,type: 'datetime'
+            });
+            laydate.render({
+                elem: '#endTime'
+                ,type: 'datetime'
+            });
+
+            $(function () {
+                $("#status").val([[${status}]]);
+                $("#refundStatus").val([[${refundStatus}]]);
+                $("#orderBy").val([[${orderBy}]]);
+                form.render('select'); //刷新select选择框渲染
+
+                if($("#status").val()==1){
+                    $("#status_menu li:nth-child(1)").addClass("layui-this");
+                    $("#status_menu li:nth-child(2)").removeClass("layui-this");
+                }else{
+                    $("#status_menu li:nth-child(2)").addClass("layui-this");
+                    $("#status_menu li:nth-child(1)").removeClass("layui-this");
+                }
+                //拦截订单（退货）
+                $(".order_intercept").click(function () {
+                    var $this = $(this);
+                    let orderSn = $(this).attr('data-id');
+
+                    if(confirm("该操作不可逆，是否确定要推送到仓库？")){
+                        var data = {
+                            orderSn: orderSn,
+                            shopId:[[${shop.id}]]
+                        };
+                        $.ajax({
+                            url: "/ajax_pdd/order_intercept",
+                            type: "POST",
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify(data),
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    layer.msg("拦截成功");
+                                    location.reload(true);
+                                    // Tips.alert('成功', function () {
+                                    //     location.reload(true);
+                                    // });
+                                } else {
+                                    alert(res.msg);
+                                    return false;
+                                }
+                            }
+                        });
+                    }
+
+                })
+
+
+                //更新订单
+                $("#upd_order").click(function () {
+                    if(!confirm("要拉取订单吗？")) return;
+                    $("#upd_order").hide();
+                    $("#upd_order_").show();
+                    let startTime = $("#startTime").val();
+                    let endTime = $("#endTime").val();
+                    var shopId = [[${shop.id}]]
+                    let data = {
+                        startTime:startTime,
+                        endTime:endTime,
+                        updType:0,
+                        shopId:shopId
+                    };
+
+                    $.ajax({
+                        url: "/ajax_pdd/pull_order",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: 'application/json',
+                        data:JSON.stringify(data),
+                        success: function (res) {
+                            if (res.code == 0) {
+                                Tips.alert({
+                                    title: '更新订单',
+                                    content: '更新结果：【'+JSON.stringify(res.data )+'】',
+                                    define: function () {
+                                        location.href = "/pdd/orderList?shopId="+shopId;
+                                    }
+                                });
+                            }else if(res.code==601){
+                                // $("#upd_order").show();
+                                // $("#upd_order_").hide();
+                                alert(res.msg);
+                                // Tips.alert(res.msg);
+                                location.href = "/pdd/oauth?shopId="+shopId;
+                            }
+                            else {
+
+                                Tips.alert(res.msg);
+                            }
+                            $("#upd_order").show();
+                            $("#upd_order_").hide();
+                        }
+                    })
+                });
+
+                //更新当前页订单状态
+                $("#upd_order_status").click(function () {
+                    $("#upd_order_status").hide();
+                    $("#upd_order_status_").show();
+                    //组合订单号
+                    var orderS = "";
+                    $(".orderSN").each(function () {
+                        orderS += $(this).val()+",";
+                    });
+                    //alert(orderS);
+                    // let startTime = $("#startTime").val();
+                    // let endTime = $("#endTime").val();
+                    var shopId = [[${shop.id}]]
+                    let data = {
+                        orderS:orderS,
+                        shopId: shopId
+                    };
+
+                    $.ajax({
+                        url: "/ajax_pdd/pull_order_status",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: 'application/json',
+                        data:JSON.stringify(data),
+                        success: function (res) {
+                            if (res.code == 0) {
+                                layer.msg("订单状态更新成功");
+                                window.location.reload();
+                                // Tips.alert({
+                                //     title: '更新订单',
+                                //     content: '订单状态更新成功',
+                                //     define: function () {
+                                //         location.href = "/pdd/orderList?shopId="+shopId;
+                                //     }
+                                // });
+                            }else if(res.code==601){
+                                // $("#upd_order").show();
+                                // $("#upd_order_").hide();
+                                alert(res.msg);
+                                // Tips.alert(res.msg);
+                                location.href = "/pdd/oauth?shopId="+shopId;
+                            }
+                            else {
+                                Tips.alert(res.msg);
+                            }
+                            $("#upd_order_status").show();
+                            $("#upd_order_status_").hide();
+                        }
+                    })
+                });
+
+
+
+                //更新当前订单状态
+                $("#upd_order_status_all").click(function () {
+                    if(!confirm("要更新订单吗？")) return;
+
+                    $("#upd_order_status_all").hide();
+                    $("#upd_order_status_all_").show();
+                    var shopId = [[${shop.id}]]
+                    let data = {
+                        orderStatus: '[[${status}]]',
+                        refundStatus: '[[${refundStatus}]]',
+                        shopId: shopId
+                    };
+
+                    $.ajax({
+                        url: "/ajax_pdd/pull_order_status_all",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: 'application/json',
+                        data:JSON.stringify(data),
+                        success: function (res) {
+                            if (res.code == 0) {
+                                layer.msg("订单状态更新成功");
+                                window.location.reload();
+                                // Tips.alert({
+                                //     title: '更新订单',
+                                //     content: '订单状态更新成功',
+                                //     define: function () {
+                                //         location.href = "/pdd/orderList?shopId="+shopId;
+                                //     }
+                                // });
+                            }else if(res.code==601){
+                                // $("#upd_order").show();
+                                // $("#upd_order_").hide();
+                                alert(res.msg);
+                                // Tips.alert(res.msg);
+                                location.href = "/pdd/oauth?shopId="+shopId;
+                            }
+                            else {
+                                Tips.alert(res.msg);
+                            }
+                            $("#upd_order_status_all").show();
+                            $("#upd_order_status_all_").hide();
+                        }
+                    })
+                });
+
+                $("#export_order").click(function () {
+                    var urlLink = window.location.href;
+                    var exportLink = "/pdd/order_list_export?shopId=[[${shop.id}]]&status="+$('#status').val()+"&startTime="+$('#startTime').val()+"&endTime="+$("#endTime").val();
+                    window.open(exportLink);
+                });
+                //订单发货
+                // $(".order_send").click(function () {
+                //     var orderId = $(this).attr("order-id");
+                //     $.ajax({
+                //         url: "/ajax_pdd/order_send",
+                //         type: "POST",
+                //         dataType: "JSON",
+                //         contentType: 'application/json',
+                //         data: orderId,
+                //         success: function (res) {
+                //             if (res.code == 0) {
+                //                 alert("发货成功");
+                //                 location.reload();
+                //             }else if(res.code==601){
+                //                 alert(res.msg);
+                //                 try {
+                //                     parent.location.href = res.data;
+                //                 }catch (e) {
+                //                     location.href = res.data;
+                //                 }
+                //             }  else {
+                //                 alert(res.msg);
+                //             }
+                //         }
+                //     })
+                // });
+
+
+            })
+        });
+
+    </script>
+
+    <!-- 模板  -->
+    <script type="text/template" id="tpl-group">
+        <div class="T-box" style="width: 1000px">
+            <div class="dd-log">
+                <ul id="sendContext">
+                </ul>
+            </div>
+        </div>
+    </script>
+
+
+</div>
+</body>
+<html>

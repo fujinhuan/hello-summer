@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title th:text="${shop.name+'退货订单-退货管理-OMS订单管理系统'}"></title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+    <style type="text/css">
+        .update {
+            display: inline-block;
+            margin-left: 15px;
+            padding: 0 20px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+            background: #009789;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .update i {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+            width: 30px;
+            height: 30px;
+            background: url(data:image/gif;base64,R0lGODlhHgAeAIABAP///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxQkUxQ0I4RDlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxQkUxQ0I4QzlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5ODNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAkUAAEALAAAAAAeAB4AAAJTjI8IkO1vFpxuWUbzlUpXfFyT1XCh+JHjBiYqtY1ZhM6ejee62+5m8PNhWEJWDUcE9nS/IHO5i0qnNijEesLysDHYcVtavh5QJ7A4liapNDbPVgAAIfkECRQAAQAsAAAAAB4AHgAAAlCMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg3kEo/YGlL2CrN+GtwMik7Cd8wlt/Ua+WPVwpDZBwuq2VBEGxNovThkdk5m0AgAh+QQJFAABACwAAAAAHgAeAAACUoyPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2D+YGiOLeRvYKbXzHgu/WEtuTuCW3OhrAU0+pEsmLBVtJ3bFVkW1pXpAxHszt2ogAAIfkECRQAAQAsAAAAAB4AHgAAAlGMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7gmNlpojZ8WKZE2OV5k2go2AvkgjOReUptWwSQEAIfkECRQAAQAsAAAAAB4AHgAAAlOMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7vlk7o6zGGvkRAaxMFBXm5JGvk4xz/vNbaE8s5FWAAAh+QQJFAABACwAAAAAHgAeAAACT4yPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2f6M1tct3b4Hy+IZFlPCCTuabzCbT9QNPKTndNwbQp7mSarX6F0CI0Is5lHQUAIfkECRQAAQAsAAAAAB4AHgAAAlKMjwiQ7W8WnG5ZRhs+V2ZlJZ44deLGjadZXg9Lha/7oe+H5/re8uDvi2A6thoRliMKg8sUM6B6SqfUYikWhcgqtNZWkw1nSeAKTylFT8dMdqMAACH5BAUUAAEALAAAAAAeAB4AAAJQjI8HC+n/GIM0ylazuVijvl0JaJHSuFBitpZeMFUk+9b2jeNpHn6zvePoOK2aEPYzgnY8Ju8JjaqALKfM6otdtQ5uD5VUWCLDU/QoxULVjwIAOw==);
+        }
+        .T-box {
+            width: 400px;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        .T-box p {
+            position: relative;
+            height: 36px;
+            line-height: 36px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .T-box p span {
+            display: inline-block;
+            padding-right: 15px;
+            text-align: right;
+            width: 110px;
+            line-height: 36px;
+            font-size: 14px;
+        }
+
+        .T-box p input, .T-box p select {
+            width: 160px;
+            padding: 0 5px;
+            height: 34px;
+            line-height: 34px;
+            font-size: 14px;
+            border: 1px solid #d3d3d3;
+            outline: none;
+        }
+
+        .T-box p i {
+            padding: 0 10px;
+            line-height: 36px;
+            font-style: normal;
+        }
+
+        .T-box p b {
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+            width: 60px;
+            height: 36px;
+            line-height: 36px;
+            background: #c33;
+            color: #fff;
+            text-align: center;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        .T-result {
+            margin-bottom: 0;
+        }
+
+        .T-result em {
+            color: #c33;
+            font-style: normal;
+        }
+    </style>
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <ul class="layui-tab-title">
+            <li><a th:href="@{/order/aliOrderList(shopId=${shop.id})}">订单管理</a></li>
+            <li class="layui-this"><a th:href="@{/order/aliRefundList(shopId=${shop.id})}">退货管理</a></li>
+        </ul>
+    </div>
+    <!-- content starts -->
+<!--    <blockquote class="layui-elem-quote">订单总览</blockquote>-->
+
+    <fieldset class="layui-elem-field">
+        <legend>按条件搜索</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-form-pane1" method="get" action="/order/aliRefundList">
+                <input name="shopId" th:value="${shop.id}" type="hidden">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <input type="text" name="refNum" placeholder="退款单编号" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="orderNum" placeholder="源订单号" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="logisticsCode" placeholder="退货物流单号" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">申请时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="startTime" id="startTime" autocomplete="off"
+                                   placeholder="yyyy-MM-dd">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="endTime" id="endTime" autocomplete="off" placeholder="yyyy-MM-dd">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="state">
+                                <option value="">退款状态</option>
+                                <option th:each="item:${T(com.b2c.entity.enums.AliOrderRefundEnums).values()}" th:text="${item.name}" th:value="${item.index}">已取消</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn">搜索</button>
+                        <i>总共：<span style="color: red" th:text="${totalSize}"></span>条记录</i>
+                    </div>
+                    <div class="layui-inline">
+                        <span id="upd_order" class="update">更新退款订单</span>
+                        <span id="upd_order_" style="display: none;" class="update"><i></i>更新中</span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </fieldset>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper">
+        <table class="dd-table">
+            <tr>
+                <th>退款单号</th>
+                <th>退款金额</th>
+                <th>订单号</th>
+                <th>订单金额</th>
+                <th>申请时间</th>
+                <th>退款类型</th>
+                <th>退款原因</th>
+                <th>退货物流</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="item:${list}">
+                <td th:text="${item.refundId}"></td>
+                <td>
+                    货品金额：￥<b th:text="${item.refundPayment.doubleValue() / 100 }"></b><br/>
+                    运费金额：￥<b th:text="${item.refundCarriage.doubleValue() / 100 }"></b>
+                </td>
+                <td th:text="${item.orderId}"></td>
+                <td th:text="${item.totalAmount}"></td>
+                <td>
+                    <div>
+                        <p  th:text="${#dates.format(item.gmtApply * 1000, 'yyyy-MM-dd HH:mm:ss')}"></p>
+
+                    </div>
+                </td>
+
+                <td>
+                    <span th:if="${item.isOnlyRefund == 0}">退货退款</span>
+                    <span th:if="${item.isOnlyRefund == 1}">仅退款</span>
+                </td>
+                <td><span>[[${item.applyReason}]]</span></td>
+                <td>
+                    <span th:text="${item.buyerLogisticsName}" ></span><br/>
+                    <span th:text="${item.freightBill}" ></span>
+                </td>
+                <td>
+                    <span th:if="${item.auditStatus == 0}" style="color: red">未确认</span>
+                    <span th:if="${item.auditStatus == 1}" style="color: red">已确认</span>
+                    <br/>
+                    <span th:text="${T(com.b2c.entity.enums.AliOrderRefundEnums).getName(item.status)}"></span>
+                </td>
+                <td>
+                    <a th:href="@{/order/dc_ali_refund_item(id=${item.refId})}">查看详情</a>
+                    <a th:if="${item.auditStatus == 0 && item.isOnlyRefund == 0}" th:attr="id=${item.refId}" class="confirm_refund track" href="javascript:;">确认退货</a>
+
+                    <a th:attr="id=${item.refId}" class="update_new" href="javascript:;">更新</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end dd-wrapper -->
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+    </div>
+
+    <script type="text/template" id="send-goods">
+        <div class="T-box">
+            <p><span>快递公司</span>
+                <select id="send-company">
+                    <option value="">请选择快递公司</option>
+                    <option th:each="item:${company}" th:value="${item.getCode()}" th:text="${item.getName()}"></option>
+                </select>
+            </p>
+            <p><span>快递单号</span><input type="text" name="express_code"/></p>
+            <p><span>发件人地址</span><input type="text" name="express_address"/></p>
+            <p class="T-result"><span>&nbsp;</span><em id="erro"></em></p>
+        </div>
+    </script>
+
+    <!--<script src="/jquery-3.3.1.min.js"></script>-->
+    <script type="text/javascript" src="/goods/Tips/Tips.min.js"></script>
+    <script type="text/javascript">
+        var layer;
+        var $;
+        var windowOpen;
+        layui.use(['laydate', 'jquery', 'form', 'layer'], function () {
+            var laydate = layui.laydate;
+            $ = layui.jquery;
+            var form = layui.form;
+            layer = layui.layer;
+            laydate.render({
+                elem: '#startTime'
+            });
+            laydate.render({
+                elem: '#endTime'
+            });
+
+            $(function () {
+
+                //更新订单
+                $("#upd_order").click(function () {
+                    $("#upd_order").hide();
+                    $("#upd_order_").show();
+                    $.ajax({
+                        url: "/ali_order/upd_ali_refund",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: 'application/json',
+                        success: function (res) {
+                            if (res.code == 0) {
+                                Tips.alert({
+                                    title: '更新订单',
+                                    content: '更新成功：【'+res.msg+'】',
+                                    define: function () {
+                                        location.href = "/order/aliRefundList?shopId=[[${shop.id}]]";
+                                    }
+                                });
+                            }else if(res.code == 601){
+                                Tips.alert("Token已过期");
+                                // location.href = res.data;
+                                location.href = "/ali/ali_oauth";
+                            } else {
+                                Tips.alert(res.msg);
+                            }
+                            $("#upd_order").show();
+                            $("#upd_order_").hide();
+                        }
+                    })
+                });
+
+                //更新单条退货订单
+                $(".update_new").click(function () {
+                    var $this = $(this);
+                    var data = {
+                        id: $this.attr("id")
+                    };
+                    $.ajax({
+                        url: "/ali_order/upd_ali_refund_by_refId",
+                        type: "POST",
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function (res) {
+                            if (res.code == 0) {
+                                Tips.alert('成功：'+res.msg, function () {
+                                    location.reload(true);
+                                });
+                            } else {
+                                alert(res.msg);
+                                return false;
+                            }
+                        }
+                    });
+                })
+
+                $(".confirm_refund").click(function () {
+                    var $this = $(this);
+                    var data = {
+                        id: $this.attr("id"),
+                        company: "",
+                        companyCode:"",
+                        code: "",
+                        orderSource: 'ALIBABA',
+                        address:""
+                    };
+                    if(confirm("该操作不可逆，是否确定要退货？")){
+                        $.ajax({
+                            url: "/ali_ajax/reviewRefund",
+                            type: "POST",
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify(data),
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    Tips.alert('成功', function () {
+                                        location.reload(true);
+                                    });
+                                } else {
+                                    alert(res.msg);
+                                    return false;
+                                }
+                            }
+                        });
+                    }
+                    // Tips.confirm({
+                    //     title: '填写退货物流信息',
+                    //     content: $('#send-goods').html(),
+                    //     define: function () {
+                    //         var data = {
+                    //             id: $this.attr("id"),
+                    //             company: $("#send-company  option:selected").text(),
+                    //             companyCode: $("#send-company  option:selected").val(),
+                    //             code: $("input[name='express_code']").val(),
+                    //             orderSource: 'ALIBABA',
+                    //             address:$("input[name='express_address']").val()
+                    //         };
+                    //         $.ajax({
+                    //             url: "/ali_ajax/reviewRefund",
+                    //             type: "POST",
+                    //             dataType: 'json',
+                    //             contentType: 'application/json',
+                    //             data: JSON.stringify(data),
+                    //             success: function (res) {
+                    //                 if (res.code == 0) {
+                    //                     Tips.alert('成功', function () {
+                    //                         location.reload(true);
+                    //                     });
+                    //                 } else {
+                    //                     alert(res.msg);
+                    //                     return false;
+                    //                 }
+                    //             }
+                    //         });
+                    //     }
+                    // });
+                })
+            })
+
+
+        });
+
+    </script>
+</div>
+
+
+</body>
+<html>

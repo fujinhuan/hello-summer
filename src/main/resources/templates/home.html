@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title})">
+    <title>ERP管理系统</title>
+</head>
+<body th:replace="layout :: common_body(~{::div.layui-body})">
+<div class="layui-body" style="padding:15px;">
+
+<!--    <fieldset class="layui-elem-field">-->
+<!--        <legend>最近五日</legend>-->
+<!--        <div class="layui-field-box">-->
+<!--            <div class="layui-inline">-->
+<!--                <a href="/" class="layui-btn">商品上架</a>-->
+<!--            </div>-->
+<!--            <div class="layui-inline">-->
+<!--                <a href="/?flag=1" class="layui-btn">SKU更新</a>-->
+<!--            </div>-->
+<!--            <div class="layui-inline">-->
+<!--                <a href="/?flag=2" class="layui-btn">商品入库</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </fieldset>-->
+    <link rel="stylesheet" href="/goods/splb/sp.css"/>
+    <div class="sp-wrapper" th:if="${flag==0}">
+        <table class="sp-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>商品名</th>
+                <th>商品编码</th>
+                <th>创建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item:${lists}">
+                <td th:text="${item.getId()}"></td>
+                <td th:text="${item.getName()}"></td>
+                <td th:text="${item.getNumber()}"></td>
+                <td th:if="${item.getCreateTimeL()}!=null" th:text="${#dates.format(item.getCreateTimeL()*1000,'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="sp-wrapper" th:if="${flag==1}">
+        <table class="sp-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>商品名</th>
+                <th>规格编码</th>
+                <th>库存</th>
+                <th>颜色</th>
+                <th>规格</th>
+                <th>款式</th>
+                <th>创建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item:${lists}">
+                <td th:text="${item.getId()}"></td>
+                <td th:text="${item.getName()}"></td>
+                <td th:text="${item.getSpecNumber()}"></td>
+                <td th:text="${item.getCurrentQty()}"></td>
+                <td th:text="${item.getColorValue()}"></td>
+                <td th:text="${item.getSizeValue()}"></td>
+                <td th:text="${item.getStyleValue()}"></td>
+                <td th:if="${item.getCreateTimeL()}!=null" th:text="${#dates.format(item.getCreateTimeL()*1000,'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="sp-wrapper" th:if="${flag==2}">
+        <table class="sp-table">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>商品名</th>
+                <th>规格编码</th>
+                <th>库存</th>
+                <th>颜色</th>
+                <th>规格</th>
+                <th>款式</th>
+                <th>仓位</th>
+                <th>创建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item:${lists}">
+                <td th:text="${itemStat.index+1}"></td>
+                <td th:text="${item.getName()}"></td>
+                <td th:text="${item.getSpecNumber()}"></td>
+                <td th:text="${item.getCurrentQty()}"></td>
+                <td th:text="${item.getColorValue()}"></td>
+                <td th:text="${item.getSizeValue()}"></td>
+                <td th:text="${item.getStyleValue()}"></td>
+                <td th:text="${item.getLocationName()}"></td>
+                <td th:text="${item.getCreateTime()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript" src="/goods/Tips/Tips.min.js"></script>
+</div>
+</body>
+</html>

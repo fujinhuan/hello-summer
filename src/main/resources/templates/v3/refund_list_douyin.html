@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>退货管理-OMS订单管理系统</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+<div class="layui-body" style="padding:15px;">
+    <style type="text/css">
+        .T-box {
+            width: 400px;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        .T-box p {
+            position: relative;
+            height: 36px;
+            line-height: 36px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .T-box p span {
+            display: inline-block;
+            padding-right: 15px;
+            text-align: right;
+            width: 110px;
+            line-height: 36px;
+            font-size: 14px;
+        }
+
+        .T-box p input, .T-box p select {
+            width: 160px;
+            padding: 0 5px;
+            height: 34px;
+            line-height: 34px;
+            font-size: 14px;
+            border: 1px solid #d3d3d3;
+            outline: none;
+        }
+
+        .T-box p i {
+            padding: 0 10px;
+            line-height: 36px;
+            font-style: normal;
+        }
+
+        .T-box p b {
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+            width: 60px;
+            height: 36px;
+            line-height: 36px;
+            background: #c33;
+            color: #fff;
+            text-align: center;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        .T-result {
+            margin-bottom: 0;
+        }
+
+        .T-result em {
+            color: #c33;
+            font-style: normal;
+        }
+    </style>
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <ul class="layui-tab-title">
+            <li class="layui-this">退货管理</li>
+        </ul>
+    </div>
+    <!-- content starts -->
+<!--    <blockquote class="layui-elem-quote">售后订单</blockquote>-->
+
+    <fieldset class="layui-elem-field">
+        <legend>按条件搜索</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-form-pane1" method="get" action="/douyin/refund_list">
+                <input type="hidden" th:value="${shop.getId()}" name="shopId"/>
+                <div class="layui-form-item">
+                   <!-- <div class="layui-inline">
+                        <input type="text" name="refundNum" placeholder="退货编号" class="layui-input">
+                    </div>-->
+                    <div class="layui-inline">
+                        <input id="orderNum" type="text" name="orderNum" placeholder="订单编号" th:value="${orderNum}" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="logisticsCode" placeholder="退货物流单号" th:value="${logisticsCode}" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">申请时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="startTime" id="startTime" autocomplete="off" placeholder="yyyy-MM-dd">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="endTime" id="endTime" autocomplete="off" placeholder="yyyy-MM-dd">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+
+                            <select name="status">
+                                <option value="">退货状态</option>
+                                <option th:each="s:${T(com.b2c.enums.third.EnumDouYinOrderRefundStatus).values()}" th:text="${s.getName()}" th:value="${s.getIndex()}" >售后状态</option>
+                            </select>
+
+                    </div>
+
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn">搜索</button>
+                        <i>总共：<span style="color: red" th:text="${totalSize}"></span>条记录</i>
+                    </div>
+                    <div class="layui-inline">
+                        <span id="upd_order" class="layui-btn layui-btn-normal" th:attr="shopId=${shop.getId()}">更新退货订单</span>
+                        <span id="upd_order_" style="display: none;" class="layui-btn layui-btn-disabled"><i></i>更新中</span>
+                    </div>
+
+                </div>
+
+
+
+            </form>
+        </div>
+    </fieldset>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper">
+        <table class="dd-table">
+            <tr>
+                <th>退款单号</th>
+                <th>订单号</th>
+                <!--<th>退款商品</th>-->
+                <th>退货总数</th>
+                <th>退款总额</th>
+                <th>退货类型</th>
+                <th>退货理由</th>
+                <th>申请时间</th>
+                <th>退货物流</th>
+                <th>退货状态</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="item:${list}">
+                <td th:text="${item.getAftersaleId()}"></td>
+                <td th:text="${item.getOrderId()}"></td>
+
+<!--                <div>
+                    <td th:each="i:${item.getItems()}">
+                        <img th:src="${i.getProduct_image()}" style="width: 70px;height: 70px;float: left" >
+                        <p style="float: left;padding-left: 10px;">
+                            <span th:text="${#strings.abbreviate(i.getProduct_name(),18)}" th:title="${i.getProduct_name()}"></span><br/>
+                            &lt;!&ndash;<span th:text="${item.specDesc}"></span><br/>&ndash;&gt;
+                            <span th:text="${i.getShop_sku_code()}"></span>
+                        </p>
+                    </td>
+                </div>-->
+
+                <td>
+                    <span th:text="${item.comboNum}"></span>
+                </td>
+
+                <td th:text="${item.totalAmount}"></td>
+                <td th:text="${T(com.b2c.enums.third.EnumDouYinOrderRefundTypeStatus).getName(item.getAftersaleType())}"></td>
+                <td th:text="${item.questionDesc}"></td>
+                <td th:text="${#dates.format(item.applyTime*1000, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td>
+                    <p th:text="${item.logisticsCompany}"></p>
+                    <p th:text="${item.logisticsCode}"></p>
+                </td>
+                <td>
+                    <p th:text="${T(com.b2c.enums.third.EnumDouYinOrderRefundStatus).getName(item.getRefundStatus())}"></p>
+                    <p th:if="${item.getAftersaleType()!=2}" th:text="*{item.getAuditStatus()==0} ? '待确认' : '已确认'"></p>
+                </td>
+                <td class="center">
+                    <a th:href="@{/douyin/refund_detail(refundId=${item.getId()},shopId=${shop.getId()})}">查看详情</a>
+
+                    <a href="javascript:;" th:if="${item.getAftersaleType()!=2 && item.getAuditStatus()==0}" th:attr="data-id=${item.getAftersaleId()},shop-id=${shop.getId()}"  class="douyin_confirm_refund" >同意退款</a>
+                   <!-- <a href="javascript:;" style="color: #FFFFFF" th:attr="data-id=${item.getId()},shop-id=${shop.getId()}" th:if="${(item.getFinalStatus()==11 || item.getFinalStatus()==22) && item.auditStatus==0}" class="confirm_refund layui-btn layui-btn-normal layui-btn-xs">确认到仓库</a>-->
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end dd-wrapper -->
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+    </div>
+
+
+    <script type="text/template" id="send-goods">
+        <div class="T-box">
+            <p><span>快递公司</span>
+            </p>
+            <p><span>快递单号</span><input type="text" autocomplete="off" name="express_code"/></p>
+<!--            <p><span>发件人地址</span><input type="text" name="express_address"/></p>-->
+            <p class="T-result"><span>&nbsp;</span><em id="erro"></em></p>
+        </div>
+    </script>
+
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/goods/Tips/Tips.min.js"></script>
+    <script type="text/javascript">
+        layui.use(['laydate','form'], function () {
+            var laydate = layui.laydate;
+            var form = layui.form;
+            laydate.render({
+                elem: '#startTime'
+            });
+            laydate.render({
+                elem: '#endTime'
+            });
+        });
+        $(function () {
+            //确认订单start
+            $(".confirm_refund").click(function () {
+                var orderId = $(this).attr("data-id");
+                var shopId = $(this).attr("shop-id");
+                //确认订单iframe层
+                layer.open({
+                    type: 2,
+                    title: '订单确认',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['480px', '650px'],
+                    content: '/douyin/order_refund_confirm?refundId='+orderId+"&shopId="+shopId //iframe的url
+                });
+            });//确认订单end
+
+            $(".douyin_confirm_refund").click(function () {
+                var id = $(this).attr("data-id");
+                var shopId = $(this).attr("shop-id");
+                var data = {id:id, shopId:shopId};
+                //确认订单iframe层
+                $.ajax({
+                    url: "/ajax_douyin/returnGoodsToWareHouseSuccess",
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: 'application/json',
+                    data:JSON.stringify(data),
+                    success: function (res) {
+                        alert(res.msg);
+                    }
+                });
+            });
+
+            //更新订单
+            $("#upd_order").click(function () {
+                $("#upd_order").hide();
+                $("#upd_order_").show();
+                var startTime = $("#startTime").val();
+                var endTime = $("#endTime").val();
+                var orderNum = $("#orderNum").val();
+                var shopId=$(this).attr("shopId");
+                var data = {startTime:startTime, endTime:endTime,orderNum:orderNum,shopId:shopId};
+                $.ajax({
+                    url: "/ajax_douyin/pull_refund_order",
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: 'application/json',
+                    data:JSON.stringify(data),
+                    success: function (res) {
+                        if (res.code == 0) {
+                            alert("更新成功");
+                            window.location.reload();
+                        }else {
+                            alert(res.msg);
+                        }
+                        $("#upd_order").show();
+                        $("#upd_order_").hide();
+                    }
+                });
+
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

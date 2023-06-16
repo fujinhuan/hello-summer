@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>店铺商品查询-商品列表</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+    <style type="text/css">
+        .fl-nav a {
+            position: relative;
+            display: inline-block;
+            padding: 0 15px;
+            line-height: 48px;
+            padding-bottom: 2px;
+        }
+
+        .fl-nav a.active {
+            padding-bottom: 0;
+            border-bottom: 2px solid #39c;
+        }
+    </style>
+
+
+    <!-- content starts -->
+    <blockquote class="layui-elem-quote">商品列表</blockquote>
+
+
+    <fieldset class="layui-elem-field">
+        <legend>按条件搜索</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-form-pane1" method="get" th:action="@{/goods/lists}">
+                <input type="hidden" name="shopId" th:value="${shopId}" />
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <input type="text" name="number" placeholder="商品编码" value="" class="layui-input">
+                    </div>
+<!--                    <div class="layui-inline">-->
+<!--                        <input type="text" name="goodsId" placeholder="商品ID" value="" class="layui-input">-->
+<!--                    </div>-->
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn">搜索</button>
+                    </div>
+
+<!--                    <div class="layui-inline">-->
+<!--                        <span id="upd_ali_good" class="update">更新1688商品到云购平台</span>-->
+<!--                        <span id="upd_ali_good_" style="display: none;" class="update"><i></i>更新中</span>-->
+<!--                    </div>-->
+
+                    <!--                    <div class="layui-inline">
+                                            <a class="layui-btn" id="upd_ali_good" href="javascript:;"><i class="layui-icon"></i>更新1688商品</a>
+                                        </div>-->
+                </div>
+
+            </form>
+        </div>
+    </fieldset>
+    <!-- start sp-wrapper -->
+    <link rel="stylesheet" href="/goods/splb/sp.css"/>
+    <div class="sp-wrapper">
+        <table class="sp-table">
+            <tr>
+                <!--                <th>序号</th>-->
+                <th>ID</th>
+                <th>商品标题</th>
+                <th>商品编码</th>
+                <th>库存</th>
+                <th>商品信息(云购)</th>
+                <th>商品信息(1688)</th>
+                <th>商品信息(拼多多)</th>
+            </tr>
+            <tr th:each="item:${lists}">
+                <!--                <td th:text="${item.count}"></td>-->
+                <td th:text="${item.id}"></td>
+                <td>
+                    <img th:src="${item.image}" th:if="${#strings.isEmpty(item.image) == false}" style="float: left;">
+                    <div style="float: left;padding-left: 5px;">
+                        <b th:attr="data-id=${item.id}">[[${item.name}]]</b><br/>
+                        上架时间:<b th:text="${#dates.format(item.createTime * 1000 ,'yyyy-MM-dd HH:mm:ss')}"></b>
+                    </div>
+                </td>
+                <td th:text="${item.number}"></td>
+                <td th:text="${item.currentQty}"></td>
+                <td >
+                    <div th:if="${item.ygProductId !=null && item.ygProductId > 0}">
+                    <img th:src="${item.ygImage}" style="float: left;">
+                    <div style="float: left;padding-left: 5px;">
+                        <a target="_blank" th:href="${'http://m.huayiyungou.com/goods/'+item.ygProductId}" style="color: black"><b th:attr="data-id=${item.ygProductId}">[[${item.ygTitle}]]</b></a><br/>
+                        ID:<b th:text="${item.ygProductId}"></b><br/>
+                        <a href="javascript:;" th:if="${item.aliProductId !=null && item.aliProductId >0}" th:attr="yg-id=${item.ygProductId},ali-id=${item.aliProductId}" class="upd_ali_detail_to_yg">同步1688主图及详情</a>
+                    </div>
+                    </div>
+                    <div th:if="${item.ygProductId ==null || item.ygProductId <= 0}">
+                        <a href="javascript:;" th:attr="data-id=${item.id}" class="publish_to_yg">一键发布到云购</a><br/>
+                        <a href="javascript:;" class="link_yg" th:attr="data-id=${item.id}">关联云购商品</a>
+                    </div>
+                </td>
+
+                <td >
+                    <div th:if="${item.aliProductId !=null && item.aliProductId > 0}">
+                        <img th:src="${item.aliImage}" style="float: left;">
+                        <div style="float: left;padding-left: 5px;">
+                            <b th:text="${item.aliTitle}"></b><br/>
+                            ID:<b th:text="${item.aliProductId}"></b><br/>
+                            <a href="javascript:;" class="upd_stock_to_ali" th:attr="data-id=${item.aliProductId}">同步库存到1688</a>
+                        </div>
+                    </div>
+                    <div th:if="${item.aliProductId ==null || item.aliProductId <= 0}">
+<!--                        <a href="javascript:;" class="publish_to_ali" th:attr="data-id=${item.id}">一键发布到1688</a><br />-->
+                        <a href="javascript:;" class="link_ali" th:attr="data-id=${item.id}">关联1688商品</a>
+                    </div>
+                </td>
+                <td >
+                    <div th:if="${item.pddProductId !=null && item.pddProductId > 0}">
+                        <img th:src="${item.pddImage}" style="float: left;">
+                        <div style="float: left;padding-left: 5px;">
+                            <a href="javascript:;"><b th:attr="data-id=${item.pddProductId}">[[${item.pddTitle}]]</b></a><br/>
+                        </div>
+                    </div>
+                    <div th:if="${item.pddProductId ==null || item.pddProductId <= 0}">
+                        <a href="javascript:;"><b th:attr="data-id=${item.pddProductId}">一键同步到拼多多</b></a><br />
+                        <a href="javascript:;" class="link_pdd" th:attr="data-id=${item.id}">关联拼多多商品</a>
+                    </div>
+
+<!--                <td>-->
+<!--                    &lt;!&ndash;查看库存&ndash;&gt;-->
+<!--                    <a href="javascript:alert('请登录后台进行修改操作');">修改</a>-->
+<!--                    &lt;!&ndash;<i  th:attr="data-id=${item.getId()}" class="edit">发布</i>&ndash;&gt;-->
+
+<!--                </td>-->
+
+            </tr>
+        </table>
+    </div>
+
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+        <span>总共：[[${totalSize}]]条记录</span>
+    </div>
+
+    <script type="text/javascript" src="/goods/splb/jquery.min.js"></script>
+    <script type="text/javascript" src="/goods/splb/Tips.min.js"></script>
+    <script type="text/javascript" src="/goods/splb/slide.js"></script>
+    <script type="text/javascript" src="/goods/splb/select.js"></script>
+    <script type="text/javascript" src="/goods/spxx.js"></script>
+
+    <!--<script type="text/javascript" src="/goods/splb/data.js"></script>-->
+    <script type="text/javascript">
+
+        layui.use(['layer', 'jquery', 'form'], function () {
+            var form = layui.form;
+        });
+    </script>
+
+
+    <style type="text/css">
+        .update {
+            display: inline-block;
+            margin-left: 15px;
+            padding: 0 20px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+            background: #009789;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .update i {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+            width: 30px;
+            height: 30px;
+            background: url(data:image/gif;base64,R0lGODlhHgAeAIABAP///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxQkUxQ0I4RDlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxQkUxQ0I4QzlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5ODNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAkUAAEALAAAAAAeAB4AAAJTjI8IkO1vFpxuWUbzlUpXfFyT1XCh+JHjBiYqtY1ZhM6ejee62+5m8PNhWEJWDUcE9nS/IHO5i0qnNijEesLysDHYcVtavh5QJ7A4liapNDbPVgAAIfkECRQAAQAsAAAAAB4AHgAAAlCMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg3kEo/YGlL2CrN+GtwMik7Cd8wlt/Ua+WPVwpDZBwuq2VBEGxNovThkdk5m0AgAh+QQJFAABACwAAAAAHgAeAAACUoyPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2D+YGiOLeRvYKbXzHgu/WEtuTuCW3OhrAU0+pEsmLBVtJ3bFVkW1pXpAxHszt2ogAAIfkECRQAAQAsAAAAAB4AHgAAAlGMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7gmNlpojZ8WKZE2OV5k2go2AvkgjOReUptWwSQEAIfkECRQAAQAsAAAAAB4AHgAAAlOMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7vlk7o6zGGvkRAaxMFBXm5JGvk4xz/vNbaE8s5FWAAAh+QQJFAABACwAAAAAHgAeAAACT4yPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2f6M1tct3b4Hy+IZFlPCCTuabzCbT9QNPKTndNwbQp7mSarX6F0CI0Is5lHQUAIfkECRQAAQAsAAAAAB4AHgAAAlKMjwiQ7W8WnG5ZRhs+V2ZlJZ44deLGjadZXg9Lha/7oe+H5/re8uDvi2A6thoRliMKg8sUM6B6SqfUYikWhcgqtNZWkw1nSeAKTylFT8dMdqMAACH5BAUUAAEALAAAAAAeAB4AAAJQjI8HC+n/GIM0ylazuVijvl0JaJHSuFBitpZeMFUk+9b2jeNpHn6zvePoOK2aEPYzgnY8Ju8JjaqALKfM6otdtQ5uD5VUWCLDU/QoxULVjwIAOw==);
+        }
+    </style>
+    <script type="text/javascript">
+        //发布商品
+        $(function () {
+            $(".edit").click(function () {
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    url: "/goods/upd_ali_goods_to_1688",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: JSON.stringify(id),
+                    contentType: 'application/json',
+                    success: function (res) {
+                        if (res.code==0){
+                            Tips.alert({
+                                content: "发布成功",
+                                define: function () {
+                                    location.reload(true);
+                                }
+                            });
+                        }  else if (res.code == 601) {
+                            Tips.alert({
+                                title: '确定授权',
+                                content: '需要1688应用授权,授权成功重新更新',
+                                define: function () {
+                                    location.href = res.data;
+                                }
+                            });
+                        } else {
+                            Tips.alert(res.msg);
+                        }
+                    }
+                })
+            });
+
+            //更新阿里商品列表
+            $("#upd_ali_good").click(function () {
+                $("#upd_ali_good").hide();
+                $("#upd_ali_good_").show();
+                $.ajax({
+                    url: "/goods/upd_ali_goods_to_yungou",
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: 'application/json',
+                    success: function (res) {
+                        if (res.code == 0) {
+                            Tips.alert({
+                                title: '更新阿里巴巴商品',
+                                content: res.msg,
+                                define: function () {
+                                    location.href = "/goods/lists";
+                                }
+                            });
+                        } else if (res.code == 601) {
+                            Tips.alert({
+                                title: '确定授权',
+                                content: '需要1688应用授权,授权成功重新更新',
+                                define: function () {
+                                    location.href = res.data;
+                                }
+                            });
+                        } else {
+
+                            Tips.alert(res.msg);
+                        }
+                        $("#upd_ali_good").show();
+                        $("#upd_ali_good_").hide();
+                    }
+                })
+            });
+
+            //阿里token提示
+            var aliTokenMsg = '[[${ALI_TOKEN}]]';
+            if (aliTokenMsg.length > 0) {
+                Tips.alert(aliTokenMsg);
+            }
+
+            //同步库存到阿里
+            $(".upd_stock_to_ali").click(function () {
+                var id = $(this).attr("data-id");
+                alert("暂未实现："+id);
+            })
+            //一键发布到1688
+            $(".publish_to_ali").click(function () {
+                var id = $(this).attr("data-id");
+                alert("暂未实现："+id);
+            })
+
+            //关联云购商品
+
+            $(".link_yg").click(function () {
+                var id = $(this).attr("data-id");
+                // alert("暂未实现："+id);
+                layer.open({
+                    type: 2,
+                    title: '关联云购商品',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['940px', '90%'],
+                    content: '/goods/yg_product_lists?id=' + id //iframe的url
+                });
+            })
+            //关联1688商品
+            $(".link_ali").click(function () {
+                var id = $(this).attr("data-id");
+                // alert("暂未实现："+id);
+                layer.open({
+                    type: 2,
+                    title: '关联阿里商品',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['940px', '90%'],
+                    content: '/goods/ali_online_product_lists?id=' + id //iframe的url
+                });
+            })
+
+            //关联拼多多商品
+            $(".link_pdd").click(function () {
+                var id = $(this).attr("data-id");
+                // alert("暂未实现："+id);
+                layer.open({
+                    type: 2,
+                    title: '关联拼多多商品',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['940px', '90%'],
+                    content: '/pdd/pdd_online_product_lists?id=' + id //iframe的url
+                });
+            })
+
+
+            //同步商品到云购
+            $(".publish_to_yg").click(function () {
+                var id = $(this).attr("data-id");
+                if(confirm("确认一键发布到云购吗？")) {
+                    //AJAX 发布
+                    $.ajax({
+                        url: "/goods_ajax/publish_to_yg",
+                        type: "POST",
+                        dataType: "JSON",
+                        data: JSON.stringify(id),
+                        contentType: 'application/json',
+                        success: function (res) {
+                            if (res.code == 0) {
+                                Tips.alert({
+                                    content: res.msg,
+                                    define: function () {
+                                        location.reload(true);
+                                    }
+                                });
+                            } else {
+                                Tips.alert(res.msg);
+                            }
+                        }
+                    });
+                }
+
+            })
+            //更新阿里主图及详情到云购
+            $(".upd_ali_detail_to_yg").click(function () {
+                var ygId = $(this).attr("yg-id");
+                var aliId = $(this).attr("ali-id");
+                if(confirm("确认将阿里的主图及详情同步到云购吗？")) {
+                    // alert(ygId+" "+aliId);
+                    //AJAX 同步
+                    $.ajax({
+                        url: "/goods/upd_ali_detail_to_yg",
+                        type: "POST",
+                        dataType: "JSON",
+                        data: JSON.stringify({aliProductId:aliId,ygProductId:ygId}),
+                        contentType: 'application/json',
+                        success: function (res) {
+                            if (res.code == 0) {
+                                Tips.alert({
+                                    content: res.msg,
+                                    define: function () {
+                                        location.reload(true);
+                                    }
+                                });
+                            }else if(res.code = 601){
+                                Tips.alert(res.msg);
+                                location.href=res.data;
+                            } else {
+                                Tips.alert(res.msg);
+                            }
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+
+    <!-- end sp-wrapper -->
+
+
+</div>
+
+
+</body>
+<html>

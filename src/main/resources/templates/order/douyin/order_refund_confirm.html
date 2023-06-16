@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>确认订单</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.js"></script>
+    <script type="text/javascript" src="/jquery.min.js"></script>
+    <script type="text/javascript" src="/sb/Tips.min.js"></script>
+</head>
+<body>
+
+<div class="" style="padding:15px;">
+
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper" id="myElementId">
+        <div class="dd-info">
+            <p class="mb"><strong>订单编号：[[${orderVo.orderId}]]</strong></p>
+        </div>
+        <div class="dd-info">
+            <p class="mb"><strong>订单状态：</strong>
+                <b th:text="${T(com.b2c.enums.third.EnumDouYinOrderRefundStatus).getName(orderVo.orderStatus)}"></b>&nbsp;
+            </p>
+        </div>
+
+    </div>
+    <form class="layui-form layui-form-pane1">
+        <input type="hidden" name="refundId" th:value="${orderVo.id}" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">物流公司</label>
+            <div class="layui-input-block">
+                <input type="text" name="logisticsCompany" lay-verify="required" autocomplete="off" th:value="${orderVo.logisticsCompany}"
+                       placeholder="物流公司" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">快递单号</label>
+            <div class="layui-input-block">
+                <input type="text" name="logisticsCode" lay-verify="required" autocomplete="off" th:value="${orderVo.logisticsCode}"
+                       placeholder="快递单号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" lay-filter="orderConfirm" class="layui-btn" lay-submit="" >订单确认</button>
+            </div>
+        </div>
+    </form>
+
+
+    <!-- end dd-wrapper -->
+    <script>
+        //JavaScript代码区域
+        var layer;
+        var $;
+        var form;
+        var index = 0;
+        try {
+            index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        }catch (e) {
+        }
+
+        layui.use(['laydate', 'jquery', 'form', 'layer'], function () {
+            var laydate = layui.laydate;
+            form = layui.form;
+            layer = layui.layer;
+            $ = layui.jquery;
+
+            //监听提交
+            form.on('submit(orderConfirm)', function(data){
+                if(confirm("确定订单操作将会把该订单推送到仓库，是否要确认订单？")) {
+                    $.ajax({
+                        url: "/ajax_douyin/confirm_refund",
+                        type: "POST",
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data.field),
+                        success: function (res) {
+                            if (res.code == 0) {
+                                alert("确认成功！");
+                            } else {
+                                alert(res.msg);
+                            }
+                            parent.layer.close(index);
+                            parent.location.reload();
+                        }
+                    });
+                }
+                return false;
+            });
+
+            $(function () {
+                // $("#confirm_order").click(function () {
+                //     var $this = $(this);
+                //     var orderId = $("input[name=orderId]").val();
+                //     var consignee = $("input[name=consignee]").val();
+                //     var mobile = $("input[name=mobile]").val();
+                //     var clientId = $("#clientId").val();
+                //     var sellerMemo = $("#sellerMemo").val();
+                //
+                //     var data = {
+                //         orderId:orderId,
+                //         receiver:consignee,
+                //         mobile:mobile,
+                //         clientId:clientId,
+                //         sellerMemo:sellerMemo
+                //     }
+                //     console.log(data);
+                //     alert(JSON.stringify(data));
+                // });
+
+            });//jquery END
+
+        });
+    </script>
+</div>
+</body>
+<html>

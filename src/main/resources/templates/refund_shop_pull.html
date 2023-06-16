@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title})">
+    <title>网店订单拉取-OMS订单管理系统</title>
+</head>
+<body th:replace="layout :: common_body(~{::div.layui-body})">
+<div class="layui-body" style="padding:15px;">
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <ul class="layui-tab-title">
+            <li class="layui-this">网店订单拉取</li>
+        </ul>
+    </div>
+
+    <!-- content starts -->
+    <!--    <blockquote class="layui-elem-quote">订单总览</blockquote>-->
+
+    <fieldset class="layui-elem-field">
+        <legend>网店列表</legend>
+        <div class="layui-field-box">
+
+                    <div class="layui-inline" th:each="item:${shops}">
+                        <a th:if="${item.type != 0}" th:attr="shopId=${item.getId()}" th:href="@{/refund/pull_order_refund(shopId=${item.getId()})}" class="layui-btn layui-btn-normal" th:text="${item.name}">excel导入批批网订单</a>
+
+                    </div>
+
+
+        </div>
+    </fieldset>
+</div>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>订单商品查询-OMS订单管理系统</title>
+
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+<div class="layui-body" style="padding:15px;">
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <ul class="layui-tab-title">
+            <li class="layui-this">订单商品查询</li>
+        </ul>
+    </div>
+    <style>
+        .hideAddress{
+            width: 300px;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+    <!-- content starts -->
+    <!--    <blockquote class="layui-elem-quote">订单总览</blockquote>-->
+
+    <fieldset class="layui-elem-field">
+        <legend>按条件搜索</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-form-pane1" method="get" th:action="@{/order/item_list}">
+                <input type="hidden" name="shopId" value="99" />
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <input type="text" name="orderNum" th:value="${orderNum}" placeholder="订单编号" class="layui-input" style="width: 200px">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="sku" placeholder="商品SKU" th:value="${sku}" class="layui-input" style="width: 200px">
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="buyerUserId" id="buyerUserId">
+                                <option value="">客户</option>
+                                <option th:each="item:${clientList}" th:value="${item.id}"
+                                        th:text="${item.developerName+'--'+item.userName}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">下单时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="startTime" id="startTime" autocomplete="off"
+                                   placeholder="yyyy-MM-dd">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="endTime" id="endTime" autocomplete="off"
+                                   placeholder="yyyy-MM-dd">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn">搜索</button>
+                        <i>总共：<span style="color: red" th:text="${totalSize}"></span>条记录</i>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </fieldset>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper">
+        <table class="dd-table">
+            <tr>
+                <th>订单ID</th>
+                <th>订单号</th>
+                <th >商品</th>
+                <th >商品名</th>
+                <th >规格</th>
+                <th >sku</th>
+                <th >数量</th>
+                <th >商品总金额</th>
+                <th>下单时间</th>
+                <th >运费</th>
+                <th>收件人</th>
+                <th>销售类型</th>
+                <th>支付信息</th>
+                <th>发货信息</th>
+                <th>订单状态</th>
+                <th>退货数量</th>
+                <th></th>
+            </tr>
+            <tr th:each="item:${lists}">
+                <td th:text="${item.orderId}"></td>
+                <td><a th:href="@{/order/detail(id=${item.orderId},shopId=${shopId})}" th:text="${item.orderNum}"></a>
+                </td>
+                <td ><img th:src="${item.goodsImage}" style="width: 50px;height: 50px;" />
+                </td>
+                <td th:text="${item.goodsTitle}"></td>
+                <td th:text="${item.skuInfo}"></td>
+                <td th:text="${item.specNumber}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.goodsTotalAmount}"></td>
+                <td>
+                    <p th:text="${#dates.format(item.getCreateOn() * 1000, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                </td>
+                <td th:text="${item.shippingFee}"></td>
+                <td >
+                    <span th:text="${item.contactPerson}"></span><br/>
+                    <span th:text="${item.address}"></span>
+                </td>
+
+                <td>
+                    <p th:if="${item.saleType == 0 }" style="color: red">外发样品</p>
+                    <p th:if="${item.saleType == 1 }" style="color: #1E9FFF">实售订单</p>
+                </td>
+                <td>
+                    <span  th:text="${T(com.b2c.enums.erp.EnumSalesOrderPayStatus).getName(item.payStatus)}"></span><br />
+                </td>
+                <td>
+                    <span th:if="${item.deliveredStatus ==4}" >
+                       <span th:text="${item.logisticsCompany}"></span><br/>
+                    <span th:text="${item.logisticsCode}"></span>
+                    </span>
+                </td>
+                <td>
+                    <span  th:text="${T(com.b2c.enums.erp.EnumErpOrderStatus).getName(item.status)}"></span>
+                </td>
+                <td >
+                    <b th:text="${item.refundCount}"></b>
+                </td>
+                <td>
+                    <a th:if="${item.status >=  T(com.b2c.enums.erp.EnumErpOrderStatus).Delivered.getIndex()}"
+                       th:href="@{/refund/refundApply(id=${item.orderId},shopId=99)}">申请退货</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end dd-wrapper -->
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+    </div>
+
+    <!--<script src="/jquery-3.3.1.min.js"></script>-->
+    <!--    <script type="text/javascript" src="/goods/Tips/Tips.min.js"></script>-->
+    <script type="text/javascript">
+        var layer;
+        var $;
+        var windowOpen;
+
+        //计算天数差的函数，通用
+        function DateDiff(sDate1, sDate2) { //sDate1和sDate2是2019-3-12格式
+            var aDate, oDate1, oDate2, iDays
+            aDate = sDate1.split("-")
+            oDate1 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]) //转换为9-25-2017格式
+            aDate = sDate2.split("-")
+            oDate2 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0])
+            iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24) //把相差的毫秒数转换为天数
+            return iDays
+        }
+
+        layui.use(['laydate', 'jquery', 'form', 'layer'], function () {
+            var laydate = layui.laydate;
+            $ = layui.jquery;
+            var form = layui.form;
+            layer = layui.layer;
+            laydate.render({
+                elem: '#startTime'
+            });
+            laydate.render({
+                elem: '#endTime'
+            });
+            //下拉框默认值
+            // var shopId = '[[${shopId}]]';
+            // if(shopId!='')
+            //     $("#shopId").val(shopId);
+            var auditStatus = '[[${auditStatus}]]';
+            if(auditStatus!='')
+                $("#auditStatus").val(auditStatus);
+
+            var buyerUserId = '[[${buyerUserId}]]';
+            if(buyerUserId!='')
+                $("#buyerUserId").val(buyerUserId);
+
+            var status = '[[${status}]]';
+            if(status!='')
+                $("#status").val(status);
+
+            var saleType = '[[${saleType}]]';
+            if(saleType!='')
+                $("#type").val(saleType);
+
+            form.render();
+            $(function () {
+
+            })
+        });
+        //取消订单
+        $(".cancel_order").click(function () {
+            if(confirm("确定要取消订单吗？")){
+                var orderId =$(this).attr("order-id");
+                $.ajax({
+                    url: "/ajax_order_confirm/order_cancel",
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: 'application/json',
+                    data: JSON.stringify({orderId:orderId}),
+                    success: function (res) {
+                        if (res.code == 0) {
+                            alert("取消成功！");
+                            window.location.reload();
+                        } else {
+                            alert(res.msg);
+                        }
+
+
+                    }
+                })
+            }
+        })
+        //展开查看更多
+        $(".display_zk").click(function () {
+            var obj = $(this);
+            $(this).siblings(".display").each(function () {
+                $(this).show();
+            });
+            obj.remove();
+        })
+
+    </script>
+
+
+</div>
+</body>
+</html>

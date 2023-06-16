@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>退款详情-订单总览-订单详情</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+
+    <!-- content starts -->
+    <blockquote class="layui-elem-quote">退货订单详情
+        <div class="layui-inline">
+            <button type="button" id="print_btn" class="layui-btn">打印订单</button>
+        </div>
+    </blockquote>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper" id="myElementId">
+
+
+        <div class="dd-info">
+            <p class="mb">退款单号：<strong th:text="${orderVo.refund_id}"></strong></p>
+        </div>
+        <div class="dd-info">
+            <p class="mb"><strong>状态：</strong>
+                <b th:text="${T(com.b2c.enums.datacenter.EnumDcTmallOrderReturnStatus).getName(orderVo.status)}"></b>&nbsp;
+                <b th:if="${orderVo.auditStatus eq 0}">未确认</b>
+                <b th:if="${orderVo.auditStatus eq 1}">已确认</b>
+            </p>
+
+            <p>订单号：<b th:text="${orderVo.tid}"></b></p>
+            <p>退款金额：￥<b th:text="${orderVo.refund_fee}"></b></p>
+            <p>退款申请时间：<b th:text="${#dates.format(orderVo.created * 1000, 'yyyy-MM-dd HH:mm:ss')}"></b></p>
+            <p>退款理由：<b th:text="${orderVo.reason}"></b></p>
+            <p>备注：<b th:text="${orderVo.desc}"></b></p>
+            <p>是否需要退货：
+                <b th:if="${orderVo.has_good_return == 1}" >需要退货</b>
+                <b th:if="${orderVo.has_good_return == 0}" >不需要退货</b>
+            </p>
+            <p>退货物流：
+                <b th:text="${orderVo.logisticsCompany}" ></b><br/>
+                <b th:text="${orderVo.logisticsCode}" ></b>
+            </p>
+        </div>
+        <table class="dd-table">
+            <tr>
+                <th>商品</th>
+                <th>规格</th>
+                <th>SKU</th>
+                <th>购买单价</th>
+                <th>退货数量</th>
+                <th>合计金额</th>
+            </tr>
+            <tr th:each="item:${orderVo.items}">
+                <td>
+                    <div><img th:src="${item.productImgUrl}">
+                        <p th:text="${item.goodsTitle}"></p>
+                    </div>
+                </td>
+                <td>
+                    <p th:text="${item.skuInfo}"></p>
+                </td>
+                <td th:text="${item.getSpecNumber()}"></td>
+                <td>¥[[${item.price}]]</td>
+                <td>[[${item.getQuantity()}]]</td>
+                <td th:text="${item.getQuantity()}*${item.getPrice()}"></td>
+            </tr>
+        </table>
+
+    </div>
+    <!-- end dd-wrapper -->
+
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script src="/jQuery.print.min.js"></script>
+    <script>
+        $(function () {
+            $("#print_btn").click(function () {
+                $.print("#myElementId" /*, options*/);
+            })
+        })
+    </script>
+
+</div>
+
+
+</body>
+<html>

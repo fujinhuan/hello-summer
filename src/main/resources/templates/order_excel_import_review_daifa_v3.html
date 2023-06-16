@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>excel批量导入直播机构订单-订单管理-OMS订单管理系统</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+    <style type="text/css">
+        .update {
+            display: inline-block;
+            margin-left: 15px;
+            padding: 0 20px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+            background: #009789;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .update i {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+            width: 30px;
+            height: 30px;
+            background: url(data:image/gif;base64,R0lGODlhHgAeAIABAP///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxQkUxQ0I4RDlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxQkUxQ0I4QzlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5ODNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAkUAAEALAAAAAAeAB4AAAJTjI8IkO1vFpxuWUbzlUpXfFyT1XCh+JHjBiYqtY1ZhM6ejee62+5m8PNhWEJWDUcE9nS/IHO5i0qnNijEesLysDHYcVtavh5QJ7A4liapNDbPVgAAIfkECRQAAQAsAAAAAB4AHgAAAlCMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg3kEo/YGlL2CrN+GtwMik7Cd8wlt/Ua+WPVwpDZBwuq2VBEGxNovThkdk5m0AgAh+QQJFAABACwAAAAAHgAeAAACUoyPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2D+YGiOLeRvYKbXzHgu/WEtuTuCW3OhrAU0+pEsmLBVtJ3bFVkW1pXpAxHszt2ogAAIfkECRQAAQAsAAAAAB4AHgAAAlGMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7gmNlpojZ8WKZE2OV5k2go2AvkgjOReUptWwSQEAIfkECRQAAQAsAAAAAB4AHgAAAlOMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7vlk7o6zGGvkRAaxMFBXm5JGvk4xz/vNbaE8s5FWAAAh+QQJFAABACwAAAAAHgAeAAACT4yPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2f6M1tct3b4Hy+IZFlPCCTuabzCbT9QNPKTndNwbQp7mSarX6F0CI0Is5lHQUAIfkECRQAAQAsAAAAAB4AHgAAAlKMjwiQ7W8WnG5ZRhs+V2ZlJZ44deLGjadZXg9Lha/7oe+H5/re8uDvi2A6thoRliMKg8sUM6B6SqfUYikWhcgqtNZWkw1nSeAKTylFT8dMdqMAACH5BAUUAAEALAAAAAAeAB4AAAJQjI8HC+n/GIM0ylazuVijvl0JaJHSuFBitpZeMFUk+9b2jeNpHn6zvePoOK2aEPYzgnY8Ju8JjaqALKfM6otdtQ5uD5VUWCLDU/QoxULVjwIAOw==);
+        }
+    </style>
+
+    <!-- content starts -->
+    <blockquote class="layui-elem-quote">excel批量导入代发订单</blockquote>
+
+    <fieldset class="layui-elem-field">
+        <legend></legend>
+        <div class="layui-field-box">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <form method="post" enctype="multipart/form-data" id="execl_form">
+                        <input type="file" name="excel" id="excel" placeholder="" class="layui-input">
+                    </form>
+                </div>
+
+                <div class="layui-inline">
+                    <button type="button" id="excel_upload_btn" class="layui-btn">上传excel并预览</button>
+<!--                    <a href="/importTemplates/yijiandaifamoban.xlsx" target="_blank">订单模版下载</a>-->
+                    <span id="excel_upload_btn_" style="display: none;" class="update"><i></i>导入中</span>
+                </div>
+
+                <div class="layui-inline">
+                    <a href="/importTemplates/yijiandaifamoban.xlsx" target="_blank" style="color: #007DDB" >订单模版下载</a>
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <form class="layui-form ">
+                <div class="layui-inline">
+                    <label class="layui-form-label">选择客户</label>
+                    <div class="layui-input-inline">
+                        <select name="buyerUserId" id="buyerUserId" lay-verify="required" lay-search="">
+                            <option value="">直接选择或搜索选择</option>
+                            <option th:each="item:${clientList}" th:value="${item.id}" th:text="${item.developerName+'--'+item.userName}">radio</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <button type="button" class="layui-btn layui-btn-normal" id="excel_import">批量导入订单<span
+                            id="selectedNum">(0)</span></button>
+                    <span id="excel_import_" style="display: none;" class="update"><i></i>导入中</span>
+                </div>
+                </form>
+            </div>
+        </div>
+    </fieldset>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper">
+        <table class="dd-table">
+            <tr>
+                <th><input id="allCheck" type="checkbox"/>序号</th>
+                <th>订单号</th>
+                <th>下单时间</th>
+                <th>商品信息</th>
+                <th>备注</th>
+                <th>收件人</th>
+                <th>订单状态</th>
+            </tr>
+            <tbody id="order_list">
+
+            </tbody>
+        </table>
+    </div>
+    <!-- end dd-wrapper -->
+
+
+    <script type="text/javascript" src="/goods/Tips/Tips.min.js"></script>
+    <script type="text/javascript">
+        var layer;
+        var $;
+        var windowOpen;
+        var orderList;
+
+        layui.use(['laydate', 'jquery', 'form', 'layer'], function () {
+            var laydate = layui.laydate;
+            $ = layui.jquery;
+            var form = layui.form;
+            layer = layui.layer;
+            laydate.render({
+                elem: '#startTime'
+            });
+            laydate.render({
+                elem: '#endTime'
+            });
+
+            $(function () {
+                //批量导入
+                $("#excel_import").click(function () {
+                    var orderNos = [];
+                    var importOrderList = [];//选中的导入订单
+                    var buyerUserId = $("#buyerUserId").val();
+                    if(buyerUserId==''){
+                        alert("请选择客户");
+                        return;
+                    }
+                    //console.log("获取到的excel的数据");
+                    //console.log(orderList)
+                    $("input[name^='orderNo']").each(function (i, el) {
+                        if ($(this).is(':checked')) {
+                            var selectOrderNo = $(this).val();
+                            orderNos.push(selectOrderNo);
+                            orderList.filter(function(p){
+                                if( p.id == selectOrderNo){
+                                    importOrderList.push(p);
+                                }
+                            });
+                        }
+                    });
+                    //console.log(orderNos);
+                    if (orderNos.length == 0){
+                        alert("请选择订单");
+                    }else{
+                        $("#excel_import_").show();
+                        $("#excel_import").hide();
+
+                        //console.log("选中的订单");
+                        //console.log(importOrderList);
+                        // alert("ok");
+                        $.ajax({
+                            url: "/sales/daifa_order_import_submit",
+                            type: "post",
+                            dataType: "JSON",
+                            contentType: 'application/json',
+                            data: JSON.stringify({buyerUserId:buyerUserId,orderList:importOrderList}),
+                            success: function (result) {
+                                $("#excel_import_").hide();
+                                $("#excel_import").show();
+                                // console.log(result);
+                                if (result.code == 0) {
+
+                                    alert(result.data);
+
+                                } else {
+                                    alert("更新失败:" + result.msg);
+                                }
+
+                                // alert(JSON.stringify(result));
+                                return false;
+                            }
+                        });
+                    }
+
+
+                })
+
+                //AJAX 上传订单excel
+                $("#excel_upload_btn").click(function () {
+                    var excel = $("#excel").val();
+                    if (excel == '') {
+                        alert("请选择文件");
+                        return false;
+                    } else if (excel.lastIndexOf(".xls") < 0) {//可判断以.xls和.xlsx结尾的excel
+                        alert("只能上传Excel文件");
+                    } else if (excel.lastIndexOf(".xlsx") < 0) {
+                        alert("只能上传Excel文件");
+                    } else {
+                        var url = "/sales/daifa_order_import_excel_review";
+                        // var formData = new FormData($('#execl_form')[0]);
+
+                        var formData = new FormData();
+                        formData.append("excel", document.getElementById("excel").files[0]);
+                        $(this).hide();
+                        $("#excel_upload_btn_").show();
+                        $.ajax({
+                            url: url,
+                            type: "post",
+                            data: formData,
+                            success: function (result) {
+                                $("#excel_upload_btn_").hide();
+                                $("#excel_upload_btn").show();
+                                // console.log(result);
+                                if (result.code == 0) {
+                                    orderList = result.data;
+                                    alert("excel上传成功，找到"+result.data.length+'个订单');
+                                    var rows = 0;//总行数
+
+                                    //循环加入数据到视图
+                                    var orderListHtml = "";
+                                    $("#order_list").html("");
+                                    $(result.data).each(function (i,d) {
+                                        var trHtml = '<tr>';
+                                        trHtml += '<td><input type="checkbox" class="currCheck" name="orderNo" value="'+d.id+'" />' + (i + 1) +'</td>'
+                                        trHtml += '<td>'+d.id+'</td>'
+                                        trHtml += '<td>'+d.orderTimeStr+'</td>'
+
+                                        var goodsInfo = '<table><tr><th>款号</th><th>SKU编码</th><th>规格</th><th>数量</th></tr>';
+                                        $(d.items).each(function (j, g) {
+                                            rows ++;
+                                            goodsInfo += '<tr >' +
+                                                '<td>' + g.goodsNumber + '</td>' +
+                                                '<td>' + g.specNumber + '</td>' +
+                                                '<td>' + g.skuInfo + '</td>' +
+                                                '<td>' + g.quantity + '</td></tr>';
+                                        })
+                                        goodsInfo += "</table>"
+                                        trHtml += '<td>' + goodsInfo + '</td>'
+
+                                        trHtml += '<td><span style="color: red">'+d.sellerMemo+'</span></td>'
+
+                                        var contact = '';
+                                        contact += d.contactPerson + '<br />'
+                                        contact += d.contactMobile + '<br />'
+                                        contact += d.province + ' ' + d.city + ' ' + d.area + '<br />';
+                                        contact += d.address;
+                                        trHtml += '<td>' + contact + '</td>'
+
+                                        trHtml += '<td>'+d.statusStr+'</td>'
+
+                                        trHtml += '</tr>';
+
+                                        orderListHtml += trHtml;
+                                    })
+                                    $("#order_list").html(orderListHtml);
+
+                                } else {
+                                    alert("更新失败:" + result.msg);
+                                }
+
+                                // alert(JSON.stringify(result));
+                                return false;
+                            },
+                            error: function () {
+                                alert("excel上传失败");
+                            },
+                            cache: false,
+                            contentType: false,
+                            processData: false
+                        });
+                    }
+
+                    return false;
+                })
+
+                $('#allCheck').on('change', function (e) {
+                    var checked = $('#allCheck').prop('checked');
+                    $('.currCheck').prop('checked', checked);
+                    $('#selectedNum').text('(' + getSelectNum() + ')')
+                })
+
+                $('#order_list').on('change', '.currCheck', function (e) {
+                    for (var i = 0; i < $('.currCheck').length; i++) {
+                        var checked = $('.currCheck').eq(i).prop('checked');
+                        console.log(checked);
+                        if (!checked) {
+                            $('#allCheck').prop('checked', false);
+                            $('#selectedNum').text('(' + getSelectNum() + ')')
+                            return;
+                        }
+                    }
+                    $('#allCheck').prop('checked', true);
+                })
+
+
+                function getSelectNum() {
+                    var n = 0;
+                    for (var i = 0; i < $('.currCheck').length; i++) {
+                        var checked = $('.currCheck').eq(i).prop('checked');
+                        if (checked) {
+                            n++;
+                        }
+                    }
+                    return n;
+                }
+            })//jquery END
+        });
+    </script>
+</div>
+
+
+</body>
+<html>

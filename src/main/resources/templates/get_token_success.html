@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title})">
+    <title>成功 - OMS订单管理系统</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+<div class="layui-body" style="padding:15px;">
+    <h1 style="color: red">获取token成功!!!</h1>
+    <h1 >店铺ID：<span th:text="${shop.sellerUserId}"></span></h1>
+    <h1 >店铺名：<span th:text="${shop.name}"></span>&nbsp;&nbsp;<a style="color: #0000cc;font-size: medium" th:href="@{/shop/dashboard(shopId=${shop.id})}">进入店铺</a></h1>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>退货订单详情-退货管理-OMS订单管理系统</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+
+    <!-- content starts -->
+    <blockquote class="layui-elem-quote">退货详情
+        <div class="layui-inline">
+            <button type="button" id="print_btn" class="layui-btn">打印</button>
+        </div>
+    </blockquote>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+<!--    <div class="dd-wrapper">-->
+<!--        <div class="dd-step" th:if="${item.status}>0">-->
+<!--            <p><span th:class="${item.status >= 1} ? 'active' : ''"><i>1</i>卖家同意</span></p>-->
+<!--            <p class="line"></p>-->
+<!--            <p><span th:class="${item.status >= 2} ? 'active' : ''"><i>2</i>退款成功</span><em></em></p>-->
+<!--            <p class="line"></p>-->
+<!--            <p><span th:class="${item.status >= 5} ? 'active' : ''"><i>3</i>买家退货</span><em></em></p>-->
+<!--            <p class="line"></p>-->
+<!--            <p><span th:class="${item.status >= 6} ? 'active' : ''"><i>4</i>卖家确认收货</span><em></em></p>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="dd-wrapper" id="myElementId">
+
+        <div class="dd-info">
+            <p class="mb"><strong>退货单号：[[${item.refId}]]</strong></p>
+            <p class="mb"><strong>订单号：[[${item.orderId}]]</strong></p>
+
+        </div>
+        <div class="dd-info">
+            <p class="mb"><strong>订单状态：</strong><b
+                    th:text="${T(com.b2c.entity.enums.AliOrderRefundEnums).getName(item.status)}"></b><b
+                    th:if="${item.status==1}">倒计时03小时02分35秒</b><i th:if="${item.status==1}">如买家未付款将自动取消订单</i></p>
+            <p >买家Id：[[${item.buyerUserId}]]</p>
+
+        </div>
+        <table class="dd-table">
+            <tr>
+                <th>商品清单</th>
+                <th>购买单价</th>
+                <th>退货数量</th>
+
+            </tr>
+            <tr th:each="order:${item.orderItemList}">
+                <td>
+                    <div><img th:src="${order.productImgUrl}">
+                        <p th:text="${order.name}"></p>
+                        <p th:text="${'规格：'+order.skuInfo}"></p>
+                    </div>
+                </td>
+                <td>¥<span th:text="${order.itemAmount.doubleValue() / order.quantity }"></span></td>
+                <td>[[${order.refundQuantity}]]</td>
+
+            </tr>
+        </table>
+        <div class="dd-info">
+
+            <p><span >退运费：¥<b th:text="${item.refundCarriage.doubleValue() / 100}"></b></span></p>
+            <p><span>退款金额：¥<b th:text="${item.refundPayment.doubleValue() / 100}"></b></span></p>
+        </div>
+
+    </div>
+    <!-- end dd-wrapper -->
+
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script src="/jQuery.print.min.js"></script>
+    <script>
+        $(function () {
+            $("#print_btn").click(function () {
+                $.print("#myElementId" /*, options*/);
+            })
+        })
+    </script>
+
+</div>
+
+
+</body>
+<html>

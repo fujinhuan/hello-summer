@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>订单发货</title>
+    <link rel="stylesheet" href="/css/hy.css">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script src="/layui/layui.js"></script>
+    <script src="/js/city.js"></script>
+</head>
+<body>
+<style>
+    html,
+    body,
+    .print-container {
+        height: 100%;
+    }
+
+    .print-container {
+        display: flex;
+        flex-direction: column;
+        padding: 10px 20px;
+        background-color: #fff;
+        box-sizing: border-box;
+    }
+
+    .ox-flex-box {
+        display: flex;
+        flex-shrink: 0;
+    }
+
+    .ox-flex-box.center {
+        align-items: center;
+    }
+
+    .ox-flex-box.stretch {
+        align-items: stretch;
+    }
+
+    .ox-flex-box.justify-between {
+        justify-content: space-between;
+    }
+
+    .ox-flex-box .key {
+        flex-shrink: 0;
+    }
+
+    #layuiDate {
+        width: 200px;
+        height: 40px;
+    }
+
+    .empty {
+        width: 1px;
+        height: 1px;
+    }
+
+    .mr5 {
+        margin-right: 5px
+    }
+
+    .mt5 {
+        margin-top: 5px
+    }
+
+    .ml5 {
+        margin-left: 5px
+    }
+
+    .mb5 {
+        margin-bottom: 5px
+    }
+
+    .w50 {
+        width: 50px
+    }
+
+    .mr10 {
+        margin-right: 10px
+    }
+
+    .mt10 {
+        margin-top: 10px
+    }
+
+    .ml10 {
+        margin-left: 10px
+    }
+
+    .mb10 {
+        margin-bottom: 10px
+    }
+
+    .w100 {
+        width: 100px
+    }
+
+    .mr15 {
+        margin-right: 15px
+    }
+
+    .mt15 {
+        margin-top: 15px
+    }
+
+    .ml15 {
+        margin-left: 15px
+    }
+
+    .mb15 {
+        margin-bottom: 15px
+    }
+
+    .w150 {
+        width: 150px
+    }
+
+    .mr20 {
+        margin-right: 20px
+    }
+
+    .mt20 {
+        margin-top: 20px
+    }
+
+    .ml20 {
+        margin-left: 20px
+    }
+
+    .mb20 {
+        margin-bottom: 20px
+    }
+
+    .w200 {
+        width: 200px
+    }
+
+    .mr25 {
+        margin-right: 25px
+    }
+
+    .mt25 {
+        margin-top: 25px
+    }
+
+    .ml25 {
+        margin-left: 25px
+    }
+
+    .mb25 {
+        margin-bottom: 25px
+    }
+
+    .w250 {
+        width: 250px
+    }
+
+    .mr30 {
+        margin-right: 30px
+    }
+
+    .mt30 {
+        margin-top: 30px
+    }
+
+    .ml30 {
+        margin-left: 30px
+    }
+
+    .mb30 {
+        margin-bottom: 30px
+    }
+
+    .w300 {
+        width: 300px
+    }
+
+    .mr35 {
+        margin-right: 35px
+    }
+
+    .mt35 {
+        margin-top: 35px
+    }
+
+    .ml35 {
+        margin-left: 35px
+    }
+
+    .mb35 {
+        margin-bottom: 35px
+    }
+
+    .w350 {
+        width: 350px
+    }
+
+    .mr40 {
+        margin-right: 40px
+    }
+
+    .mt40 {
+        margin-top: 40px
+    }
+
+    .ml40 {
+        margin-left: 40px
+    }
+
+    .mb40 {
+        margin-bottom: 40px
+    }
+
+    .w400 {
+        width: 400px
+    }
+
+    .mr45 {
+        margin-right: 45px
+    }
+
+    .mt45 {
+        margin-top: 45px
+    }
+
+    .ml45 {
+        margin-left: 45px
+    }
+
+    .mb45 {
+        margin-bottom: 45px
+    }
+
+    .w450 {
+        width: 450px
+    }
+
+    .mr50 {
+        margin-right: 50px
+    }
+
+    .mt50 {
+        margin-top: 50px
+    }
+
+    .ml50 {
+        margin-left: 50px
+    }
+
+    .mb50 {
+        margin-bottom: 50px
+    }
+
+    .w500 {
+        width: 500px
+    }
+
+    .pl20 {
+        padding-left: 20px;
+    }
+
+    .pr20 {
+        padding-right: 20px;
+    }
+
+    .btn {
+        cursor: pointer;
+        color: #39c;
+    }
+
+    .layui-form-label {
+        width: 100px;
+    }
+
+    .layui-input-block {
+        margin-left: 130px;
+    }
+
+    .overflow {
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+        vertical-align: middle;
+    }
+
+    .print-container .table-box .layui-table {
+        table-layout: fixed;
+    }
+
+    .print-container .table-box .goods-table .goods-img {
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+    }
+
+    .ox-float-box {
+        height: 60px;
+        background-color: #fff;
+    }
+
+    .scroll-wrapper {
+        position: relative;
+        flex: 1;
+    }
+
+    .scroll-wrapper .scroll-box {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        overflow-y: auto;
+    }
+
+    .address-modal {
+        position: absolute;
+        z-index: 10;
+        width: 400px;
+        padding: 20px;
+        display: none;
+        border: 1px solid #e5e5e5;
+        background-color: #fff;
+    }
+
+    .address-modal p {
+        max-width: 360px;
+        white-space: normal;
+    }
+
+    .address-modal a {
+        color: #39c;
+    }
+
+    .address-input {
+        position: absolute;
+        left: -9999px;
+    }
+
+    #modify-modal {
+        position: fixed;
+        z-index: 2;
+        left: 50%;
+        top: 40%;
+        width: 600px;
+        transform: translate(-50%, -50%);
+        border: 1px solid #e5e5e5;
+        background-color: #fff;
+    }
+
+    #modify-modal .modal-title {
+        padding: 0 40px;
+        height: 60px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    #modify-modal .modal-content {
+        padding: 30px 40px 40px 0;
+    }
+
+    #modify-modal .layui-form-label {
+        width: 80px;
+    }
+
+    #modify-modal .layui-input-block {
+        margin-left: 110px;
+    }
+
+    #modify-modal .city-box {
+        position: relative;
+    }
+
+    #modify-modal .city-select {
+        position: absolute;
+        z-index: 10;
+        top: 50px;
+        left: 110px;
+        right: 0;
+        height: 270px;
+        display: flex;
+        align-items: stretch;
+        border-radius: 2px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    }
+
+    #modify-modal .city-select .scroll {
+        flex: 1;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    #modify-modal .city-select .scroll li {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        cursor: pointer;
+    }
+
+    #modify-modal .city-select .scroll li.active {
+        background: #39c;
+        color: #fff;
+    }
+
+    #modify-modal .city-select .scroll li.active:hover {
+        background: #39c;
+        color: #fff;
+    }
+
+    #modify-modal .city-select .scroll li:hover {
+        background: #39c;
+        color: #fff;
+    }
+
+    #mask-box {
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        top: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+        cursor: default;
+    }
+    .red{
+        color: red;
+    }
+
+</style>
+
+<div class="print-container">
+    <div class="ox-flex-box justify-between">
+        <form class="layui-form" th:action="@{/douyin/order_print_list}">
+            <input type="hidden" name="print" th:value="${printStatus}">
+            <input type="hidden" name="shopId" th:value="${shopId}">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <input type="text" name="orderNum" th:value="${orderNum}" placeholder="订单编号" class="layui-input" style="width: 200px" />
+                </div>
+                <div class="layui-inline">
+                    <input type="text" name="goodsNum" th:value="${goodsNum}" placeholder="商品编码" class="layui-input"  />
+                </div>
+                <div class="layui-inline">
+                    <input type="text" name="goodsSpecNum" th:value="${goodsSpecNum}" placeholder="SKU编码" class="layui-input"  />
+                </div>
+               <div class="layui-inline">
+                    <select name="isBz"  style="width: 200px;height: 35px;border-radius: 5px;box-shadow: 1px 1px 5px #169bd5;display: block">
+                        <option value="-1">筛选备注</option>
+                        <option value="1">有备注</option>
+                        <option value="0">无备注</option>
+                    </select>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">下单时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" name="startTime"  id="startTime" autocomplete="off"
+                               style="width: 180px;" placeholder="开始时间">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" name="endTime" id="endTime" style="width: 180px;" autocomplete="off" placeholder="结束时间">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button type="submit" class="layui-btn">搜索</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="ox-flex-box justify-between">
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title" id="orderListLi">
+                <li th:class="${printStatus == 0 && hb==0} ? 'layui-this' : ''">
+                    <a th:href="@{/douyin/order_print_list(print=0,shopId=${shopId})}" >单个取号</a>
+                </li>
+                <li th:class="${printStatus == 0 && hb==1} ? 'layui-this' : ''">
+                    <a th:href="@{/douyin/order_douyin_code_hebing(print=0,shopId=${shopId})}" >合并取号</a>
+                </li>
+                <li th:class="${printStatus == 1 } ? 'layui-this' : ''">
+                    <a th:href="@{/douyin/order_print_list(print=1,shopId=${shopId})}" >打印面单</a>
+                </li>
+                <li th:class="${printStatus == 2 } ? 'layui-this' : ''">
+                    <a th:href="@{/douyin/order_print_list(print=2,shopId=${shopId})}" >订单发货</a>
+                </li>
+                <li th:class="${printStatus == 4 } ? 'layui-this' : ''">
+                    <a th:href="@{/douyin/order_print_list(print=4,shopId=${shopId})}" >取号失败</a>
+                </li>
+                <li>
+                    <select  style="width: 200px;height: 25px;border-radius: 5px;box-shadow: 1px 1px 5px #169bd5;" id="selectCompany">
+                        <option value="">选择取号快递</option>
+                        <option value="yunda">韵达</option>
+                        <option value="jtexpress">极兔</option>
+                    </select>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="scroll-wrapper">
+        <div class="scroll-box">
+            <div id="untreated" class="table-box">
+                <table class="layui-table order-table" lay-skin="line">
+                    <thead>
+                    <tr>
+                        <th width="2%"><input class="allCheck" type="checkbox"></th>
+                        <th width="10%">收件信息</th>
+                        <th>商品标题</th>
+                        <th>SKU编码</th>
+                        <th>数量</th>
+                        <th>库存</th>
+                        <th>订单备注</th>
+                        <th>时间</th>
+                        <th th:if="${printStatus == 1}">物流信息</th>
+                        <th>打单结果</th>
+                        <!--<th>订单状态</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="item:${lists}">
+                        <tr >
+                            <td><input class="currCheck" type="checkbox" th:value="${item.getParentOrderId()}"></td>
+                            <td>
+                                <!-- <div><i th:text="${item.getReceiver_name()}"></i> <i th:text="${item.receiver_phone}"></i></div>-->
+                                <div class="overflow hover-class">
+                                    <i th:text="${item.getProvince()+item.getCity()+item.getTown()}"></i></br>
+                                    <b th:text="${item.getParentOrderId()}"></b>
+                                    <div class="address-modal">
+                                        <div class="ox-flex-box justify-between">
+                                            <p> <i th:text="${item.getProvince()+item.getCity()+item.getTown()}"></i></p>
+                                            <a class="copy-address" href="javascript:;">复制</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            </td>
+
+                            <td>
+                                <span th:text="${item.getProductName()}"></span>
+                            </td>
+                            <td>
+                                <span th:text="${'商品编码：'+ item.getGoodsNumber()}"></span></br>
+                                <span th:text="${item.getCode()}"></span>
+                            </td>
+                            <td><span th:text="${item.getComboNum()}"> </span></td>
+                            <td><span th:class="${(item.getCurrentQty()-item.getPickingQty())<=item.getComboNum()} ? 'red' : ''"  th:text="${item.getCurrentQty()-item.getPickingQty()}"> </span></td>
+                            <td>
+                                <b th:class="${#strings.isEmpty(item.getBuyerWords())} ? '' : 'red'" th:text="${'买家：'+item.getBuyerWords()}"></b></br>
+                                <b th:class="${#strings.isEmpty(item.getSellerWords())} ? '' : 'red'" th:text="${'卖家：'+item.getSellerWords()}"></b>
+                            </td>
+                            <td>
+                                <p><i th:text="${'下单：'+#dates.format(item.getCreateTime()*1000, 'yyyy-MM-dd HH:mm:ss')}" ></i></p>
+                                <p><i th:text="${'发货：'+#dates.format(item.getExpShipTime()*1000, 'yyyy-MM-dd HH:mm:ss')}" ></i></p>
+                            </td>
+                            <td th:if="${printStatus==1}">
+                                <p><i th:text="${item.getLogisticsCompany()}"></i></p>
+                                <p><i th:text="${item.getLogisticsCode()}"></i></p>
+                            </td>
+                            <td th:text="${item.getResult()}"></td>
+                           <!-- <td>
+                                <b th:text="${T(com.b2c.enums.third.EnumDouYinOrderStatus).getThirdStatusName(item.getOrderStatus())}" ></b>
+                            </td>-->
+                        </tr>
+
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="sendingGoods" style="display: none;" class="table-box">
+
+            </div>
+            <div id="sendedGoods" style="display: none;" class="table-box">
+
+            </div>
+            <div id="success" style="display: none;" class="table-box">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+    </div>
+
+    <div class="ox-float-box ox-flex-box justify-between center pl20 pr20" style="box-shadow: 0 0 20px #e4e4e4;">
+        <span>已勾选<i id="order">0</i>个订单</span>
+        <div class="float-btn">
+             <button type="button" class="layui-btn layui-btn-normal" id="updSku">批量修改SKU</button>
+             <button type="button"  class="layui-btn layui-btn-normal" id="updOrder" th:attr="shopId=${shopId}">更新订单状态</button>
+            <button type="button"  class="layui-btn layui-btn-danger" id="print_code" th:attr="shopId=${shopId}">继续获取电子面号</button>
+        </div>
+    </div>
+</div>
+<script type="text/template" id="tpl-1">
+    <div class="T-box">
+        <p><span>旧SKU :</span><input id="oldSku" type="text" th:value="${goodsSpecNum}" style="border: 1px solid black;margin-left: 5px;line-height: 25px"/></p>
+        <p><span>新SKU :</span><input id="newSku" type="text" style="border: 1px solid black;margin-left: 5px;line-height: 25px"/></p>
+    </div>
+</script>
+
+<div id="mask-box" style="display: none;"><p id="box-text" style="margin: 450px auto;text-align: center;font-size: 40px"></p></div>
+<script type="text/javascript" src="/sockjs-1.0.0.min.js"></script>
+<script type="text/javascript" src="/sb/Tips.min.js"></script>
+<script>
+    $(document).ready(function(){
+        //打印快递单
+        let arr = [];
+        $(document).on('click', '#print_code', function () {
+
+            var company = $("#selectCompany  option:selected").val();
+            if(company.length==0){
+                alert("请选择取号快递");
+                return;
+            }
+            var shopId = $(this).attr('shopId');
+            var orders=getResult(currTab).orders;
+            var len = orders.length;
+            if(len==0)alert("请选择需要取号的订单");
+            for(var i = 0; i < len; i++) {
+                if(arr.indexOf(orders[i])<0){
+                    arr.push(orders[i]);
+                }
+            }
+            var loading = $("#mask-box");
+            loading.show();
+            $("#box-text").text('订单取号中');
+
+            //for(var i = 0; i < arr.length; i++){
+                let num=i;
+                var reqData={orders:arr,shopId:shopId,company:company,isHebing:0,print:4};
+                $.ajax({
+                    url: "/ajax_douyin/douyin_order_print_code",
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: 'application/json',
+                    data: JSON.stringify(reqData),
+                    success: function (res) {
+                        if(res.code==0){
+                            location.reload();
+                        }
+                        /* $("#box-text").text('订单'+num+'{'+res.msg+'}');
+                         console.log('订单'+num+'{'+res.msg+'}');
+                         if(i=arr.length){
+                             location.reload();
+                         }*/
+                    }
+                })
+            //}
+        })
+
+        $(document).on('click', '#updOrder', function () {
+
+            var shopId = $(this).attr('shopId');
+            var orders=getResult(currTab).orders;
+            var len = orders.length;
+            if(len==0)alert("请选择需要更新的订单");
+            for(var i = 0; i < len; i++) {
+                if(arr.indexOf(orders[i])<0){
+                    arr.push(orders[i]);
+                }
+            }
+            var loading = $("#mask-box");
+            loading.show();
+            $("#box-text").text('更新中');
+
+            var reqData={orders:arr,shopId:shopId};
+            $.ajax({
+                url: "/ajax_douyin/douyin_order_status_by_orders",
+                type: "POST",
+                dataType: "JSON",
+                contentType: 'application/json',
+                data: JSON.stringify(reqData),
+                success: function (res) {
+                    if(res.code==0){
+                        location.reload();
+                    }
+                }
+            })
+        })
+
+        $('#updSku').click(function () {
+            var orders=getResult(currTab).orders;
+            Tips.alert({
+                title: '批量修改所选订单SKU',
+                content: $('#tpl-1').html(),
+                before: function () {
+                    var oldSku = $('#oldSku').val();
+                    var newSku = $('#newSku').val();
+                    if (oldSku == '') {
+                        alert("旧SKU不能为空，请搜索后修改");
+                        return false;
+                    }
+                    if (oldSku == '') {
+                        alert("新SKU不能为空");
+                        return false;
+                    }
+                    var reqData={orders:orders,oldSku:oldSku,newSku:newSku};
+                    $.ajax({
+                        url: '/ajax_douyin/orders_upd_sku',
+                        type: "POST",
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(reqData),
+                        success: function (res) {
+                            if (res.code == 0) {
+                                Tips.alert('修改成功', function () {
+                                    location.reload(true);
+                                });
+                            } else {
+                                alert(res.msg);
+                            }
+                        },
+                    });
+                    return false;
+                }
+            });
+        });
+
+
+        var currTab = 'untreated';
+        function getResult(currTab) {
+            var   res   =   new   Object();
+            var orders= [];
+            var result = 0;
+            var checkList = $('#' + currTab).find('.currCheck');
+            for (let i = 0; i < checkList.length; i++) {
+                var currChecked = checkList.eq(i).prop('checked');
+                if (currChecked) {
+                    orders.push(checkList.eq(i).val());
+                    result++;
+                }
+            }
+            res.result=result;
+            res.orders=orders;
+            return res;
+        }
+        $(document).on('change', '.allCheck', function () {
+            var checked = $(this).prop('checked');
+            var checkList = $(this).parents('table').find('.currCheck');
+            for (let i = 0; i < checkList.length; i++) {
+                checkList.eq(i).prop('checked', checked);
+            }
+            $('#order').text(getResult(currTab).result);
+        })
+        $(document).on('change', '.currCheck', function () {
+            var checked = $(this).prop('checked');
+            var checkList = $(this).parents('table').find('.currCheck');
+            var allCheck = $(this).parents('table').find('.allCheck');
+            for (let i = 0; i < checkList.length; i++) {
+                var currChecked = checkList.eq(i).prop('checked');
+                if (!currChecked) {
+                    allCheck.eq(0).prop('checked', false);
+                    $('#order').text(getResult(currTab).result);
+                    return;
+                }
+            }
+            allCheck.eq(0).prop('checked', true);
+            $('#order').text(getResult(currTab).result);
+        });
+    });
+    $(function () {
+
+        // //tab选中效果
+        // var tag = '[[${printStatus}]]';
+        // if(tag==1){
+        //     //已打印
+        //     $("#orderListLi").find("li").eq(0).removeClass("layui-this");
+        //     $("#orderListLi").find("li").eq(1).addClass("layui-this");
+        // }
+        var provList = city;
+        var cityList = [];
+        var areaList = [];
+
+        var currProv = '';
+        var currCity = '';
+        var currArea = '';
+
+
+
+        var modalArr = [];
+
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#startTime'
+                ,type: 'datetime'
+            });
+            laydate.render({
+                elem: '#endTime'
+                ,type: 'datetime'
+            });
+        });
+       /* layui.use('form');
+        layui.use('element', function () {
+            var element = layui.element;
+            element.on('tab()', function () {
+                const lay_id = this.getAttribute('lay-id');
+                $('#' + lay_id).show();
+                $('#' + currTab).hide();
+                currTab = lay_id;
+                $('#order').text(getResult(currTab));
+            });
+        });
+        $('.check-goods').on('click', function () {
+            var type = $(this).prop('type');
+            if (type) {
+                $(this).parents('tr').next().hide();
+                $(this).prop('type', false);
+                $(this).text('查看商品详情');
+            } else {
+                $(this).parents('tr').next().show();
+                $(this).prop('type', true);
+                $(this).text('收起商品详情');
+            }
+        });*/
+
+        $(document).on('click', '.modify-address', function () {
+            $('#modify-modal').show();
+            $('#mask-box').show();
+            var dataset = this.dataset;
+            var form = document.forms['address-form'];
+            form.area.value = dataset.provice + '/' + dataset.city + '/' + dataset.area;
+            form.address.value = dataset.address;
+            form.remarks.value = dataset.remarks;
+            form.mobile.value = dataset.mobile;
+            form.name.value = dataset.name;
+            currProv = dataset.provice;
+            currCity = dataset.city;
+            currArea = dataset.area;
+            $('#order-num').text(dataset.order);
+        })
+
+        $(document).on('click', '.select-address', function () {
+            var type = $(this).prop('type');
+            if (type) {
+                $('.city-select').hide();
+                $(this).prop('type', false);
+            } else {
+                $('.city-select').show();
+                initAddressSelect($('#prov-box'), provList, currProv);
+                cityList = getCurrList(currProv, provList);
+                initAddressSelect($('#city-box'), cityList, currCity);
+                areaList = getCurrList(currCity, cityList);
+                initAddressSelect($('#area-box'), areaList, currArea);
+                $(this).prop('type', true);
+            }
+        })
+
+        $(document).on('click', '#mask-box', function () {
+            $('#modify-modal').hide();
+            $('#mask-box').hide();
+        })
+
+        $(document).on('click', '#modal-close', function () {
+            $('#modify-modal').hide();
+            $('#mask-box').hide();
+        })
+
+        $(document).on('click', '#prov-box li', function () {
+            currProv = $(this).text();
+            initAddressSelect($('#prov-box'), provList, currProv);
+            cityList = getCurrList(currProv, provList);
+            initAddressSelect($('#city-box'), cityList);
+            areaList = [];
+            currArea = "";
+            initAddressSelect($('#area-box'), areaList);
+        });
+
+        $(document).on('click', '#city-box li', function () {
+            currCity = $(this).text();
+            initAddressSelect($('#city-box'), cityList, currCity);
+            areaList = getCurrList(currCity, cityList);
+            initAddressSelect($('#area-box'), areaList);
+        })
+
+        $(document).on('click', '#area-box li', function () {
+            currArea = $(this).text();
+            $('.city-select').hide();
+            $('.select-address').prop('type', false);
+            document.forms['address-form'].area.value = currProv + '/' + currCity + '/' + currArea;
+
+        });
+
+        $(document).on('mouseover', '.hover-class', function () {
+            $(this).children('.address-modal').show();
+        });
+
+        $(document).on('mouseout', '.hover-class', function () {
+            $(this).children('.address-modal').hide();
+        });
+
+        $(document).on('click', '.copy-address', function () {
+            $(this).prev().select();
+            if (document.execCommand) {
+                document.execCommand("Copy");
+                layer.msg('复制成功');
+            } else {
+                layer.open({
+                    title: false,
+                    content: '您的浏览器不支持复制，请手动复制'
+                });
+            }
+        })
+
+    })
+    function initAddressSelect(box, list, curr) {
+        var str = '';
+        for (let i = 0; i < list.length; i++) {
+            var item = list[i].value;
+            if (item === curr) {
+                str += '<li class="active">' + item + '</li>';
+            } else {
+                str += '<li>' + item + '</li>';
+            }
+        }
+        box.html(str);
+    }
+    function getCurrList(curr, list) {
+        for (let i = 0; i < list.length; i++) {
+            var item = list[i];
+            if (curr === item.value) {
+                return item.children;
+            }
+        }
+    }
+</script>
+</body>
+</html>

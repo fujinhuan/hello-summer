@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title})">
+    <title>订单详情-订单管理-OMS订单管理系统</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+    <style>
+        .dd-info p {
+            margin: 5px 0px;
+        }
+
+        .dd-info p select {
+            width: 250px;
+            border: 1px solid #d3d3d3;
+            outline: none;
+            height: 25px;
+        }
+    </style>
+    <!-- content starts -->
+    <blockquote class="layui-elem-quote">订单详情
+        <div class="layui-inline">
+            <button type="button" id="print_btn" class="layui-btn layui-btn-primary layui-btn-sm">打印订单</button>
+        </div>
+    </blockquote>
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper" id="myElementId">
+        <div class="dd-info">
+            <p class="mb"><strong>订单编号：[[${order.getId()}]]</strong></p>
+        </div>
+        <div class="dd-info">
+            <p class="mb">
+                <strong>订单状态：</strong>
+                <b th:text="${T(com.b2c.entity.alibaba.EnumAliOrderStatus).getName(order.getStatus())}"></b>&nbsp;
+                <b th:if="${order.auditStatus == 1}">已确认</b>
+                <b th:if="${order.auditStatus == 0}">未确认</b>
+            </p>
+
+
+            <p th:if="${order.buyerName!=null}" th:text="${'买家:'+order.buyerName}"></p>
+            <p>收货人：[[${order.contactPerson}]]</p>
+            <p>收货人手机号：[[${order.mobile}]]</p>
+            <p>收货地址： [[${order.getAddress()}]]</p>
+            <p>买家留言：[[${order.buyerFeedback}]]</p>
+            <p>卖家备注：[[${order.sellerMemo}]]</p>
+        </div>
+        <!--        <div class="dd-info" th:if="${order.getOrderSource().equals('ALIBABA') || order.getOrderSource().equals('TMALL') || order.getOrderSource().equals('TAOBAO')}">-->
+        <!--            <p><strong>订单类型：</strong><select id="set_order_type">-->
+        <!--                <option selected value="-1">请选择订单类型</option>-->
+        <!--                <option value="3">批发订单</option>-->
+        <!--                <option value="9">直播订单</option>-->
+        <!--            </select></p>-->
+        <!--            <p><strong>订单客户：</strong><select id="set_order_user"><option selected value="0" >请选择订单客户</option></select></p>-->
+        <!--            <div class="layui-inline" ><button type="button" id="relevancy_order" th:attr="d_id=${order.getId()},d_order_source=${order.getOrderSource()}"  class="layui-btn" >确认关联</button></div>-->
+        <!--        </div>-->
+
+        <table class="dd-table">
+            <tr>
+                <th>商品</th>
+                <th>规格</th>
+                <th>SKU</th>
+                <!--                <th>购买单价</th>-->
+                <th>数量</th>
+                <th>商品金额</th>
+                <th>库存信息</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="item:${order.items}">
+                <td>
+                    <div><img th:src="${item.productImgUrl}">
+                        <p th:text="${item.name}"></p>
+                    </div>
+                </td>
+                <td>
+                    <p th:text="${item.skuInfo}"></p>
+                    <p style="color: red" th:text="${'仓库SKU：'+item.getErpSpec()}"></p>
+                    <p th:if="${item.getNewSpec()!=null}" style="color: red" th:text="${'新规格：'+item.getNewSpec()}"></p>
+                </td>
+                <td>
+                    <p th:text="${item.cargoNumber}"></p>
+                    <p th:if="${item.getNewSpecNumber()!=null}" style="color: red">
+                        新SKU：[[${item.getNewSpecNumber()}]]</p>
+                </td>
+                <!--                <td>¥[[${item.getPrice()}]]</td>-->
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.itemAmount}"></td>
+
+                <td>
+                    <p th:text="${'当前库存:'+item.getCurrentQty()}"></p>
+                    <p th:text="${'已拣货库存:'+item.getLockedQty()}"></p>
+                    <p th:text="${'拣货中库存:'+item.getPickQty()}"></p>
+                </td>
+
+                <td >
+<!--                    <a href="javascript:;" class="edit_good" th:attr="d_id=${order.getId()},d_item_id=${item.getId()},d_goodNum=${item.productCargoNumber}">修改</a>-->
+                    <a th:if="${order.getAuditStatus()==0 && item.getErpGoodsSpecId() == 0 }" href="javascript:;" class="upd_goods" th:attr="d_item_id=${item.getId()}">修改商品</a>
+                </td>
+            </tr>
+        </table>
+
+        <div class="dd-info">
+            <p><span>订单总额：<b th:text="'¥'+${order.totalAmount}"></b></span></p>
+            <p><span>含运费：<b th:text="'¥'+${order.shippingFee}"></b></span></p>
+
+        </div>
+        <div th:if="${order.getAuditStatus()==0 && order.status == 'waitsellersend' }" class="layui-inline"
+             style="float: right">
+            <button type="button" class="layui-btn" id="sub_order" th:attr="d_id=${order.getId()}">确认订单</button>
+        </div>
+
+    </div>
+    <div class="dd-wrapper">
+        <div class="dd-log" th:if="${express}">
+            <h3>物流信息</h3>
+            <ul>
+                <li th:each="vo:${express}">
+                    <i></i><span>物流跟踪:[[${vo.time}]]</span><span>[[${vo.context}]]</span></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/template" id="edit_good_sku">
+        <div class="T-box">
+            <form method="post">
+                <p id="new_good_sku"></p>
+            </form>
+        </div>
+    </script>
+    <!-- end dd-wrapper -->
+    <script>
+        layui.use(['laydate', 'jquery', 'form', 'layer'], function () {
+            var laydate = layui.laydate;
+            var $ = layui.jquery;
+            var form = layui.form;
+            var layer = layui.layer;
+            $(function () {
+
+                //变更商品
+                $(".upd_goods").click(function () {
+                    var $this = $(this);
+                    var orderItemId =  $this.attr("d_item_id");
+                    //确认订单iframe层
+                    layer.open({
+                        type: 2,
+                        title: '补充商品信息',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['1100px', '650px'],
+                        content: '/order/upd_goods?orderItemId=' + orderItemId +"&shopId=[[${shop.id}]]" //iframe的url
+                    });
+
+                })
+
+                //确认订单
+                $('#sub_order').click(function () {
+                    var $this = $(this);
+                    var orderId = $this.attr("d_id");
+                    var shopId = [[${shop.id}]];
+                    //确认订单iframe层
+                    layer.open({
+                        type: 2,
+                        title: '订单确认',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['480px', '650px'],
+                        content: '/order/ali_order_confirm?orderId=' + orderId + "&shopId=" + shopId //iframe的url
+                    });
+
+
+                    // if(confirm("确定订单操作将会把该订单推送到仓库，是否要确认订单？")) {
+                    //     $.ajax({
+                    //         url: "/ali/order_confirm",
+                    //         type: "POST",
+                    //         dataType: "JSON",
+                    //         contentType: 'application/json',
+                    //         data: JSON.stringify(data),
+                    //         success: function (res) {
+                    //             if (res.code == 0) {
+                    //                 alert("订单确认成功");
+                    //                 location.href='/order/aliOrderList?shopId=[[${shop.id}]]';
+                    //             } else {
+                    //                 Tips.alert(res.msg);
+                    //             }
+                    //         }
+                    //     })
+                    // }
+                });
+
+
+                //修改商品规格
+                $('.edit_good').click(function () {
+                    var $this = $(this);
+                    var data = {goodNumber: $this.attr('d_goodNum')}
+                    Tips.alert({
+                        title: '修改商品规格',
+                        content: $('#edit_good_sku').html(),
+                        defineText: '提交',
+                        render: function () {
+                            $.ajax({
+                                url: "/ajax_order/get_good_spec_by_number",
+                                type: "POST",
+                                dataType: "JSON",
+                                data: JSON.stringify(data),
+                                contentType: 'application/json',
+                                success: function (res) {
+                                    if (res.code == 0) {
+                                        render(res.data)
+                                    }
+                                }
+                            });
+                        },
+                        before: function () {
+                            var data = {
+                                orderId: $this.attr('d_id'),
+                                itemId: $this.attr('d_item_id'),
+                                orderSource: 'ALIBABA',
+                                newSpecId: $("#new_spec_id  option:selected").val()
+                            }
+                            $.ajax({
+                                url: "/ajax_order/upd_good_spec_by_id",
+                                type: "POST",
+                                dataType: "JSON",
+                                data: JSON.stringify(data),
+                                contentType: 'application/json',
+                                success: function (res) {
+                                    if (res.code == 0) {
+                                        Tips.alert('修改成功', function () {
+                                            location.reload(true);
+                                        });
+                                    } else {
+                                        Tips.alert(res.msg);
+                                    }
+                                }
+                            });
+                            return false;
+                        }
+                    });
+
+                    function render(data) {
+                        var html = '<select id="new_spec_id">';
+                        for (var i = 0, n = data.length; i < n; i++) {
+                            html += '<option value="' + data[i].id + '">' + data[i].specNumber + ' ' + data[i].sizeValue + ' ' + data[i].colorValue + '</option>';
+                        }
+                        html += '</select>';
+                        $('#new_good_sku').html(html);
+                    }
+                });
+
+
+            });//jquery END
+        });
+    </script>
+    <script src="/jQuery.print.min.js"></script>
+    <script>
+        $(function () {
+            $("#print_btn").click(function () {
+                $.print("#myElementId" /*, options*/);
+            })
+        })
+    </script>
+</div>
+</body>
+<html>

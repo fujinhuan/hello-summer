@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title th:replace="${title}">首页-ERP管理系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.js"></script>
+    <script type="text/javascript" src="/jquery.min.js"></script>
+    <script type="text/javascript" src="/sb/Tips.min.js"></script>
+</head>
+<body class="layui-layout-body" th:fragment="common_body(main)">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">ERP管理系统</div>
+
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    [[${username}]]
+                </a>
+                <dl class="layui-nav-child">
+<!--                    <dd><a href="/shop/shop_list">回到新版</a></dd>-->
+                    <dd><a href="">安全设置</a></dd>
+                    <dd><a th:if="${session.userId == 1}" href="/login/user_list">团队管理</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/exit">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed ">
+                    <a class="menu_list" menu="home" href="/">ERP系统首页</a>
+                </li>
+            <li class="layui-nav-item ">
+                <a class="" href="javascript:;">采购管理</a>
+                <dl class="layui-nav-child">
+                    <dd class="menu_list" menu="order_list" ><a href="/order/list">销售订单</a></dd>
+<!--                    <dd class="menu_list" menu="system_order" ><a href="/sales/system_order">系统下单</a></dd>-->
+<!--                    <dd class="menu_list" menu="order_excel_import" ><a href="/order/daifa_order_excel_import_review">excel导入订单</a></dd>-->
+<!--                    <dd class="menu_list" menu="refund_list" ><a href="/refund/list">退货退款</a></dd>-->
+                </dl>
+            </li>
+<!--                <li class="layui-nav-item ">-->
+<!--                    <a href="javascript:;">售后中心</a>-->
+<!--                    <dl class="layui-nav-child">-->
+<!--                        <dd class="menu_list" menu="refund_list" ><a href="/refund/list">退货退款</a></dd>-->
+
+<!--                    </dl>-->
+<!--                </li>-->
+<!--                <li class="layui-nav-item ">-->
+<!--                    <a href="javascript:;">商品中心</a>-->
+<!--                    <dl class="layui-nav-child">-->
+<!--                        <dd class="menu_list" menu="goods"><a href="/goods/lists">商品列表</a></dd>-->
+<!--&lt;!&ndash;                        <dd class="menu_list" menu="goods_stock"><a href="/goods/inventory_list">商品库存查询</a></dd>&ndash;&gt;-->
+<!--                    </dl>-->
+<!--                </li>-->
+
+<!--                <li class="layui-nav-item layui-nav-itemed">-->
+<!--                    <a href="javascript:;">客户中心</a>-->
+<!--                    <dl class="layui-nav-child">-->
+<!--                        <dd class="menu_list" menu="client_list"><a href="#">客户列表</a></dd>-->
+<!--                        <dd class="menu_list" menu="after_sales"><a href="/after_sales/list">售后客服</a></dd>-->
+<!--                    </dl>-->
+<!--                </li>-->
+                <!--                 <li class="layui-nav-item layui-nav-itemed">-->
+                <!--                   <a href="javascript:;">数据分析</a>-->
+                <!--                   <dl class="layui-nav-child">-->
+                <!--                     <dd><a href="javascript:;">商品销售榜</a></dd>-->
+                <!--                     <dd><a href="javascript:;">会员分布</a></dd>-->
+                <!--                     <dd><a href="javascript:;">商品退换榜</a></dd>-->
+
+                <!--                   </dl>-->
+                <!--                 </li>-->
+
+                <!--                 <li class="layui-nav-item layui-nav-itemed"><a href="javascript:;">基础管理</a>-->
+                <!--                   <dl class="layui-nav-child">-->
+                <!--                     <dd><a href="/shop/list">店铺列表</a></dd>-->
+                <!--                     <dd><a href="/shop/add">添加店铺</a></dd>-->
+                <!--                   </dl>-->
+
+                <!--                 </li>-->
+                <!--                 <li class="layui-nav-item layui-nav-itemed"><a href="javascript:;">系统管理</a>-->
+                <!--                   <dl class="layui-nav-child">-->
+                <!--                     <dd><a href="/manage/tdgl">团队管理</a></dd>-->
+                <!--                     <dd><a href="/manage/fzgl">分组管理</a></dd>-->
+                <!--                     <dd><a href="/manage/htrz">后台日志</a></dd>-->
+                <!--                   </dl>-->
+                <!--                 </li>-->
+
+                 <li class="layui-nav-item layui-nav-item"><a href="javascript:;">网店管理</a>
+                   <dl class="layui-nav-child">
+                     <dd><a target="_blank" href="/shop/shop_list">店铺选择</a></dd>
+                     <dd><a target="_blank" href="/fahuo/order_pdd?shopId=18">拼多多-打单工具</a></dd>
+<!--                     <dd><a href="/manage/htrz">拼多多-退货管理</a></dd>-->
+                   </dl>
+                 </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body" th:replace="${main}">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">内容主体区域</div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © huayiyungou.com - 华衣云商
+    </div>
+</div>
+
+<script type="text/javascript">
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+
+    });
+    $(function () {
+        var meunId = '[[${menuId}]]';
+        $(".menu_list").each(function () {
+            //先清楚所有选中样式
+            $(this).removeClass("layui-this");
+            $(this).parent().parent().removeClass("layui-nav-itemed");
+        })
+        $(".menu_list").each(function () {
+            if ($(this).attr('menu') == meunId) {
+                $(this).addClass("layui-this");
+                $(this).parent().parent().addClass("layui-nav-itemed");
+                return;
+            }
+        })
+    })
+</script>
+</body>
+</html>

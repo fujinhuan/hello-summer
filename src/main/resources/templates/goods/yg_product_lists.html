@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>云购商品列表</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.js"></script>
+    <script type="text/javascript" src="/jquery.min.js"></script>
+    <script type="text/javascript" src="/sb/Tips.min.js"></script>
+</head>
+<body>
+
+<div class="" style="padding:15px;">
+    <style type="text/css">
+        .T-box {
+            width: 400px;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        .T-box p {
+            position: relative;
+            height: 36px;
+            line-height: 36px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .T-box p span {
+            display: inline-block;
+            padding-right: 15px;
+            text-align: right;
+            width: 110px;
+            line-height: 36px;
+            font-size: 14px;
+        }
+
+        .T-box p input, .T-box p select {
+            width: 160px;
+            padding: 0 5px;
+            height: 34px;
+            line-height: 34px;
+            font-size: 14px;
+            border: 1px solid #d3d3d3;
+            outline: none;
+        }
+
+        .T-box p i {
+            padding: 0 10px;
+            line-height: 36px;
+            font-style: normal;
+        }
+
+        .T-box p b {
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+            width: 60px;
+            height: 36px;
+            line-height: 36px;
+            background: #c33;
+            color: #fff;
+            text-align: center;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        .T-result {
+            margin-bottom: 0;
+        }
+
+        .T-result em {
+            color: #c33;
+            font-style: normal;
+        }
+
+        .tips.table {
+            width: 800px;
+            height: 500px;
+            overflow-y: auto;
+        }
+
+        .tips-table table {
+            width: 100%;
+        }
+
+        .tips-table th, .tips-table td {
+            padding: 15px 0;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .tips-table th {
+            background: #f2f2f2;
+        }
+
+        .fl-nav a {
+            position: relative;
+            display: inline-block;
+            padding: 0 15px;
+            line-height: 48px;
+            padding-bottom: 2px;
+        }
+
+        .fl-nav a.active {
+            padding-bottom: 0;
+            border-bottom: 2px solid #39c;
+        }
+
+        .cp-product, .cp-other {
+            overflow: hidden;
+            padding: 20px 0px;
+        }
+
+        .cp-product .cp-input {
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .cp-product .cp-input span {
+            width: 80px;
+        }
+
+        .cp-input {
+            padding: 20px 50px;
+            height: 44px;
+            line-height: 44px;
+        }
+
+        .cp-input span {
+            display: inline-block;
+            width: 150px;
+            padding-right: 20px;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .cp-input input[type="text"], .cp-input select {
+            width: 200px;
+            height: 34px;
+            padding: 4px 9px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .cp-input input[type="number"], .cp-input select {
+            width: 200px;
+            height: 34px;
+            padding: 4px 9px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .cp-input input[type="button"] {
+            width: 80px;
+            height: 44px;
+            font-size: 16px;
+            text-align: center;
+            background: #39c;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .cp-input label {
+            margin-right: 20px;
+        }
+
+        .cp-input input[type="radio"] {
+            vertical-align: middle;
+            margin-right: 3px;
+        }
+
+        .cp-input .cp-mb {
+            margin-left: 20px;
+            color: #39c;
+        }
+
+        .cp-input select {
+            width: 300px;
+            height: 44px;
+            line-height: 44px;
+            padding: 0 9px;
+        }
+
+        .cp-button {
+            padding-left: 100px;
+        }
+
+        .cp-button button, .cp-button a {
+            border: 0 none;
+            width: 160px;
+            height: 44px;
+            line-height: 44px;
+            background: #39c;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .cp-button a {
+            display: inline-block;
+            margin: 0 20px;
+            background: #BCBCBC;
+        }
+
+        .cp-input {
+            padding: 20px 50px;
+            height: 44px;
+            line-height: 44px;
+        }
+
+        .cp-input span {
+            display: inline-block;
+            width: 150px;
+            padding-right: 20px;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .cp-input input[type="text"], .cp-input select {
+            width: 200px;
+            height: 34px;
+            padding: 4px 9px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .cp-input p {
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            width: 42px;
+            height: 42px;
+            border: 1px dashed #ccc;
+        }
+
+        .cp-input p input[type="file"], .cp-input p b, .cp-input p img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 3;
+            width: 42px;
+            height: 42px;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .cp-input p img {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .cp-input p b {
+            opacity: 1;
+            z-index: 2;
+            height: 42px;
+            line-height: 42px;
+            text-align: center;
+            font-size: 18px;
+            color: #868686;
+        }
+
+    </style>
+    <!-- content starts -->
+    <blockquote class="layui-elem-quote">云购商品列表
+        <span style="color: red">[[${msg}]]</span>
+    </blockquote>
+
+    <!--    <fieldset class="layui-elem-field">-->
+    <!--        <legend>按条件搜索</legend>-->
+    <!--        <div class="layui-field-box">-->
+    <!--            <form class="layui-form layui-form-pane1" method="get" >-->
+    <!--                <div class="layui-form-item">-->
+    <!--                    <div class="layui-input-inline">-->
+    <!--                        <input type="text" class="layui-input" name="number" autocomplete="off"-->
+    <!--                               th:value="${number}" placeholder="输入商品编码搜索">-->
+    <!--                    </div>-->
+    <!--                    &lt;!&ndash;<div class="layui-input-inline">-->
+    <!--                        <input type="text" class="layui-input" name="startTime" id="startTime" placeholder="yyyy-MM-dd">-->
+    <!--                    </div>-->
+    <!--                    <div class="layui-input-inline">-->
+    <!--                        <input type="text" class="layui-input" name="endTime" id="endTime" placeholder="yyyy-MM-dd">-->
+    <!--                    </div>&ndash;&gt;-->
+    <!--                    <div class="layui-inline">-->
+    <!--                        <button type="submit" class="layui-btn">搜索</button>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </form>-->
+    <!--        </div>-->
+    <!--    </fieldset>-->
+    <!--<form class="layui-form layui-form-pane1" method="post">-->
+    <table class="layui-table" lay-even lay-skin="row">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>云购商品ID</th>
+            <th>商品主图</th>
+            <th>商品名</th>
+            <th>商品编码</th>
+
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item:${goodsList}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.id}"></td>
+            <td>
+                <img th:src="${item.image}" th:if="${#strings.isEmpty(item.image) == false}"
+                     style="float: left; width: 50px;">
+            </td>
+            <td th:text="${item.title}"></td>
+            <td th:text="${item.goodsNumber}"></td>
+
+            <td>
+                <a class="link_to" th:attr="erp-goods=${erpGoods.id},yg-id=${item.id}" style="color: #0000FF">关联该商品</a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+    </div>
+
+    <script type="text/javascript" src="/goods/splb/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$('table tr:not(:first)').remove();
+            var len = $('table tr').length;
+            for (var i = 1; i < len; i++) {
+                $('table tr:eq(' + i + ') td:first').text(i);
+            }
+            $(".link_to").click(function () {
+                var erpGoodsId = $(this).attr("erp-goods");
+                var ygGoodsId = $(this).attr("yg-id");
+                alert("还未处理：" + erpGoodsId + "  云购id" + ygGoodsId);
+                $.ajax({
+                    url: "/goods_ajax/link_yg",
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: 'application/json',
+                    data: JSON.stringify({erpGoodsId:erpGoodsId,ygGoodsId:ygGoodsId}),
+                    success: function (res) {
+                        if (res.code == 0) {
+                            alert("操作成功");
+                        } else {
+                            alert(res.msg);
+                        }
+                        // alert(JSON.stringify(res));
+                    }
+                })
+            })
+        });
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#startTime'
+            });
+            laydate.render({
+                elem: '#endTime'
+            });
+        });
+
+    </script>
+</div>
+</body>
+<html>

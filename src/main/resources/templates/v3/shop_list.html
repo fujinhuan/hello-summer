@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head >
+    <title>选择店铺-OMS订单管理系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body >
+<div class="layui-body" style="padding:15px;">
+    <link rel="stylesheet" href="/css/order.css"/>
+<!--    <div class="layui-tab layui-tab-brief" lay-filter="demo">-->
+<!--        <ul class="layui-tab-title">-->
+<!--            <li class="layui-this">选择店铺</li>-->
+<!--        </ul>-->
+<!--    </div>-->
+
+    <!-- content starts -->
+    <!--    <blockquote class="layui-elem-quote">订单总览</blockquote>-->
+
+    <div class="layui-tab layui-tab-brief" >
+        <ul class="layui-tab-title">
+            <li class="layui-this">拼多多</li>
+        </ul>
+    </div>
+
+    <div class="card-list-wrap">
+        <div class="card-box" th:each="item:${shops}" th:if="${item.type == 5 || item.type == 18 || item.type == 14 }">
+            <a th:href="@{/shop/dashboard(shopId=${item.id})}" >
+                <div class="card-title" th:text="${item.name}">华衣云购</div>
+                <div class="card-content" >
+                    <div class="card-msg">
+                        平台：<span th:text="${item.typeName}"></span>
+                    </div>
+                    <div class="card-msg">主体：<span th:text="${item.company }"></span></div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+<!--    <div class="layui-tab layui-tab-brief" >
+        <ul class="layui-tab-title">
+            <li class="layui-this">快手</li>
+        </ul>
+    </div>
+
+    <div class="card-list-wrap">
+        <div class="card-box" th:each="item:${shops}" th:if="${item.type == 13}">
+            <a th:href="@{/shop/dashboard(shopId=${item.id})}" >
+                <div class="card-title" th:text="${item.name}">华衣云购</div>
+                <div class="card-content" >
+                    <div class="card-msg">
+                        平台：<span th:text="${item.typeName}"></span>
+                    </div>
+                    <div class="card-msg">主体：<span th:text="${item.company }"></span></div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+    <div class="layui-tab layui-tab-brief" >
+        <ul class="layui-tab-title">
+            <li class="layui-this">抖音小店</li>
+        </ul>
+    </div>
+
+    <div class="card-list-wrap">
+        <div class="card-box" th:each="item:${shops}" th:if="${item.type == 6}">
+            <a th:href="@{/shop/dashboard(shopId=${item.id})}" >
+                <div class="card-title" th:text="${item.name}">华衣云购</div>
+                <div class="card-content" >
+                    <div class="card-msg">
+                        平台：<span th:text="${item.typeName}"></span>
+                    </div>
+                    <div class="card-msg">主体：<span th:text="${item.company }"></span></div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="layui-tab layui-tab-brief" >
+        <ul class="layui-tab-title">
+            <li class="layui-this">蘑菇街</li>
+        </ul>
+    </div>
+
+    <div class="card-list-wrap">
+        <div class="card-box" th:each="item:${shops}" th:if="${item.type == 12}">
+            <a th:href="@{/shop/dashboard(shopId=${item.id})}" >
+                <div class="card-title" th:text="${item.name}">华衣云购</div>
+                <div class="card-content" >
+                    <div class="card-msg">
+                        平台：<span th:text="${item.typeName}"></span>
+                    </div>
+                    <div class="card-msg">主体：<span th:text="${item.company }"></span></div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+    <div class="layui-tab layui-tab-brief" >
+        <ul class="layui-tab-title">
+            <li class="layui-this">1688</li>
+        </ul>
+    </div>
+
+    <div class="card-list-wrap">
+        <div class="card-box" th:each="item:${shops}" th:if="${item.type == 1}">
+            <a th:href="@{/shop/dashboard(shopId=${item.id})}" >
+                <div class="card-title" th:text="${item.name}">华衣云购</div>
+                <div class="card-content" >
+                    <div class="card-msg">
+                        平台：<span th:text="${item.typeName}"></span>
+                    </div>
+                    <div class="card-msg">主体：<span th:text="${item.company }"></span></div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="layui-tab layui-tab-brief" >
+        <ul class="layui-tab-title">
+            <li class="layui-this">淘系店铺</li>
+        </ul>
+    </div>
+
+    <div class="card-list-wrap">
+        <div class="card-box" th:each="item:${shops}" th:if="${item.type == 4}">
+            <a th:href="@{/shop/dashboard(shopId=${item.id})}" >
+                <div class="card-title" th:text="${item.name}">华衣云购</div>
+                <div class="card-content" >
+                    <div class="card-msg">
+                        平台：<span th:text="${item.typeName}"></span>
+                    </div>
+                    <div class="card-msg">主体：<span th:text="${item.company }"></span></div>
+                </div>
+            </a>
+        </div>
+
+    </div>-->
+    <div class="layui-tab layui-tab-brief" >
+        <ul class="layui-tab-title">
+            <li class="layui-this">抖音</li>
+        </ul>
+    </div>
+    <div class="card-list-wrap">
+        <div class="card-box" th:each="item:${shops}" th:if="${item.type == 6}">
+            <a th:href="@{/shop/dashboard(shopId=${item.id})}" >
+                <div class="card-title" th:text="${item.name}">华衣云购</div>
+                <div class="card-content" >
+                    <div class="card-msg">
+                        平台：<span th:text="${item.typeName}"></span>
+                    </div>
+                    <div class="card-msg">主体：<span th:text="${item.company }"></span></div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="layui-tab layui-tab-brief" >
+        <ul class="layui-tab-title">
+            <li class="layui-this">其他</li>
+        </ul>
+    </div>
+    <div class="card-list-wrap">
+        <div class="card-box" th:each="item:${shops}" th:if="${item.type == 8}">
+            <a th:href="@{/shop/dashboard(shopId=${item.id})}" >
+            <div class="card-title" th:text="${item.name}">华衣云购</div>
+            <div class="card-content" >
+                <div class="card-msg">
+                    平台：<span th:text="${item.typeName}"></span>
+                </div>
+                <div class="card-msg">主体：<span th:text="${item.company }"></span></div>
+            </div>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+<script src="/js/jquery.min.js"></script>
+<script>
+    // var timestamp=null;
+    // function waitForMsg(){
+    //         $.ajax({
+    //             type:"get",
+    //             url:"/ajax_pdd/pull_order_test?timestamp="+timestamp,
+    //             async:true,
+    //             cache:false,
+
+    //             success:function(data){
+    //                 // var json=JSON.parse(data); //将data由string变成JSON
+    //                 // if(json['msg']!=""){
+    //                 //     alert(json['msg']); //显示消息
+    //                 // }
+    //                 // timestamp=json['timestamp']; //将时间设置成data返回的时间
+    //                 setTimeout('waitForMsg()',1000); //一秒后重新执行
+    //                 console.log(data);
+    //             },
+    //             error:function(XHLHttpRequest,textStatus,errorThrown){
+    //                 alert("error:"+textStatus+"("+errorThrown+")");
+    //                 setTimeout("waitForMsg()",1500);
+    //             }
+    //         });
+    // }
+    
+    $(function(){
+        // waitForMsg()
+        // $.ajax({url:"/ajax_pdd/pull_order_test",success:function(data, textStatus){
+        //     this; // 在这里this指向的是Ajax请求的选项配置信息，请参考下图
+        //     console.log(data);
+        // }})
+        
+
+
+        // $.get("/ajax_pdd/pull_order_test", {}, function (data, textStatus){
+
+        //     //返回的 data 可以是 xmlDoc, jsonObj, html, text, 等等.
+        //     this; // 在这里this指向的是Ajax请求的选项配置信息，请参考下图
+        //     console.log(data);
+
+        //     //alert(textStatus);//请求状态：success，error等等。
+
+        //     //当然这里捕捉不到error，因为error的时候根本不会运行该回调函数
+        //     //alert(this);
+        // });
+
+        // $(".ajax.load").load("/ajax_pdd/pull_order_test",function (responseText, textStatus, XMLHttpRequest){
+
+        //     this;//在这里this指向的是当前的DOM对象，即$(".ajax.load")[0] 
+        //     console.log(data);
+        //     //alert(responseText);//请求返回的内容
+        //     //alert(textStatus);//请求状态：success，error
+        //     //alert(XMLHttpRequest);//XMLHttpRequest对象
+        // });
+    })
+    
+</script>
+</body>
+</html>

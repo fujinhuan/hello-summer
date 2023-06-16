@@ -1,0 +1,368 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, select {
+    margin: 0;
+    padding: 0
+}
+
+em, i, b {
+    font-weight: normal;
+    font-style: normal;
+}
+
+ol, ul, li {
+    list-style: none;
+}
+
+img, a img {
+    border: 0;
+    outline: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+p {
+    word-wrap: break-word;
+}
+
+a {
+    text-decoration: none;
+}
+
+input, textarea {
+    outline: none;
+    border: 0 none;
+    font-family: "Microsoft Yahei";
+}
+
+select {
+    outline: none;
+    font-family: "Microsoft Yahei";
+}
+
+body {
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #333;
+}
+
+/*============================================*/
+.sp-wrapper {
+    padding: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+.sp-title {
+    height: 50px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+}
+
+.sp-title span, .sp-title a, .sp-title b {
+    position: relative;
+    display: inline-block;
+    padding: 0 15px;
+    line-height: 48px;
+    padding-bottom: 2px;
+}
+
+.sp-title span, .sp-title a.active {
+    padding-bottom: 0;
+    border-bottom: 2px solid #39c;
+}
+
+.sp-title a {
+    font-weight: normal;
+}
+
+.sp-title a.active {
+    color: #39c;
+}
+
+.sp-title b i {
+    font-weight: bold;
+}
+
+.sp-tool {
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.sp-tool input[type=text], .sp-tool select {
+    margin-right: 10px;
+    width: 150px;
+    height: 30px;
+    padding: 0 4px;
+    border: 1px solid #A1A1A1;
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.sp-tool select {
+    width: 160px;
+}
+
+.sp-tool span b {
+    padding-right: 10px;
+}
+
+.sp-tool input[type=button], .sp-tool input[type=submit] {
+    margin-right: 10px;
+    width: 90px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    background: #39f;
+    color: #fff;
+    cursor: pointer;
+}
+
+.sp-tool i, .sp-tool a {
+    margin-right: 10px;
+    display: inline-block;
+    text-align: center;
+    width: 90px;
+    height: 30px;
+    line-height: 30px;
+    background: #39f;
+    color: #fff;
+    cursor: pointer;
+}
+
+.sp-tool a.add, .sp-tool i.add {
+    background: #f60;
+}
+
+.sp-table table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #E4E4E4;
+}
+
+.sp-table th, .sp-table td {
+    padding: 10px 20px;
+    text-align: left;
+    font-size: 12px;
+    color: #333;
+    border-bottom: 1px solid #E4E4E4;
+}
+
+.sp-table th {
+    background: #f2f2f2;
+    padding: 3px 20px;
+}
+
+.sp-table th em {
+    margin-left: 10px;
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: #39c;
+    color: #fff;
+}
+
+.sp-table td span {
+    margin-left: 30px;
+    color: #39c;
+    cursor: pointer;
+}
+
+.sp-table td i, .sp-table td a {
+    color: #39c;
+    font-style: normal;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.sp-table td img {
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+
+.sp-table div {
+    padding-top: 100px;
+}
+
+.sp-table p {
+    line-height: 30px;
+    color: #969696;
+}
+
+.sp-table td input.level, .sp-table td input.rate, .sp-table td input.rule {
+    width: 50px;
+    border: 1px solid #E4E4E4;
+    margin: 0 10px;
+    padding: 3px 5px;
+    font-size: 12px;
+}
+
+.sp-table td input.rate {
+    margin-left: 0;
+    width: 30px;
+}
+
+.sp-table td input.level {
+    margin-left: 0;
+    width: 100px;
+}
+
+.sp-result {
+    display: none;
+    position: absolute;
+    z-index: 100000;
+    width: 250px;
+    height: 150px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #d3d3d3;
+}
+
+.sp-result li {
+    font-size: 12px;
+    line-height: 30px;
+    padding: 0 10px;
+}
+
+.sp-result li:hover {
+    background: #f2f2f2;
+    font-weight: bold;
+}
+
+.T-box {
+    padding: 20px 0;
+}
+
+.T-box p {
+    position: relative;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.T-box p span {
+    display: inline-block;
+    padding-right: 15px;
+    text-align: right;
+    width: 80px;
+    line-height: 32px;
+    font-size: 14px;
+}
+
+.T-box p input[type=text], .T-box p select {
+    width: 148px;
+    padding: 0 4px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    border: 1px solid #d3d3d3;
+    outline: none;
+}
+
+.T-box p select {
+    width: 160px;
+    height: 32px;
+}
+
+.T-box p input[type=submit], .T-box p input[type=button] {
+    width: 90px;
+    height: 32px;
+    background: #39f;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    border: 0 none;
+}
+
+.T-box p.rate input, .T-box p.less input, .T-box p.pics input {
+    width: 70px;
+}
+
+.T-box p.rate, .T-box p.less, .T-box p.pics, .T-box p.next {
+    display: none;
+}
+
+.pages {
+    clear: both;
+    padding: 50px 10px;
+    text-align: right;
+    line-height: 30px;
+}
+
+.pages a {
+    margin: 0 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.pages a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+.pages a.active, .nums a.active:hover {
+    font-weight: bold;
+    text-decoration: none;
+    cursor: default;
+}
+
+.fx-setting {
+    position: relative;
+    padding-left: 80px;
+    font-size: 12px;
+    line-height: 30px;
+    color: #333;
+}
+
+.fx-setting h5 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80px;
+    font-weight: normal;
+    line-height: 30px;
+    font-size: 12px;
+}
+
+.fx-setting p {
+    margin-bottom: 20px;
+}
+
+.fx-setting p label {
+    margin-right: 30px;
+}
+
+.fx-setting p label.mr0 {
+    margin-right: 0;
+}
+
+.fx-setting p input[type="radio"], .fx-setting p input[type="checkbox"] {
+    vertical-align: -3px;
+    margin-right: 3px;
+}
+
+.fx-setting p input[type="text"] {
+    width: 52px;
+    text-align: center;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    margin: 0 10px;
+    padding: 2px 0;
+}
+
+.fx-setting p span {
+    display: inline-block;
+    min-width: 70px;
+}
+
+.fx-setting p i {
+    margin-left: 10px;
+    color: #A1A1A1;
+}

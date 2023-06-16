@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title})">
+    <title>OMS订单管理系统</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+<div class="layui-body" style="padding:15px;background: #f2f2f2;">
+
+    <style>
+        .message-body{
+
+        }
+        .message-top{
+            background: #fff;
+            padding:30px;
+        }
+        .message-body .content-title{
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .message-body .content-title .label{
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+        .message-body .content-title span{
+            font-size: 13px;
+            color: #999;
+            margin-left: 5px;
+        }
+        .message-body .order-list{
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .message-body .order-item{
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
+        .message-body .order-label{
+            font-size: 14px;
+            color: #999;
+        }
+        .message-body .order-num{
+            margin-top:20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .message-card-box{
+            background: #fff;
+            margin: 10px auto;
+            padding: 60px 0;
+        }
+        .my-tab-brief{
+            background: #fff;
+            width: 90%;
+            margin: 0 auto;
+        }
+        .my-tab-brief .layui-tab-title{
+            background: #fff;
+            display: flex;
+
+        }
+        .my-tab-brief .layui-tab-title li{
+            border-right: 1px solid #e6e6e6;
+            width: 20%;
+            padding: 0;
+            margin: 0;
+        }
+        .my-tab-brief .layui-tab-title span{
+            color: #FF5722;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+        .my-tab-brief .layui-tab-title li:last-child{
+            border-right: none;
+        }
+        .my-tab-brief .layui-tab-title .layui-this{
+            border-right: none;
+            background: #009688;
+            color: #fff;
+        }
+        .my-tab-brief  .massgae-box{
+            padding: 0 15px;
+        }
+        .my-tab-brief .message-item{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            line-height: 24px;
+            color: #999;
+        }
+        .message-left{
+            width: 80%;
+            display: flex;
+            align-items: center;
+        }
+        .message-left img{
+            margin-right: 5px;
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+
+        .message-right{
+            color: #999;
+        }
+
+    </style>
+    <h1 th:text="${msg}"></h1>
+
+    <div class="message-body">
+        <div class="message-top">
+            <div class="content-title">
+                <div>
+                    <span class="label" th:text="${shop.name}"></span>
+                    <!--<span class="" th:text="${shop.typeName}"></span>-->
+                    <a th:if="${shop.getId()==5 || shop.getId()==18}" class="layui-btn layui-btn-normal" style="margin-left: 15px;" th:href="@{'/pdd/oauth?shopId='+${shop.getId()}}" >店铺授权</a>
+                    <a th:if="${shop.getId()==8 || shop.getId()==19}" class="layui-btn layui-btn-normal dyauth" style="margin-left: 15px;" href="javascript:;"  th:attr="shopId=${shop.getId()}">店铺授权</a>
+<!--                    <span>更新时间：2019-12-21 11:22:31</span>-->
+                </div>
+<!--                <button type="button" class="layui-btn layui-btn-sm layui-btn-danger">拉取新订单</button>-->
+
+            </div>
+            <div class="order-list">
+
+                    <a class="order-item" th:href="@{/order/lists(shopId=${shopId},status=1)}">
+                    <div class="order-label">待处理订单</div>
+                    <div class="order-num" th:text="${report.waitAuditOrder}">100</div>
+                    </a>
+
+                <div class="order-item">
+                    <div class="order-label">今日订单</div>
+                    <div class="order-num" th:text="${report.todayOrder}">100</div>
+                </div>
+                <div class="order-item">
+                    <div class="order-label">总订单</div>
+                    <div class="order-num" th:text="${report.orderTotal}">100</div>
+                </div>
+                <div class="order-item">
+                    <div class="order-label">待处理退货</div>
+                    <div class="order-num" th:text="${report.waitAuditReturn}">100</div>
+                </div>
+                <div class="order-item">
+                    <div class="order-label">退款退款总数</div>
+                    <div class="order-num" th:text="${report.refundTotal}">100</div>
+                </div>
+            </div>
+        </div>
+        <div class="message-card-box">
+            <div class="layui-tab layui-tab-card my-tab-brief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">全部信息<span></span></li>
+                    <li>订单信息<span></span></li>
+                    <li>退款信息<span></span></li>
+                    <li>发布新商品 <span></span></li>
+                    <li>库存预警<span></span></li>
+                </ul>
+                <div class="layui-tab-content" style="min-height: 100px;">
+                    <div class="layui-tab-item layui-show">
+                        <div class="massgae-box">
+<!--                            <div class="message-item">-->
+<!--                                <div class="message-left">-->
+<!--                                    <img src="./image/green-icon.png" alt="">-->
+<!--                                    <span>您有一条新的订单信息</span>-->
+<!--                                </div>-->
+<!--                                <div class="message-right">-->
+<!--                                    2020-03-12  21:56:22-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="message-item">-->
+<!--                                <div class="message-left">-->
+<!--                                    <img src="./image/danger-icon.png" alt="">-->
+<!--                                    <span>您有一条新的退款信息</span>-->
+<!--                                </div>-->
+<!--                                <div class="message-right">-->
+<!--                                    2020-03-12  21:56:22-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="message-item">-->
+<!--                                <div class="message-left">-->
+<!--                                    <img src="./image/tip-icon.png" alt="">-->
+<!--                                    <span>有新商品发布</span>-->
+<!--                                </div>-->
+<!--                                <div class="message-right">-->
+<!--                                    2020-03-12  21:56:22-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                    <div class="layui-tab-item"></div>
+                    <div class="layui-tab-item"></div>
+                    <div class="layui-tab-item"></div>
+                    <div class="layui-tab-item"></div>
+                    <div class="layui-tab-item"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/static/goods/Tips/Tips.min.js"></script>
+
+    <script>
+        $(function () {
+            $(".dyauth").click(function () {
+                let shopId = $(this).attr('shopId');
+                if(confirm("授权抖音店铺?")){
+                    var data = {shopId: shopId};
+                    $.ajax({
+                        url: "/ajax_douyin/oauth",
+                        type: "POST",
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function (res) {
+                            if (res.code == 0) {
+                                alert("授权成功");
+                            } else {
+                                alert(res.msg);
+                                return false;
+                            }
+                        }
+                    });
+                }
+            });
+        })
+    </script>
+</div>
+</body>
+</html>

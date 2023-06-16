@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>退货订单详情-退货管理-OMS订单管理系统</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+
+    <!-- content starts -->
+    <blockquote class="layui-elem-quote">退货订单详情
+        <div class="layui-inline">
+            <button type="button" id="print_btn" class="layui-btn">打印订单</button>
+        </div>
+    </blockquote>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper" id="myElementId">
+
+
+        <div class="dd-info">
+            <p class="mb"><strong >退货单号：<b th:text="${orderVo.id}"></b></strong></p>
+        </div>
+        <div class="dd-info">
+            <p class="mb"><strong>退货状态：</strong><b
+                    th:text="${T(com.b2c.entity.pdd.EnumPddOrderRefundStatus).getName(orderVo.getAfter_sales_status())}"></b></p>
+            <p>源订单号：<b th:text="${orderVo.getOrder_sn()}"></b></p>
+            <p>退货申请时间：<b th:text="${#dates.format(orderVo.getCreated_time()*1000, 'yyyy-MM-dd HH:mm:ss')}"></b></p>
+
+            <p>买家发货物流：<b th:text="${orderVo.tracking_company}"></b>&nbsp;<b th:text="${orderVo.tracking_number}"></b></p>
+
+        </div>
+        <table class="dd-table">
+            <tr>
+                <th>商品</th>
+                <th>商品款号</th>
+                <th>规格</th>
+                <th>SKU</th>
+
+                <th>退货数量</th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <td>
+                    <div><img th:src="${orderVo.getGoods_image()}">
+                        <p th:text="${orderVo.getGoods_name()}"></p>
+                    </div>
+                </td>
+                <td th:text="${orderVo.getGoods_number()}"></td>
+                <td>
+                    <span th:text="${orderVo.getSkuInfo()}"></span>
+                </td>
+                <td th:text="${orderVo.skuNumber}"></td>
+                <td th:text="${orderVo.quantity}"></td>
+                <td >
+                    <a th:if="${orderVo.getAuditStatus()==0}" href="javascript:;" class="upd_goods" th:attr="refund_id=${orderVo.getId()}">修改商品</a>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <!-- end dd-wrapper -->
+
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script src="/jQuery.print.min.js"></script>
+    <script>
+        layui.use(['laydate', 'jquery', 'form', 'layer'], function () {
+            $(function () {
+                $("#print_btn").click(function () {
+                    $.print("#myElementId" /*, options*/);
+                })
+                $(".upd_goods").click(function () {
+                    var $this = $(this);
+                    var refundId =  $this.attr("refund_id");
+                    //确认订单iframe层
+                    layer.open({
+                        type: 2,
+                        title: '修改订单商品',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['1100px', '650px'],
+                        content: '/order/upd_refud_goods?refundId=' + refundId+"&shopId=[[${orderVo.getShopId()}]]" //iframe的url
+                    });
+
+                })
+            })
+        });
+    </script>
+
+</div>
+
+
+</body>
+<html>

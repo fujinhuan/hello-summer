@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>[[${shopName}]]退货订单-退货管理-OMS订单管理系统</title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+<div class="layui-body" style="padding:15px;">
+    <style type="text/css">
+        .T-box {
+            width: 400px;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        .T-box p {
+            position: relative;
+            height: 36px;
+            line-height: 36px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .T-box p span {
+            display: inline-block;
+            padding-right: 15px;
+            text-align: right;
+            width: 110px;
+            line-height: 36px;
+            font-size: 14px;
+        }
+
+        .T-box p input, .T-box p select {
+            width: 160px;
+            padding: 0 5px;
+            height: 34px;
+            line-height: 34px;
+            font-size: 14px;
+            border: 1px solid #d3d3d3;
+            outline: none;
+        }
+
+        .T-box p i {
+            padding: 0 10px;
+            line-height: 36px;
+            font-style: normal;
+        }
+
+        .T-box p b {
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+            width: 60px;
+            height: 36px;
+            line-height: 36px;
+            background: #c33;
+            color: #fff;
+            text-align: center;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        .T-result {
+            margin-bottom: 0;
+        }
+
+        .T-result em {
+            color: #c33;
+            font-style: normal;
+        }
+    </style>
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <ul class="layui-tab-title">
+            <li ><a th:href="@{/order_yungou/list(shopId=${shop.id})}">订单管理</a></li>
+            <li class="layui-this"><a th:href="@{/order_yungou/refund_list(shopId=${shop.id})}">退货管理</a></li>
+        </ul>
+    </div>
+    <!-- content starts -->
+<!--    <blockquote class="layui-elem-quote">售后订单</blockquote>-->
+
+    <fieldset class="layui-elem-field">
+        <legend>按条件搜索</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-form-pane1" method="get" action="/order_yungou/refund_list">
+                <input type="hidden" name="shopId" th:value="${shop.id}" />
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <input type="text" name="returnOrderNum" placeholder="退货编号" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="orderNum" placeholder="订单编号" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="logisticsCode" placeholder="退货物流单号" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">申请时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="startTime" id="startTime" autocomplete="off" placeholder="yyyy-MM-dd">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="endTime" id="endTime" autocomplete="off" placeholder="yyyy-MM-dd">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+
+                            <select name="state">
+                                <option value="">退货状态</option>
+                                <option th:each="s:${T(com.b2c.entity.enums.OrderCancelStateEnums).values()}" th:text="${s.getName()}" th:value="${s.getIndex()}" >售后状态</option>
+                            </select>
+
+                    </div>
+
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn">搜索</button>
+                        <i>总共：<span style="color: red" th:text="${totalSize}"></span>条记录</i>
+                    </div>
+
+
+                </div>
+
+
+
+            </form>
+        </div>
+    </fieldset>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper">
+        <table class="dd-table">
+            <tr>
+                <th>退款单号</th>
+<!--                <th width="20%">退货商品</th>-->
+                <th>退货总数</th>
+                <th>退款金额</th>
+                <th>订单号</th>
+                <th>申请时间</th>
+                <th>退款类型</th>
+<!--                <th width="20%">订单信息</th>-->
+                <th>退货物流</th>
+                <th>订单状态</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="item:${list}">
+                <td th:text="${item.getOrderCancelNum()}"></td>
+                <td>
+                    <span th:text="${item.totalQuantity}"></span>
+                </td>
+                <td>
+                    <b>¥[[${item.getTotalAmount()}]]</b><br />
+
+                </td>
+                <td th:text="${item.getOrderNum()}"></td>
+                <td th:text="${#dates.format(item.getCreateOn()*1000, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td >
+                    <p th:if="${item.type==0}" style="color: red">退货退款</p>
+                    <p th:if="${item.type==1}" style="color: red">仅退款</p>
+                </td>
+                <td>
+                    <p th:text="${item.sendCompany}"></p>
+                    <p th:text="${item.sendCode}"></p>
+                </td>
+                <td>
+                    <span th:text="${T(com.b2c.entity.enums.OrderCancelStateEnums).getName(item.state)}"></span><br />
+                    <a th:if="${T(com.b2c.entity.enums.OrderCancelStateEnums).Delivered.index == item.state}" class="tuisong_return" th:attr="data-id=${item.getId()}" href="javascript:;">推送到仓库系统</a>
+                </td>
+                <td class="center">
+                    <a th:href="@{/order_yungou/order_detail_refund_yg(id=${item.getId()})}">查看详情</a>
+
+                    <a th:if="${item.getState() eq 1 && item.getType() eq 0}" th:attr="id=${item.getId()}"
+                       class="track"
+                       href="javascript:;">同意</a>
+
+                    <a th:if="${item.getState() eq 1}" th:attr="id=${item.getId()}" class="track"
+                       href="javascript:;">拒绝</a>
+
+                    <a th:if="${item.getState() eq 4 && item.getType() eq 0}"
+                       th:attr="id=${item.getId()},ddbh=${item.getOrderNum()},thbh=${item.getOrderCancelNum()},fksj=${item.getPaymentResultTime()},tksj=${item.getFinishOn()},ddze=${item.getTotalAmount()},skr=${item.getMjMobile()}"
+                       class="track" href="javascript:;">确认退款</a>
+
+                    <a th:if="${item.getState() eq 1 && item.getType() eq 1}"
+                       th:attr="id=${item.getId()},ddbh=${item.getOrderNum()},thbh=${item.getOrderCancelNum()},fksj=${item.getPaymentResultTime()},tksj=${item.getFinishOn()},ddze=${item.getTotalAmount()},skr=${item.getMjMobile()}"
+                       class="track" href="javascript:;">确认退款</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end dd-wrapper -->
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+    </div>
+
+    <script type="text/template" id="tuikuan">
+        <div class="T-box">
+            <p><span>订单编号</span><i id="ddbh"></i></p>
+            <p><span>退货编号</span><i id="thbh"></i></p>
+            <p><span>付款时间</span><i id="fksj"></i></p>
+            <p><span>退款时间</span><i id="tksj"></i></p>
+            <p><span>订单总额</span><i id="ddze"></i></p>
+            <p><span>收款人</span><i id="skr"></i></p>
+            <p><span>退款金额</span><i id="skje"></i></p>
+            <p><span>退款方式</span><i>按原账户退回</i></p>
+        </div>
+    </script>
+
+    <script type="text/template" id="send-goods">
+        <div class="T-box">
+            <p><span>快递公司</span>
+                <select id="send-company">
+                    <option value="">请选择快递公司</option>
+                    <option th:each="item:${company}" th:value="${item.getCode()}" th:text="${item.getName()}"></option>
+                </select>
+            </p>
+            <p><span>快递单号</span><input type="text" name="express_code"/></p>
+            <p><span>发件人地址</span><input type="text" name="express_address"/></p>
+            <p class="T-result"><span>&nbsp;</span><em id="erro"></em></p>
+        </div>
+    </script>
+
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/goods/Tips/Tips.min.js"></script>
+    <script type="text/javascript">
+        layui.use(['laydate','form'], function () {
+            var laydate = layui.laydate;
+            var form = layui.form;
+            laydate.render({
+                elem: '#startTime'
+            });
+            laydate.render({
+                elem: '#endTime'
+            });
+        });
+        $(function () {
+            //展开查看更多
+            $(".display_zk").click(function () {
+                var obj = $(this);
+                $(this).siblings(".display").each(function () {
+                    $(this).show();
+                });
+                obj.remove();
+            })
+
+            //推送到仓库系统
+            $('.tuisong_return').click(function (e) {
+                var dataId = $(this).attr('data-id');
+                var dataObj = {
+                    refundId: dataId
+                }
+                $.ajax({
+                    url: '/order_yungou/refund_notify_wms',
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(dataObj),
+                    success: function (data) {
+                        if (data.code == 0) {
+                            location.reload(true);
+                        }else{
+                            alert(data.msg);
+                        }
+                    }
+                });
+            })
+
+            $('.center').delegate('a', 'click', function (e) {
+                var $this = $(this);
+                var dataObj = {
+                    id: $this.attr("id"),
+                    orderSource: 'YUNGOU'
+                }
+                if ($this.text() == '同意') {
+                    // var shopId = [[${shop.id}]];
+                    // if(shopId == 3){
+                    //     //云购零售
+                    //     if ($this.text() == '同意') {
+                    //         Tips.alert({
+                    //             title: '退款申请',
+                    //             content: '确认同意退款吗？',
+                    //             defineText: '确定',
+                    //             define: function () {
+                    //                 $.ajax({
+                    //                     url: '/order_yungou/reviewRefund',
+                    //                     type: "POST",
+                    //                     dataType: 'json',
+                    //                     contentType: 'application/json',
+                    //                     data: JSON.stringify(dataObj),
+                    //                     success: function (data) {
+                    //                         if (data.code == 0) {
+                    //                             location.reload(true);
+                    //                         }else{
+                    //                             alert(data.msg);
+                    //                         }
+                    //                     }
+                    //                 });
+                    //             }
+                    //         });
+                    //     }
+                    // }else {
+                        //云购非零售
+                        Tips.confirm({
+                            title: '填写退货物流信息',
+                            content: $('#send-goods').html(),
+                            define: function () {
+                                var data = {
+                                    id: $this.attr("id"),
+                                    company: $("#send-company  option:selected").text(),
+                                    companyCode: $("#send-company  option:selected").val(),
+                                    code: $("input[name='express_code']").val(),
+                                    orderSource: 'OFFLINE',
+                                    address:$("input[name='express_address']").val()
+                                };
+                                $.ajax({
+                                    url: "/order_yungou/reviewRefund_offline",
+                                    type: "POST",
+                                    dataType: 'json',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(data),
+                                    success: function (res) {
+                                        if (res.code == 0) {
+                                            Tips.alert('成功', function () {
+                                                location.reload(true);
+                                            });
+                                        } else {
+                                            alert(res.msg);
+                                            return false;
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    // }
+
+
+                }
+
+
+                if ($this.text() == '拒绝') {
+                    Tips.alert({
+                        title: '退款申请',
+                        content: '确认拒绝退款吗？',
+                        defineText: '确定',
+                        define: function () {
+                            $.ajax({
+                                url: '/order_yungou/refund_list',
+                                type: "POST",
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                data: JSON.stringify(dataObj),
+                                success: function (res) {
+                                    if (res.code == 0) {
+                                        location.href = '/order_yungou/refund_list?shopId=[[${shop.id}]]';
+                                    }else{
+                                        alert(res.msg);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+                // if ($this.text() == '确认收货') {
+                //     Tips.alert({
+                //         title: '确认收货',
+                //         content: '确认已收货吗？',
+                //         defineText: '确定',
+                //         define: function () {
+                //             $.ajax({
+                //                 url: '/ajax_yungou/confirmReceipt',
+                //                 type: "POST",
+                //                 dataType: 'json',
+                //                 contentType: 'application/json',
+                //                 data: JSON.stringify(dataObj),
+                //                 success: function (data) {
+                //                     if (data.code == 1) {
+                //                         location.href = '/order_yungou/ygRefundList?id=3';
+                //                     } else {
+                //                         alert(data.msg);
+                //                     }
+                //                 }
+                //             });
+                //         }
+                //     });
+                // }
+                if ($this.text() == '确认退款') {
+                    Tips.alert({
+                        title: '退款',
+                        content: $('#tuikuan').html(),
+                        defineText: '确定',
+                        render: function (utils) {
+                            $('#ddbh').text($this.attr("ddbh"));
+                            $('#thbh').text($this.attr("thbh"));
+                            $('#fksj').text($this.attr("fksj"));
+                            $('#tksj').text($this.attr("tksj"));
+                            $('#ddze').text($this.attr("ddze"));
+                            $('#skr').text($this.attr("skr"));
+                            $('#skje').text($this.attr("ddze"));
+                        },
+                        define: function () {
+                            $.ajax({
+                                url: '/ajax_yungou/confirmRefund',
+                                type: "POST",
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                data: JSON.stringify(dataObj),
+                                success: function (data) {
+                                    if (data.code == 1) {
+                                        alert("操作成功");
+                                        location.href = '/order_yungou/refund_list?shopId=[[${shop.id}]]';
+                                        return false;
+                                    } else {
+                                        alert(data.msg);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

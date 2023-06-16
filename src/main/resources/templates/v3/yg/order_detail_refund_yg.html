@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title})">
+    <title>退货订单详情-退货管理-OMS订单管理系统</title>
+</head>
+<body th:replace="layout :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+
+    <!-- content starts -->
+    <blockquote class="layui-elem-quote">退货订单详情
+        <div class="layui-inline">
+            <button type="button" id="print_btn" class="layui-btn">打印订单</button>
+        </div>
+    </blockquote>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper" id="myElementId">
+
+
+        <div class="dd-info">
+            <p class="mb"><strong th:text="${orderVo.getOrderCancelNum()}">订单编号：[[${orderVo.orderNum}]]</strong></p>
+        </div>
+        <div class="dd-info">
+            <p class="mb"><strong>订单状态：</strong><b
+                    th:text="${T(com.b2c.entity.enums.OrderCancelStateEnums).getName(orderVo.getState())}"></b></p>
+            <p>买家手机：[[${orderVo.mjMobile}]]</p>
+            <p>收货人：[[${orderVo.consignee}]]</p>
+            <p>收货人手机号：[[${orderVo.consigneeMobile}]]</p>
+            <p>收货地址：[[${orderVo.address}]]</p>
+        </div>
+        <table class="dd-table">
+            <tr>
+                <th>商品</th>
+                <th>规格</th>
+                <th>SKU</th>
+                <th>购买单价</th>
+                <th>退货数量</th>
+                <th>合计金额</th>
+            </tr>
+            <tr th:each="item:${orderVo.getCancelItems()}">
+                <td>
+                    <div><img th:src="${item.getImage()}">
+                        <p th:text="${item.getTitle()}"></p>
+                    </div>
+                </td>
+                <td>
+                    <p>颜色：[[${item.color}]] 尺码：[[${item.size}]]</p>
+                </td>
+                <td th:text="${item.getSpecNumber()}"></td>
+                <td>¥[[${item.price}]]</td>
+                <td>[[${item.getQuantity()}]]</td>
+                <td th:text="${item.getQuantity()}*${item.getPrice()}"></td>
+            </tr>
+        </table>
+        <div class="dd-info">
+            <p><span>退货时间：<b th:text="${#dates.format(orderVo.getCreateOn()*1000, 'yyyy-MM-dd HH:mm:ss')}">¥[[${orderVo.freight}]]</b></span></p>
+            <p><span>退货数量：<b th:text="${orderVo.getTotalCount()}">¥[[${orderVo.freight}]]</b></span></p>
+            <p><span>退货总价：<b th:text="${orderVo.getTotalAmount()}">¥[[${orderVo.goodsTotalPrice}]]</b></span></p>
+        </div>
+
+    </div>
+    <!-- end dd-wrapper -->
+
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script src="/jQuery.print.min.js"></script>
+    <script>
+        $(function () {
+            $("#print_btn").click(function () {
+                $.print("#myElementId" /*, options*/);
+            })
+        })
+    </script>
+
+</div>
+
+
+</body>
+<html>

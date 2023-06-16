@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title th:text="${shop.name+'退货订单-退货管理-OMS订单管理系统'}"></title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+<div class="layui-body" style="padding:15px;">
+    <style type="text/css">
+        .T-box {
+            width: 400px;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        .T-box p {
+            position: relative;
+            height: 36px;
+            line-height: 36px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .T-box p span {
+            display: inline-block;
+            padding-right: 15px;
+            text-align: right;
+            width: 110px;
+            line-height: 36px;
+            font-size: 14px;
+        }
+
+        .T-box p input, .T-box p select {
+            width: 160px;
+            padding: 0 5px;
+            height: 34px;
+            line-height: 34px;
+            font-size: 14px;
+            border: 1px solid #d3d3d3;
+            outline: none;
+        }
+
+        .T-box p i {
+            padding: 0 10px;
+            line-height: 36px;
+            font-style: normal;
+        }
+
+        .T-box p b {
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+            width: 60px;
+            height: 36px;
+            line-height: 36px;
+            background: #c33;
+            color: #fff;
+            text-align: center;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        .T-result {
+            margin-bottom: 0;
+        }
+
+        .T-result em {
+            color: #c33;
+            font-style: normal;
+        }
+
+        .update {
+            display: inline-block;
+            margin-left: 15px;
+            padding: 0 20px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+            background: #009789;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .update i {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+            width: 30px;
+            height: 30px;
+            background: url(data:image/gif;base64,R0lGODlhHgAeAIABAP///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxQkUxQ0I4RDlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxQkUxQ0I4QzlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5ODNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAkUAAEALAAAAAAeAB4AAAJTjI8IkO1vFpxuWUbzlUpXfFyT1XCh+JHjBiYqtY1ZhM6ejee62+5m8PNhWEJWDUcE9nS/IHO5i0qnNijEesLysDHYcVtavh5QJ7A4liapNDbPVgAAIfkECRQAAQAsAAAAAB4AHgAAAlCMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg3kEo/YGlL2CrN+GtwMik7Cd8wlt/Ua+WPVwpDZBwuq2VBEGxNovThkdk5m0AgAh+QQJFAABACwAAAAAHgAeAAACUoyPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2D+YGiOLeRvYKbXzHgu/WEtuTuCW3OhrAU0+pEsmLBVtJ3bFVkW1pXpAxHszt2ogAAIfkECRQAAQAsAAAAAB4AHgAAAlGMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7gmNlpojZ8WKZE2OV5k2go2AvkgjOReUptWwSQEAIfkECRQAAQAsAAAAAB4AHgAAAlOMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7vlk7o6zGGvkRAaxMFBXm5JGvk4xz/vNbaE8s5FWAAAh+QQJFAABACwAAAAAHgAeAAACT4yPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2f6M1tct3b4Hy+IZFlPCCTuabzCbT9QNPKTndNwbQp7mSarX6F0CI0Is5lHQUAIfkECRQAAQAsAAAAAB4AHgAAAlKMjwiQ7W8WnG5ZRhs+V2ZlJZ44deLGjadZXg9Lha/7oe+H5/re8uDvi2A6thoRliMKg8sUM6B6SqfUYikWhcgqtNZWkw1nSeAKTylFT8dMdqMAACH5BAUUAAEALAAAAAAeAB4AAAJQjI8HC+n/GIM0ylazuVijvl0JaJHSuFBitpZeMFUk+9b2jeNpHn6zvePoOK2aEPYzgnY8Ju8JjaqALKfM6otdtQ5uD5VUWCLDU/QoxULVjwIAOw==);
+        }
+
+    </style>
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <ul class="layui-tab-title">
+            <li ><a th:href="@{/tao_order/list(shopId=${shop.id},status=2)}">订单管理</a></li>
+            <li class="layui-this"><a th:href="@{/tao_order/refund_list(shopId=${shop.getId()})}">退货管理</a></li>
+        </ul>
+    </div>
+    <!-- content starts -->
+    <!--    <blockquote class="layui-elem-quote">售后订单</blockquote>-->
+
+    <fieldset class="layui-elem-field">
+        <legend>按条件搜索</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-form-pane1" method="get" action="/tao_order/refund_list">
+                <input type="hidden" name="shopId" th:value="${shop.id}"/>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <input type="text" name="returnOrderNum" placeholder="退款编号" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="order_num" placeholder="订单编号" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="logisticsCode" placeholder="退货物流单号" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">申请时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="startTime" id="startTime" autocomplete="off"
+                                   placeholder="yyyy-MM-dd">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="endTime" id="endTime" autocomplete="off" placeholder="yyyy-MM-dd">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="state">
+                                <option value="">售后状态</option>
+                                <option th:each="item:${T(com.b2c.enums.datacenter.EnumDcTmallOrderReturnStatus).values()}" th:value="${item.index}" th:text="${item.name}">退款待审核</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn">搜索</button>
+                    </div>
+                    <div class="layui-inline">
+                        <span id="upd_order" class="layui-btn layui-btn-normal">更新Tao退款订单</span>
+                        <span id="upd_order_" style="display: none;" class="update"><i></i>更新中</span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </fieldset>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper">
+        <table class="dd-table">
+            <tr>
+                <th>退款单号</th>
+                <th>退款金额</th>
+                <th>订单号</th>
+                <th>订单金额</th>
+                <th>申请时间</th>
+                <th>退款类型</th>
+                <th>退款原因</th>
+                <th>退货物流</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="item:${list}">
+                <td th:text="${item.refund_id}">
+                </td>
+                <td th:text="${item.refund_fee}"></td>
+                <td th:text="${item.tid}"></td>
+                <td th:text="${item.total_fee}"></td>
+                <td>
+                        <p th:text="${#dates.format(item.created * 1000, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                </td>
+                <td>
+                    <span th:if="${item.has_good_return == 1}" >退货退款</span>
+                    <span th:if="${item.has_good_return == 0}" >仅退款</span>
+                </td>
+                <td>
+                    <span th:text="${item.reason}" ></span><br/>
+                    <span th:text="${item.desc}" ></span>
+                </td>
+                <td>
+                    <span th:text="${item.logisticsCompany}" ></span><br/>
+                    <span th:text="${item.logisticsCode}" ></span>
+                </td>
+
+                <td>
+                    <span th:text="${T(com.b2c.enums.datacenter.EnumDcTmallOrderReturnStatus).getName(item.status)}"></span><br />
+                    <span th:if="${item.auditStatus eq 0}" style="color: red">未确认</span>
+                    <span th:if="${item.auditStatus eq 1}" style="color: red">已确认</span>
+                </td>
+                <td class="center">
+                    <a th:href="@{/tao_order/refund_detail(refId=${item.refund_id},shopId=${shop.id})}">查看详情</a>
+                    <a th:if="${item.auditStatus eq 0 && item.has_good_return == 1}" th:attr="id=${item.getId()}" class="track confirm_refund" href="javascript:;">确认退货</a>
+                    <a href="javascript:;" class="updateRefundByNum" th:attr="data-id=${item.refund_id}">更新</a>
+                </td>
+            </tr>
+            <tr th:if="${not_result != null && not_result == 1 }">
+                <td colspan="10">
+                    没有找到退款单 <span th:text="${returnOrderNum}"></span>，<a href="javascript:;" class="updateRefundByNum" th:attr="data-id=${returnOrderNum}">点击更新</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- end dd-wrapper -->
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+    </div>
+
+    <script type="text/template" id="tuikuan">
+        <div class="T-box">
+            <p><span>订单编号</span><i id="ddbh"></i></p>
+            <p><span>退货编号</span><i id="thbh"></i></p>
+            <p><span>付款时间</span><i id="fksj"></i></p>
+            <p><span>退款时间</span><i id="tksj"></i></p>
+            <p><span>订单总额</span><i id="ddze"></i></p>
+            <p><span>收款人</span><i id="skr"></i></p>
+            <p><span>退款金额</span><i id="skje"></i></p>
+            <p><span>退款方式</span><i>按原账户退回</i></p>
+        </div>
+    </script>
+    <script type="text/template" id="send-goods">
+        <div class="T-box">
+            <p><span>快递公司</span>
+                <select id="send-company">
+                    <option value="">请选择快递公司</option>
+                    <option th:each="item:${company}" th:value="${item.getCode()}" th:text="${item.getName()}"></option>
+                </select>
+            </p>
+            <p><span>快递单号</span><input type="text" name="express_code"/></p>
+            <p><span>发件人地址</span><input type="text" name="express_address"/></p>
+            <p class="T-result"><span>&nbsp;</span><em id="erro"></em></p>
+        </div>
+    </script>
+
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/goods/Tips/Tips.min.js"></script>
+    <script type="text/javascript">
+        layui.use(['laydate', 'form'], function () {
+            var laydate = layui.laydate;
+            var form = layui.form;
+            laydate.render({
+                elem: '#startTime'
+            });
+            laydate.render({
+                elem: '#endTime'
+            });
+        });
+        $(function () {
+            //更新订单根据退款单号
+            $(".updateRefundByNum").click(function () {
+                var refundId = $(this).attr("data-id");
+                console.log("更新"+refundId);
+                $.ajax({
+                    url: "/tao_ajax/pull_refund_order_by_num",
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: 'application/json',
+                    data:JSON.stringify({shopId:[[${shop.id}]],orderId:refundId}),
+                    success: function (res) {
+                        if (res.code == 0) {
+                            Tips.alert({
+                                title: '更新订单',
+                                content: '【' + res.msg + '】',
+                                define: function () {
+                                    window.location.reload();
+                                }
+                            });
+
+                        } else if (res.code == 601) {
+                            // $("#upd_order").show();
+                            // $("#upd_order_").hide();
+                            alert(res.msg);
+                            // Tips.alert(res.msg);
+                            location.href = "/tao_oauth?shopId=[[${shop.id}]]";
+                        } else {
+                            Tips.alert(res.msg);
+                        }
+                    }
+                })
+            })
+            //更新订单
+            $("#upd_order").click(function () {
+                $("#upd_order").hide();
+                $("#upd_order_").show();
+                $.ajax({
+                    url: "/tao_ajax/pull_refund_order",
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: 'application/json',
+                    data:JSON.stringify({shopId:[[${shop.id}]]}),
+                    success: function (res) {
+                        if (res.code == 0) {
+                            Tips.alert({
+                                title: '更新订单',
+                                content: '更新成功：【' + res.msg + '】',
+                                define: function () {
+                                    location.href = "/tao_order/refund_list?shopId=[[${shop.id}]]";
+                                }
+                            });
+                        } else if (res.code == 601) {
+                            // $("#upd_order").show();
+                            // $("#upd_order_").hide();
+                            alert(res.msg);
+                            // Tips.alert(res.msg);
+                            location.href = "/tao_oauth?shopId=[[${shop.id}]]";
+                        } else {
+
+                            Tips.alert(res.msg);
+                        }
+                        $("#upd_order").show();
+                        $("#upd_order_").hide();
+                    }
+                })
+            });
+
+
+            //AJAX 退款
+            $(".confirm_refund").click(function () {
+                var id = $(this).attr("id");
+                if(confirm("确认要处理退款订单吗？")){
+                    var data = {
+                        id:id
+                    }
+                    $.ajax({
+                        url: "/tao_order/reviewRefund",
+                        type: "POST",
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function (res) {
+                            if (res.code == 0) {
+                                Tips.alert('成功', function () {
+                                    location.reload(true);
+                                });
+                            } else {
+                                alert(res.msg);
+                                return false;
+                            }
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+</div>
+</body>
+</html>

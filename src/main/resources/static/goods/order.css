@@ -1,0 +1,245 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, select {
+    margin: 0;
+    padding: 0
+}
+
+em, i, b {
+    font-weight: normal;
+    font-style: normal;
+}
+
+ol, ul, li {
+    list-style: none;
+}
+
+img, a img {
+    border: 0;
+    outline: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+p {
+    word-wrap: break-word;
+}
+
+a {
+    text-decoration: none;
+}
+
+input, textarea {
+    outline: none;
+    border: 0 none;
+    font-family: "Microsoft Yahei";
+}
+
+select {
+    outline: none;
+    font-family: "Microsoft Yahei";
+}
+
+body {
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #333;
+}
+
+/*============================================*/
+.dd-wrapper {
+    padding: 20px;
+    font-size: 12px;
+    line-height: 2;
+}
+
+.dd-table {
+    width: 100%;
+}
+
+.dd-table th, .dd-table td {
+    padding: 10px 0 10px 20px;
+    text-align: left;
+    font-size: 12px;
+    color: #333;
+}
+
+.dd-table th {
+    background: #f2f2f2;
+}
+
+.dd-table td {
+    padding: 20px 0 20px 20px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.dd-table td div {
+    clear: both;
+    overflow: hidden;
+    padding: 0 0 10px;
+}
+
+.dd-table td div:last-child {
+    padding-bottom: 0;
+}
+
+.dd-table td div img {
+    float: left;
+    width: 60px;
+    height: 60px;
+    margin-right: 20px;
+}
+
+.dd-table td b {
+    color: #f00;
+}
+
+.dd-table td a {
+    color: #39c;
+    margin-right: 10px;
+}
+
+.dd-table td a:last-child {
+    margin-right: 0;
+}
+
+.dd-table td a.track {
+    padding: 5px 8px;
+    background: #39c;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.dd-info {
+    margin-bottom: 20px;
+}
+
+.dd-info p {
+    overflow: hidden;
+}
+
+.dd-info p.mb {
+    border-bottom: 1px solid #f2f2f2;
+    padding-bottom: 6px;
+    margin-bottom: 15px;
+}
+
+.dd-info p b {
+    color: #f00;
+    margin-right: 20px;
+}
+
+.dd-info p i {
+    color: #969696;
+}
+
+.dd-info p span {
+    float: right;
+}
+
+.dd-info p span b {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+    margin-right: 0;
+}
+
+.dd-step {
+    padding: 50px 0 100px;
+    text-align: center;
+    color: #646464;
+}
+
+.dd-step p {
+    position: relative;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+}
+
+.dd-step p.line {
+    width: 70px;
+    margin: 0 10px;
+    height: 1px;
+    line-height: 0;
+    font-size: 0;
+    background: #f2f2f2;
+    vertical-align: middle;
+}
+
+.dd-step p span {
+}
+
+.dd-step p span i {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    margin-right: 6px;
+    border: 1px solid #646464;
+    border-radius: 50%;
+}
+
+.dd-step p span.active {
+    font-weight: bold;
+}
+
+.dd-step p span.active i {
+    background: #39c;
+    color: #fff;
+    border-color: #39c;
+}
+
+.dd-step p em {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    margin-left: -65px;
+    width: 130px;
+    height: 30px;
+    color: #969696;
+}
+
+.dd-log h3 {
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.dd-log ul {
+    padding-left: 20px;
+    border-left: 1px solid #969696;
+}
+
+.dd-log li {
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    color: #969696;
+}
+
+.dd-log li i {
+    position: absolute;
+    left: -27px;
+    top: 14px;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border: 1px solid #969696;
+    border-radius: 50%;
+}
+
+.dd-log li b {
+    margin: 0 20px;
+}
+
+.dd-log li.now {
+    color: #333;
+}
+
+.dd-log li.now i {
+    border-color: #333;
+}

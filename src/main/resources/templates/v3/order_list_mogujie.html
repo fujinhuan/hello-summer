@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title})">
+    <title th:text="${shop.name+'订单-订单管理-OMS订单管理系统'}"></title>
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+
+<div class="layui-body" style="padding:15px;">
+    <style type="text/css">
+        .update {
+            display: inline-block;
+            margin-left: 15px;
+            padding: 0 20px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+            background: #009789;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .update i {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+            width: 30px;
+            height: 30px;
+            background: url(data:image/gif;base64,R0lGODlhHgAeAIABAP///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxQkUxQ0I4RDlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxQkUxQ0I4QzlDOEQxMUU5QTRDREZBRDZFQjAxMTkxQyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5ODNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NzNCQUY4OTY1OUNFOTExOUMwMUNENEM5NDA0QTUyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAkUAAEALAAAAAAeAB4AAAJTjI8IkO1vFpxuWUbzlUpXfFyT1XCh+JHjBiYqtY1ZhM6ejee62+5m8PNhWEJWDUcE9nS/IHO5i0qnNijEesLysDHYcVtavh5QJ7A4liapNDbPVgAAIfkECRQAAQAsAAAAAB4AHgAAAlCMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg3kEo/YGlL2CrN+GtwMik7Cd8wlt/Ua+WPVwpDZBwuq2VBEGxNovThkdk5m0AgAh+QQJFAABACwAAAAAHgAeAAACUoyPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2D+YGiOLeRvYKbXzHgu/WEtuTuCW3OhrAU0+pEsmLBVtJ3bFVkW1pXpAxHszt2ogAAIfkECRQAAQAsAAAAAB4AHgAAAlGMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7gmNlpojZ8WKZE2OV5k2go2AvkgjOReUptWwSQEAIfkECRQAAQAsAAAAAB4AHgAAAlOMjwiQ7W8WnG5ZRvOVOWH/KZTVcIpZXpr6kJ0LhVpH1/aNg/mBoji3kb2Cm18x4Lv1hLbk7vlk7o6zGGvkRAaxMFBXm5JGvk4xz/vNbaE8s5FWAAAh+QQJFAABACwAAAAAHgAeAAACT4yPCJDtbxacbllG85U5Yf8plNVwillemvqQnQuFWkfX9o2f6M1tct3b4Hy+IZFlPCCTuabzCbT9QNPKTndNwbQp7mSarX6F0CI0Is5lHQUAIfkECRQAAQAsAAAAAB4AHgAAAlKMjwiQ7W8WnG5ZRhs+V2ZlJZ44deLGjadZXg9Lha/7oe+H5/re8uDvi2A6thoRliMKg8sUM6B6SqfUYikWhcgqtNZWkw1nSeAKTylFT8dMdqMAACH5BAUUAAEALAAAAAAeAB4AAAJQjI8HC+n/GIM0ylazuVijvl0JaJHSuFBitpZeMFUk+9b2jeNpHn6zvePoOK2aEPYzgnY8Ju8JjaqALKfM6otdtQ5uD5VUWCLDU/QoxULVjwIAOw==);
+        }
+
+        .T-box {
+            width: 400px;
+            padding: 0 20px;
+            text-align: left;
+        }
+
+        .T-box p {
+            position: relative;
+            height: 36px;
+            line-height: 36px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .T-box p span {
+            display: inline-block;
+            padding-right: 15px;
+            text-align: right;
+            width: 110px;
+            line-height: 36px;
+            font-size: 14px;
+        }
+
+        .T-box p input, .T-box p select {
+            width: 250px;
+            padding: 0 5px;
+            height: 34px;
+            line-height: 34px;
+            font-size: 14px;
+            border: 1px solid #d3d3d3;
+            outline: none;
+        }
+
+        .T-box p i {
+            padding: 0 10px;
+            line-height: 36px;
+            font-style: normal;
+        }
+
+        .T-box p b {
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+            width: 60px;
+            height: 36px;
+            line-height: 36px;
+            background: #c33;
+            color: #fff;
+            text-align: center;
+            font-size: 13px;
+            font-weight: normal;
+        }
+    </style>
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><a th:href="@{/ali_order/list(shopId=${shop.id},state='waitsellersend')}">待发货订单</a></li>
+            <li><a th:href="@{/ali_order/list(shopId=${shop.id})}">全部订单</a></li>
+        </ul>
+    </div>
+
+    <!-- content starts -->
+    <!--    <blockquote class="layui-elem-quote">订单总览</blockquote>-->
+
+    <fieldset class="layui-elem-field">
+        <legend>按条件搜索</legend>
+        <div class="layui-field-box">
+            <form class="layui-form layui-form-pane1" method="get" action="/pipi/order_list">
+                <input type="hidden" name="shopId" th:value="${shop.id}"/>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <input type="text" name="orderNum" th:value="${orderNum}" placeholder="订单编号"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" name="mobile" placeholder="收货人手机号" class="layui-input">
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">下单时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="startTime" th:value="${startTime}"
+                                   id="startTime" autocomplete="off"
+                                   style="width: 150px;" placeholder="yyyy-MM-dd">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="endTime" th:value="${endTime}" id="endTime"
+                                   style="width: 150px;" autocomplete="off" placeholder="yyyy-MM-dd">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="status">
+                                <option value="">订单状态</option>
+                                <option  th:each="item: ${T(com.b2c.entity.mogujie.DcOrderMogujieStatusEnum).values()}" th:text="${item.name}" th:value="${item.index}">等待发货</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn ">搜索</button>
+                        <i>总共：<span style="color: red" th:text="${totalSize}"></span>条记录</i>
+                    </div>
+<!--                                        <div class="layui-inline">-->
+<!--                                            <a target="_blank" href="/mogujie/oauth" class="layui-btn layui-btn-primary"  >获取授权</a>-->
+<!--                                        </div>-->
+                    <div class="layui-inline">
+                        <a href="javascript:;" id="upd_order" class="layui-btn layui-btn-normal">更新订单</a>
+                        <span id="upd_order_" style="display: none;" class="update"><i></i>更新中</span>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </fieldset>
+
+    <!-- start dd-wrapper -->
+    <link rel="stylesheet" href="/goods/order.css"/>
+    <div class="dd-wrapper">
+<!--        <form id="order_type_confirm" action="/dc_order/set_order_type_confirm_review" method="post">-->
+<!--            <input type="hidden" name="shopId" th:value="${shop.id}">-->
+<!--            <div class="layui-inline" style="padding-bottom: 10px;">-->
+<!--                <input type="button" class="layui-btn layui-btn-primary" th:attr="shop-id=${shop.id}" id="batch_set_order_type" value="批量关联业务员(0)"/>-->
+<!--            </div>-->
+            <table class="dd-table">
+                <tr>
+                    <th>ID</th>
+                    <th>订单号</th>
+                    <th width="250px;">商品</th>
+                    <th>订单金额</th>
+                    <th>下单时间</th>
+                    <th>收件信息</th>
+                    <th>发货信息</th>
+                    <th>备注</th>
+
+                    <th>订单状态</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="item:${lists}">
+                    <td><span th:text="${item.id}"></span></td>
+                    <td><span th:text="${item.orderNum}"></span></td>
+
+                    <td>
+                        <div th:each="it:${item.items}" >
+                            <img th:src="${it.goodsImg}">
+                            <p>
+                                <span th:text="${#strings.abbreviate(it.goodsTitle,18)}"></span><br/>
+                                规格：[[${it.goodsSpec}]]<br/>
+                                单价: ¥[[${it.price}]] 数量：[[${it.quantity}]]
+                            </p>
+                        </div>
+
+                    </td>
+                    <td>
+                        <b>¥[[${item.totalAmount}]]</b><br>（含运费：¥[[${item.shippingFee}]]）<br/>
+                    </td>
+                    <td><span th:text="${item.createdStr}"></span></td>
+                    <td>
+                        <span th:text="${item.receiverName}"></span>&nbsp;&nbsp;<span th:text="${item.receiverMobile}"></span><br />
+                        <span th:text="${item.receiverAddress}"></span>
+                    </td>
+
+                    <td>
+                        <div th:if="${item.getLogisticsCode()!=null}">
+                            <p>[[${item.logisticsCompany}]] &nbsp; [[${item.logisticsCode}]]</p>
+                        </div>
+                    </td>
+                    <td>
+                        <p th:if="${item.buyerFeedback}">买家留言：<b th:text="${item.buyerFeedback}" style="color: red"></b>
+                        </p>
+                        <p th:if="${item.sellerMemo}">卖家备注：<b th:text="${item.sellerMemo}" style="color: red"></b></p>
+                    </td>
+                    <td>
+
+                        <span th:text="${T(com.b2c.entity.mogujie.DcOrderMogujieStatusEnum).getName(item.status)}"></span><br/>
+                        <span th:if="${item.auditStatus == 0 }" style="color: red">待确认</span>
+                        <span th:if="${item.auditStatus == 1 }" style="color: red">已确认</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/mogujie/orderDetail(id=${item.getId()},shopId=${item.shopId})}">查看详情</a>
+
+                        <a th:if="${item.auditStatus == 0 && item.status == T(com.b2c.entity.mogujie.DcOrderMogujieStatusEnum).ORDER_PAID.getIndex()}"class="layui-btn layui-btn-xs layui-btn-normal confirm_order" href="javascript:;"
+                           style="color: #fff"
+                           th:attr="data-id=${item.id},shop-id=${shop.id}">确认订单</a>
+
+
+                        <a th:if="${item.getAuditStatus() == 1 && item.status == 'waitsellersend'}"
+                           th:attr="order-id=${item.getId()}" class="order_send">订单发货</a>
+
+<!--                        <a href="javascript:;" class="updateOrderByNum" th:attr="data-id=${item.id}">更新</a>-->
+                    </td>
+                </tr>
+            </table>
+<!--        </form>-->
+    </div>
+    <!-- end dd-wrapper -->
+    <div class="layui-box layui-laypage layui-laypage-default pageBox">
+        <paging:pager th:value="${pageIndex}" th:rows="${totalSize}" th:size="${pageSize}"/>
+    </div>
+
+    <!--    <script type="text/javascript" src="/static/goods/Tips/Tips.min.js"></script>-->
+    <script type="text/javascript">
+        var layer;
+        var $;
+        var windowOpen;
+
+        //计算天数差的函数，通用
+        function DateDiff(sDate1, sDate2) { //sDate1和sDate2是2019-3-12格式
+            var aDate, oDate1, oDate2, iDays
+            aDate = sDate1.split("-")
+            oDate1 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]) //转换为9-25-2017格式
+            aDate = sDate2.split("-")
+            oDate2 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0])
+            iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24) //把相差的毫秒数转换为天数
+            return iDays
+        }
+
+        function getNum() {
+            var num = 0;
+            for (var i = 0; i < $('.currCheck').length; i++) {
+                var checked = $('.currCheck').eq(i).prop('checked');
+                if (checked) {
+                    num++;
+                }
+            }
+            return num;
+        }
+
+        layui.use(['laydate', 'jquery', 'form', 'layer'], function () {
+            var laydate = layui.laydate;
+            $ = layui.jquery;
+            var form = layui.form;
+            layer = layui.layer;
+            laydate.render({
+                elem: '#startTime'
+            });
+            laydate.render({
+                elem: '#endTime'
+            });
+
+            $(function () {
+                $("#upd_order").click(function () {
+                    $("#upd_order").hide();
+                    $("#upd_order_").show();
+                    let startTime = $("#startTime").val();
+                    let endTime = $("#endTime").val();
+                    let data = {
+                        startTime:startTime,
+                        endTime:endTime,
+                        updType:0
+                    };
+
+                    $.ajax({
+                        url: "/ajax_mogujie/pull_order",
+                        type: "POST",
+                        dataType: "JSON",
+                        contentType: 'application/json',
+                        data:JSON.stringify(data),
+                        success: function (res) {
+                            if (res.code == 0) {
+                                Tips.alert({
+                                    title: '更新订单',
+                                    content: '更新结果：【'+JSON.stringify(res.data )+'】',
+                                    define: function () {
+                                        location.href = "/mogujie/order_list?shopId=12";
+                                    }
+                                });
+                            }else if(res.code==601){
+                                // $("#upd_order").show();
+                                // $("#upd_order_").hide();
+                                alert(res.msg);
+                                // Tips.alert(res.msg);
+                                location.href = "/mogujie/oauth";
+                            }
+                            else {
+
+                                Tips.alert(res.msg);
+                            }
+                            $("#upd_order").show();
+                            $("#upd_order_").hide();
+                        }
+                    })
+                });
+
+                //确认订单start
+                $(".confirm_order").click(function () {
+                    var orderId = $(this).attr("data-id");
+                    var shopId = $(this).attr("shop-id");
+                    //确认订单iframe层
+                    layer.open({
+                        type: 2,
+                        title: '订单确认',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['480px', '650px'],
+                        content: '/mogujie/order_confirm?orderId=' + orderId + "&shopId=" + shopId //iframe的url
+                    });
+                });//确认订单end
+
+
+                //更新订单
+
+
+                //订单发货
+
+
+            })
+        });
+
+    </script>
+
+
+</div>
+</body>
+<html>

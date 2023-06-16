@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout_v3 :: common_header(~{::title})">
+    <title>申请退货-订单管理-OMS订单管理系统</title>
+    <link rel="stylesheet" type="text/css" href="/css/hy.css">
+</head>
+<body th:replace="layout_v3 :: common_body(~{::div.layui-body})">
+<div class="layui-body" style="padding:15px;">
+    <style>
+        .sp-title {
+            position: relative;
+            height: 50px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .cart-box {
+            width: 1100px;
+            min-height: 600px;
+            margin: 0 auto;
+            padding: 30px 0;
+            overflow: hidden;
+        }
+
+        .cart-head {
+            padding: 0 19px;
+            margin-bottom: 20px;
+            height: 36px;
+            line-height: 36px;
+            border: 1px solid #f2f2f2;
+            background: #f2f2f2;
+            font-size: 12px;
+            color: #646464;
+        }
+
+        .cart-head label i, .cart-foot label i, .group-head label i {
+            display: inline-block;
+            width: 17px;
+            height: 17px;
+            margin-right: 10px;
+            vertical-align: middle;
+            cursor: pointer;
+            background: url(../images/tb/c-01.png) 50% no-repeat;
+        }
+
+        .cart-head label.active i, .cart-foot label.active i, .group-head label.active i {
+            background: url(../images/tb/c-02.png) 50% no-repeat;
+        }
+
+        .cart-box .c1, .cart-box .c2, .cart-box .c3, .cart-box .c4, .cart-box .c5, .cart-box .c6 {
+            float: left;
+            display: inline-block;
+        }
+
+        .items li {
+            height: 80px;
+            padding: 20px;
+            border-top: 1px solid #f2f2f2;
+        }
+
+        .cart-foot button.active {
+            background: #f00;
+        }
+
+        .items li span.c1 {
+            line-height: 80px;
+        }
+
+        .cart-box .c2 {
+            width: 455px;
+        }
+
+        .cart-box .c3 {
+            width: 150px;
+        }
+
+        .cart-box .c5 {
+            width: 150px;
+        }
+
+        .cart-box .c4 {
+            width: 150px;
+        }
+
+        .cart-foot {
+            height: 70px;
+            line-height: 70px;
+            background: #f2f2f2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cart-foot button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 140px;
+            height: 70px;
+            line-height: 70px;
+            text-align: center;
+            font-size: 18px;
+            background: #D7D7D7;
+            color: #fff;
+            border: 0 none;
+            cursor: pointer;
+        }
+
+        .cart-foot label {
+            margin-left: 20px;
+            font-size: 12px;
+            color: #646464;
+        }
+
+        .group-box {
+            border: 1px solid #e6e6e6;
+            border-top: 2px solid #976D6A;
+            margin-bottom: 20px;
+        }
+
+        .items li .i-item {
+            width: 350px;
+            height: 80px;
+            position: relative;
+        }
+
+        .items li .i-item img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 80px;
+            height: 80px;
+        }
+
+        .items li .i-item h3 {
+            position: absolute;
+            left: 100px;
+            top: 0;
+            font-size: 12px;
+            font-weight: normal;
+            color: #323232;
+        }
+
+        .items li .i-item p {
+            position: absolute;
+            left: 100px;
+            bottom: 0;
+            font-size: 12px;
+            color: #969696;
+        }
+
+        .items li .i-item p b {
+            margin-right: 15px;
+            font-size: 12px;
+        }
+
+        .items li label i {
+            display: inline-block;
+            width: 17px;
+            height: 17px;
+            vertical-align: middle;
+            cursor: pointer;
+            background: url(../images/tb/c-01.png) 50% no-repeat;
+        }
+
+        .cart-foot .i-result p span strong {
+            font-size: 18px;
+            margin: 0 5px;
+            color: #f00;
+        }
+
+        .items li label input {
+            display: none;
+        }
+
+        .cart-foot .i-result {
+            position: absolute;
+            right: 160px;
+            top: 0;
+            padding: 10px 0;
+            line-height: 50px;
+            text-align: right;
+        }
+
+        .items li label.active i {
+            background: url(../images/tb/c-02.png) 50% no-repeat;
+        }
+
+        .cart-box .c1 {
+            width: 80px;
+        }
+    </style>
+    <div class="hy-main">
+        <div class="sp-title"><span>订单售后申请</span></div>
+        <div class="goods-wrapper">
+            <div class="cart-box">
+                <form id="cart_form">
+                    <input type="text" name="refundId" placeholder="请输入退款单号">
+                    <input type="text" name="company" placeholder="请输入物流公司">
+                    <input type="text" name="code" placeholder="请输入物流单号">
+                    <input type="hidden" name="order_id" th:value="${orderVo.getId()}"/>
+                    <div class="cart-head">
+                        <span class="c1"><label class="i-select"><i></i>全选</label></span>
+                        <span class="c2">商品</span>
+                        <span class="c3">价格</span>
+                        <span class="c5">SKU</span>
+                        <span class="c4">退货数量</span>
+                    </div>
+                    <div class="cart-main" th:if="${orderVo.getItems()!=null}">
+                        <div class="group-box">
+                            <div class="group-main">
+                                <ul class="items">
+                                    <li th:each="item:${orderVo.getItems()}" class="item">
+                                        <input type="hidden" name="items" th:value="${item.getId()}"/>
+                                        <span class="c1">
+                                            <label class="i-single"><i></i>
+                                                <input type="checkbox" name="item[]"
+                                                       th:value="${itemStat.index+':'+item.getId()}"/>
+                                            </label>
+                                        </span>
+                                        <span class="c2">
+											<div class="i-item">
+												<img th:src="${item.getProductImgUrl()}">
+												<h3><a th:text="${item.getGoodsTitle()}">HERSCITY连衣裙碎花系带喇叭袖长袖显瘦百褶中长款连衣裙女</a></h3>
+												<p>
+                                                    <strong></strong><b th:text="${item.getSkuInfo()}"></b>
+                                                    <br>
+                                                    <b>购买数量：[[${item.getQuantity()}]]</b>
+                                                </p>
+											</div>
+										</span>
+                                        <span class="c3"><b class="i-new"
+                                                            th:text="${'¥'+#numbers.formatDecimal(item.getPrice(),1,2)}">¥99.00</b></span>
+                                        <span class="c5">
+                                            <b th:text="${item.getSpecNumber()+' '}"></b>
+                                        </span>
+
+                                        <span class="c4">
+                                            <div class="i-count">
+                                                <input style="text-align: center;width: 50px;" type="text"
+                                                       name="count[]" value="0"/>
+                                            </div>
+										</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-foot">
+                        <div class="c1"><label class="i-select"><i></i>全选</label></div>
+                        <div class="i-result">
+                            <p><span>已选商品<strong id="good_num">0</strong>件</span></span></p>
+                        </div>
+                        <button id="sub_btn">提交售后</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function() {
+                var $cart = $('.cart-box');
+                var $button = $('#sub_btn'); // 结算按钮
+                var $goodnum=$('#good_num');//数量
+                // 遍历商品
+                function each(cb) {
+                    $('.item').each(function(i, item) {
+                        var $item = $(item);
+                        var $label = $item.find('label');
+                        if (!$label.length) return true;
+                        var $check = $label.find('input[type=checkbox]');
+                        if (!$check.length) return true;
+                        var $input=$item.find('input[type=text]');
+                        cb && cb($item, $label, $check,$input);
+                    });
+                }
+
+                // 是否有选中
+                function $checkOne() {
+                    var status = false;
+                    $('.i-single').each(function(i, el) {
+                        if ($(this).hasClass('active')) {
+                            status = true;
+                            return false;
+                        }
+                    });
+                    return status;
+                }
+                // 切换按钮背景
+                function $toggle() {
+                    if ($checkOne()) {
+                        $button.addClass('active');
+                    } else {
+                        $button.removeClass('active');
+                    }
+                }
+                // 单个选择
+                $cart.delegate('.i-single', 'click', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var $label = $(this);
+                    var $check = $label.find('input[type=checkbox]');
+                    if ($label.hasClass('active')) {
+                        $label.removeClass('active');
+                        $check.prop('checked', false);
+                    } else {
+                        $label.addClass('active');
+                        $check.prop('checked', true);
+                    }
+                    $toggle();
+                    addup();
+                });
+                // 全部选择
+                $cart.delegate('.i-select', 'click', function(e) {
+                    e.stopPropagation();
+                    var $select = $(this);
+                    if ($select.hasClass('active')) {
+                        $select.removeClass('active');
+                        $cart.find('label').each(function(i, label) {
+                            var $label = $(label);
+                            $label.removeClass('active');
+                            $label.find('input').prop('checked', false);
+                        });
+                    } else {
+                        $select.addClass('active');
+                        $cart.find('label').each(function(i, label) {
+                            var $label = $(label);
+                            $label.addClass('active');
+                            $label.find('input').prop('checked', true);
+                        });
+                    }
+                    $toggle();
+                    addup();
+                });
+
+                // 计算总额
+                function addup() {
+                    var res = 0;
+                    var num=0;
+                    each(function($item, $label, $check,$input) {
+                        var vals = $check.val().split(','); // 1001,红色,M,129,1
+                        console.log(vals);
+                        var price = vals[3]; // 单价
+                        var count = $input.val();//vals[4]; // 件数
+                        var stock = vals[5]; // 库存
+                        if ($check.prop('checked') === true) {
+                            if (stock > 0) res += price * count;
+                            num+=$check.length;
+                        }
+                    });
+                    $goodnum.text(num);
+                }
+                // 点击结算按钮
+                $button.click(function(e) {
+                    e.preventDefault();
+                    if (!$button.hasClass('active')) return;
+                    var res = false;
+                    each(function($item, $label, $check) {
+                        if ($item.hasClass('disable')) return true;
+                        if ($check.prop('checked') === true) res = true;
+                    });
+                    if (!res) {
+                        Tips.alert('请选择要结算的物品');
+                    } else {
+                        var saleType = '[[${saleType}]]';
+                        if(saleType=='') saleType = 1;
+
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            processData: false,
+                            url: "/tao_order/refund_apply_submit" ,
+                            data: $('#cart_form').serialize(),
+                            success: function (result) {
+                                if (result.code == 0) {
+                                    location.href='/tao_order/refund_list?shopId=7';
+                                }else{
+                                    Tips.alert(result.msg);
+                                }
+                            },
+                            error : function(e) {
+                                Tips.alert("服务器异常！"+e);
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+    </div> <!-- end hy-main -->
+</div>
+</body>
+</html>
